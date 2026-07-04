@@ -30,6 +30,8 @@ model User {
   recemVrAnalisados        RecemVr[]                @relation("RecemVrAnalista")
   recemVrAcompanhamentos   RecemVrAcompanhamento[]
   recemVrHistory           RecemVrHistory[]
+  createdCredentials       ClientCredential[]
+  credentialAccessLogs     ClientCredentialAccessLog[]
 
   @@map("users")
 }
@@ -135,6 +137,8 @@ model Client {
   history         ClientHistory[]
   deployments     Deployment[]
   recemVr         RecemVr[]
+  infrastructure  ClientInfrastructure[]
+  credentials     ClientCredential[]
 
   @@map("clients")
 }
@@ -202,6 +206,84 @@ model HomologatedPeripheral {
   createdAt DateTime @default(now()) @map("created_at")
 
   @@map("homologated_peripherals")
+}
+
+enum ClientInfraType {
+  SERVIDOR_BANCO
+  SERVIDOR_APLICACAO
+  SERVIDOR_GERENCIADOR
+  ESTACAO_TRABALHO
+  TERMINAL_PDV
+}
+
+model ClientInfrastructure {
+  id              String          @id @default(uuid())
+  clientId        String          @map("client_id")
+  client          Client          @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  type            ClientInfraType
+  nome            String
+  hostname        String?
+  ipAddress       String?         @map("ip_address")
+  operatingSystem String?         @map("operating_system")
+  cpuModel        String?         @map("cpu_model")
+  ramGb           Int?            @map("ram_gb")
+  storageGb       Int?            @map("storage_gb")
+  storageType     String?         @map("storage_type")
+  observacoes     String?         @db.Text
+  isActive        Boolean         @default(true) @map("is_active")
+  createdAt       DateTime        @default(now()) @map("created_at")
+  updatedAt       DateTime        @updatedAt @map("updated_at")
+
+  @@map("client_infrastructure")
+}
+
+enum ClientCredentialType {
+  ACESSO_REMOTO
+  BANCO_DADOS
+  VPN
+  SISTEMA_APLICACAO
+  OUTRO
+}
+
+model ClientCredential {
+  id                  String                      @id @default(uuid())
+  clientId            String                      @map("client_id")
+  client              Client                      @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  type                ClientCredentialType
+  label               String
+  username            String?
+  secretCiphertext    String                      @map("secret_ciphertext")
+  secretIv            String                      @map("secret_iv")
+  secretAuthTag       String                      @map("secret_auth_tag")
+  responsavelNome     String?                     @map("responsavel_nome")
+  responsavelTelefone String?                     @map("responsavel_telefone")
+  responsavelEmail    String?                     @map("responsavel_email")
+  notes               String?                     @db.Text
+  isActive            Boolean                     @default(true) @map("is_active")
+  createdById         String?                     @map("created_by_id")
+  createdBy           User?                       @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt           DateTime                    @default(now()) @map("created_at")
+  updatedAt           DateTime                    @updatedAt @map("updated_at")
+  accessLogs          ClientCredentialAccessLog[]
+
+  @@map("client_credentials")
+}
+
+enum ClientCredentialAction {
+  VIEW
+  COPY
+}
+
+model ClientCredentialAccessLog {
+  id           String                 @id @default(uuid())
+  credentialId String                 @map("credential_id")
+  credential   ClientCredential       @relation(fields: [credentialId], references: [id], onDelete: Cascade)
+  userId       String?                @map("user_id")
+  user         User?                  @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action       ClientCredentialAction
+  createdAt    DateTime               @default(now()) @map("created_at")
+
+  @@map("client_credential_access_logs")
 }
 
 model ServerRequirement {
