@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { KeyRound, Plus, Trash2, Copy, Eye, EyeOff } from 'lucide-react';
@@ -45,6 +45,15 @@ export default function ClientCredentialsTab({ clientId }: Props) {
   const [open, setOpen] = useState(false);
   const [revealedId, setRevealedId] = useState<string | null>(null);
   const [revealedValue, setRevealedValue] = useState<string | null>(null);
+  const revealTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (revealTimeoutRef.current) {
+        clearTimeout(revealTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const canReveal = user?.roles?.some((role) => REVEAL_ROLES.includes(role)) ?? false;
 
@@ -94,6 +103,10 @@ export default function ClientCredentialsTab({ clientId }: Props) {
   };
 
   const handleReveal = async (credential: ClientCredential) => {
+    if (revealTimeoutRef.current) {
+      clearTimeout(revealTimeoutRef.current);
+      revealTimeoutRef.current = null;
+    }
     if (revealedId === credential.id) {
       setRevealedId(null);
       setRevealedValue(null);
@@ -104,9 +117,10 @@ export default function ClientCredentialsTab({ clientId }: Props) {
       setRevealedId(credential.id);
       setRevealedValue(secret);
       toast({ title: 'Atenção', description: 'Esta visualização foi registrada em auditoria.' });
-      setTimeout(() => {
-        setRevealedId((current) => (current === credential.id ? null : current));
-        setRevealedValue((current) => (revealedId === credential.id ? null : current));
+      revealTimeoutRef.current = setTimeout(() => {
+        setRevealedId(null);
+        setRevealedValue(null);
+        revealTimeoutRef.current = null;
       }, 15000);
     } catch {
       toast({ title: 'Erro', description: 'Não foi possível revelar a credencial.', variant: 'destructive' });
