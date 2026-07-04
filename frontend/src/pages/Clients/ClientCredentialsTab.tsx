@@ -208,67 +208,69 @@ export default function ClientCredentialsTab({ clientId }: Props) {
         )}
       </div>
 
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Tipo</TableHead>
-            <TableHead>Rótulo</TableHead>
-            <TableHead>Usuário</TableHead>
-            <TableHead>Responsável pela liberação</TableHead>
-            <TableHead>Senha</TableHead>
-            <TableHead className="text-right">Ações</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {isLoading && (
-            <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground">Carregando...</TableCell></TableRow>
-          )}
-          {!isLoading && (!credentials || credentials.length === 0) && (
-            <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground py-6">Nenhuma credencial cadastrada.</TableCell></TableRow>
-          )}
-          {credentials?.map((credential) => (
-            <TableRow key={credential.id}>
-              <TableCell><Badge variant="outline">{CLIENT_CREDENTIAL_TYPE_LABELS[credential.type]}</Badge></TableCell>
-              <TableCell className="font-medium">{credential.label}</TableCell>
-              <TableCell className="text-sm text-muted-foreground">{credential.username || '-'}</TableCell>
-              <TableCell className="text-sm text-muted-foreground">
-                {credential.responsavelNome || '-'}
-                {credential.responsavelTelefone && <div className="text-xs">{credential.responsavelTelefone}</div>}
-              </TableCell>
-              <TableCell className="font-mono text-sm">
-                {revealedId === credential.id ? revealedValue : '••••••••'}
-              </TableCell>
-              <TableCell className="text-right space-x-1">
-                <Button variant="ghost" size="icon" title="Copiar" onClick={() => handleCopy(credential)}>
-                  <Copy className="w-4 h-4" />
-                </Button>
-                {canReveal && (
-                  <Button variant="ghost" size="icon" title="Revelar" onClick={() => handleReveal(credential)}>
-                    {revealedId === credential.id ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </Button>
-                )}
-                {canReveal && (
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button variant="ghost" size="icon"><Trash2 className="w-4 h-4 text-destructive" /></Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Excluir credencial?</AlertDialogTitle>
-                        <AlertDialogDescription>Esta ação não pode ser desfeita.</AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                        <AlertDialogAction onClick={() => deleteMutation.mutate(credential.id)}>Excluir</AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                )}
-              </TableCell>
+      <div className="overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Tipo</TableHead>
+              <TableHead>Rótulo</TableHead>
+              <TableHead>Usuário</TableHead>
+              <TableHead>Responsável pela liberação</TableHead>
+              <TableHead>Senha</TableHead>
+              <TableHead className="text-right">Ações</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {isLoading && (
+              <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground">Carregando...</TableCell></TableRow>
+            )}
+            {!isLoading && (!credentials || credentials.length === 0) && (
+              <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground py-6">Nenhuma credencial cadastrada.</TableCell></TableRow>
+            )}
+            {credentials?.map((credential) => (
+              <TableRow key={credential.id}>
+                <TableCell><Badge variant="outline">{CLIENT_CREDENTIAL_TYPE_LABELS[credential.type]}</Badge></TableCell>
+                <TableCell className="font-medium">{credential.label}</TableCell>
+                <TableCell className="text-sm text-muted-foreground">{credential.username || '-'}</TableCell>
+                <TableCell className="text-sm text-muted-foreground">
+                  {credential.responsavelNome || '-'}
+                  {credential.responsavelTelefone && <div className="text-xs">{credential.responsavelTelefone}</div>}
+                </TableCell>
+                <TableCell className="font-mono text-sm">
+                  {revealedId === credential.id ? revealedValue : '••••••••'}
+                </TableCell>
+                <TableCell className="text-right space-x-1">
+                  <Button variant="ghost" size="icon" title="Copiar" onClick={() => handleCopy(credential)}>
+                    <Copy className="w-4 h-4" />
+                  </Button>
+                  {canReveal && (
+                    <Button variant="ghost" size="icon" title="Revelar" onClick={() => handleReveal(credential)}>
+                      {revealedId === credential.id ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </Button>
+                  )}
+                  {canReveal && (
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button variant="ghost" size="icon"><Trash2 className="w-4 h-4 text-destructive" /></Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Excluir credencial?</AlertDialogTitle>
+                          <AlertDialogDescription>Esta ação não pode ser desfeita.</AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                          <AlertDialogAction onClick={() => deleteMutation.mutate(credential.id)}>Excluir</AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  )}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 }

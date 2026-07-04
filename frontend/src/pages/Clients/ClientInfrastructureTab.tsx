@@ -180,55 +180,57 @@ export default function ClientInfrastructureTab({ clientId }: Props) {
         )}
       </div>
 
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Tipo</TableHead>
-            <TableHead>Nome</TableHead>
-            <TableHead>Hostname / IP</TableHead>
-            <TableHead>SO</TableHead>
-            {canEdit && <TableHead className="text-right">Ações</TableHead>}
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {isLoading && (
-            <TableRow><TableCell colSpan={5} className="text-center text-muted-foreground">Carregando...</TableCell></TableRow>
-          )}
-          {!isLoading && (!items || items.length === 0) && (
-            <TableRow><TableCell colSpan={5} className="text-center text-muted-foreground py-6">Nenhum registro de infraestrutura cadastrado.</TableCell></TableRow>
-          )}
-          {items?.map((item) => (
-            <TableRow key={item.id}>
-              <TableCell><Badge variant="outline">{CLIENT_INFRA_TYPE_LABELS[item.type]}</Badge></TableCell>
-              <TableCell className="font-medium">{item.nome}</TableCell>
-              <TableCell className="text-sm text-muted-foreground">{[item.hostname, item.ipAddress].filter(Boolean).join(' / ') || '-'}</TableCell>
-              <TableCell className="text-sm text-muted-foreground">{item.operatingSystem || '-'}</TableCell>
-              {canEdit && (
-                <TableCell className="text-right space-x-1">
-                  <Button variant="ghost" size="icon" onClick={() => openEdit(item)}>
-                    <Pencil className="w-4 h-4" />
-                  </Button>
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button variant="ghost" size="icon"><Trash2 className="w-4 h-4 text-destructive" /></Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Excluir registro?</AlertDialogTitle>
-                        <AlertDialogDescription>Esta ação não pode ser desfeita.</AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                        <AlertDialogAction onClick={() => deleteMutation.mutate(item.id)}>Excluir</AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                </TableCell>
-              )}
+      <div className="overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Tipo</TableHead>
+              <TableHead>Nome</TableHead>
+              <TableHead>Hostname / IP</TableHead>
+              <TableHead>SO</TableHead>
+              {canEdit && <TableHead className="text-right">Ações</TableHead>}
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {isLoading && (
+              <TableRow><TableCell colSpan={5} className="text-center text-muted-foreground">Carregando...</TableCell></TableRow>
+            )}
+            {!isLoading && (!items || items.length === 0) && (
+              <TableRow><TableCell colSpan={5} className="text-center text-muted-foreground py-6">Nenhum registro de infraestrutura cadastrado.</TableCell></TableRow>
+            )}
+            {items?.map((item) => (
+              <TableRow key={item.id}>
+                <TableCell><Badge variant="outline">{CLIENT_INFRA_TYPE_LABELS[item.type]}</Badge></TableCell>
+                <TableCell className="font-medium">{item.nome}</TableCell>
+                <TableCell className="text-sm text-muted-foreground">{[item.hostname, item.ipAddress].filter(Boolean).join(' / ') || '-'}</TableCell>
+                <TableCell className="text-sm text-muted-foreground">{item.operatingSystem || '-'}</TableCell>
+                {canEdit && (
+                  <TableCell className="text-right space-x-1">
+                    <Button variant="ghost" size="icon" onClick={() => openEdit(item)}>
+                      <Pencil className="w-4 h-4" />
+                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button variant="ghost" size="icon"><Trash2 className="w-4 h-4 text-destructive" /></Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Excluir registro?</AlertDialogTitle>
+                          <AlertDialogDescription>Esta ação não pode ser desfeita.</AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                          <AlertDialogAction onClick={() => deleteMutation.mutate(item.id)}>Excluir</AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </TableCell>
+                )}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 }
