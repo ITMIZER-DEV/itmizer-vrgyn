@@ -207,7 +207,7 @@ export default function ClientForm() {
                     >
                         <div className="lg:hidden">
                             <Select value={activeSection} onValueChange={setActiveSection}>
-                                <SelectTrigger>
+                                <SelectTrigger aria-label="Seção">
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
