@@ -55,6 +55,7 @@ coverage/
 
 # Claude Code
 .claude/worktrees/
+.superpowers/
 
 # Backups de banco de dados (nunca versionar dump com dados reais de clientes)
 backups/
