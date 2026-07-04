@@ -122,12 +122,10 @@ export default function ClientsList() {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                                 <DropdownMenuLabel>Ações</DropdownMenuLabel>
-                                <ClientModal clientId={client.id}>
-                                    <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                                        <Pencil className="mr-2 h-4 w-4" />
-                                        Detalhes / Editar
-                                    </DropdownMenuItem>
-                                </ClientModal>
+                                <DropdownMenuItem onClick={() => navigate(`/clients/${client.id}`)}>
+                                    <Pencil className="mr-2 h-4 w-4" />
+                                    Detalhes / Editar
+                                </DropdownMenuItem>
                                 <DropdownMenuItem onClick={() => navigate(`/assessments?clientId=${client.id}&create=true`)}>
                                     <FileText className="mr-2 h-4 w-4" />
                                     Nova Validação
