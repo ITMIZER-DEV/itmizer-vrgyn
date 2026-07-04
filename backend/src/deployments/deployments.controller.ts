@@ -22,6 +22,11 @@ export class DeploymentsController {
     return this.deploymentsService.findAll();
   }
 
+  @Get('client/:clientId')
+  findByClient(@Param('clientId') clientId: string) {
+    return this.deploymentsService.findByClient(clientId);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.deploymentsService.findOne(id);

@@ -73,6 +73,11 @@ export const deploymentService = {
         return response.data;
     },
 
+    findByClient: async (clientId: string) => {
+        const response = await api.get<Deployment[]>(`/deployments/client/${clientId}`);
+        return response.data;
+    },
+
     create: async (data: CreateDeploymentDto) => {
         const response = await api.post<Deployment>('/deployments', data);
         return response.data;

@@ -37,6 +37,12 @@ export class RecemVrController {
     return this.recemVrService.findAll();
   }
 
+  @Get('client/:clientId')
+  @ApiOperation({ summary: 'Listar Recém VR de um cliente' })
+  findByClient(@Param('clientId') clientId: string) {
+    return this.recemVrService.findByClient(clientId);
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Detalhe de um Recém VR' })
   findOne(@Param('id') id: string) {

@@ -68,6 +68,17 @@ export class RecemVrService {
     });
   }
 
+  async findByClient(clientId: string) {
+    return this.prisma.recemVr.findMany({
+      where: { clientId },
+      include: {
+        solicitante: USER_SELECT,
+        analista: USER_SELECT,
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
   // =========================================================
   // DETALHE
   // =========================================================

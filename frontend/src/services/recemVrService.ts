@@ -19,6 +19,11 @@ export const recemVrService = {
     return response.data;
   },
 
+  findByClient: async (clientId: string): Promise<RecemVr[]> => {
+    const response = await api.get<RecemVr[]>(`/recem-vr/client/${clientId}`);
+    return response.data;
+  },
+
   // Etapa 1: Criação da Solicitação
   create: async (data: CreateRecemVrPayload): Promise<RecemVr> => {
     const response = await api.post<RecemVr>('/recem-vr', data);

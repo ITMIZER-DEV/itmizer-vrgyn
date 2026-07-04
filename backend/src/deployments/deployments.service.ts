@@ -49,6 +49,13 @@ export class DeploymentsService {
     });
   }
 
+  async findByClient(clientId: string) {
+    return this.prisma.deployment.findMany({
+      where: { clientId },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
   async findOne(id: string) {
     const deployment = await this.prisma.deployment.findUnique({
       where: { id },
