@@ -1,0 +1,1159 @@
+{
+  "users": [
+    {
+      "id": "752e99a9-f1ae-4f86-b746-f8e4d93062ab",
+      "email": "leonardo.alves@itmizer.com.br",
+      "password": "$2b$10$CBdFUgjz1Gv5P9x.E/lfquhjDQDEXggbQLgzfwcp30cOG3aXxV5wW",
+      "createdAt": "2026-02-12T03:14:47.704Z",
+      "updatedAt": "2026-02-12T03:14:47.704Z",
+      "is_active": true
+    },
+    {
+      "id": "93983a6e-1134-4d74-8f22-99d1d7b6b150",
+      "email": "vinicius.hofer@vrgoiania.com",
+      "password": "$2b$10$BAytCuhP4VTFeTqN4WuyDeqhQS76bbIIqaOpwopxG0YQfvDFs.Jn2",
+      "createdAt": "2026-02-12T17:16:45.781Z",
+      "updatedAt": "2026-02-12T17:16:45.781Z",
+      "is_active": true
+    },
+    {
+      "id": "bf0a204c-d9b0-4d37-8768-40d07f2959d7",
+      "email": "aguinaldo.baldin@vrgoiania.com",
+      "password": "$2b$10$fltLmviT7fB9TWYoRyOSxeretFNWPRn1JRPK/wMexAFrQi/JffeEi",
+      "createdAt": "2026-02-12T17:16:16.795Z",
+      "updatedAt": "2026-02-13T05:01:59.476Z",
+      "is_active": true
+    },
+    {
+      "id": "e5fa0f12-45d0-481b-bf30-b1b32bffa88b",
+      "email": "MATHEUS.CRUVINEL@VRGOIANIA.COM",
+      "password": "$2b$10$jY4eb1TnQJcEDNKoQ4We5O6sROu1pCGQdnHv1PR7kq2.c/96N6T7G",
+      "createdAt": "2026-02-13T06:45:53.426Z",
+      "updatedAt": "2026-02-13T06:45:53.426Z",
+      "is_active": true
+    }
+  ],
+  "profiles": [
+    {
+      "id": "752e99a9-f1ae-4f86-b746-f8e4d93062ab",
+      "full_name": "LEONARDO ALVES",
+      "email": "leonardo.alves@itmizer.com.br",
+      "created_at": "2026-02-12T03:14:47.704Z",
+      "updated_at": "2026-02-12T03:14:47.704Z"
+    },
+    {
+      "id": "93983a6e-1134-4d74-8f22-99d1d7b6b150",
+      "full_name": "VINICIUS BALDIN",
+      "email": null,
+      "created_at": "2026-02-12T17:16:45.781Z",
+      "updated_at": "2026-02-12T17:16:45.781Z"
+    },
+    {
+      "id": "bf0a204c-d9b0-4d37-8768-40d07f2959d7",
+      "full_name": "AGUINALDO BALDIN",
+      "email": null,
+      "created_at": "2026-02-12T17:16:16.795Z",
+      "updated_at": "2026-02-13T05:01:59.476Z"
+    },
+    {
+      "id": "e5fa0f12-45d0-481b-bf30-b1b32bffa88b",
+      "full_name": "MATHEUS CRU",
+      "email": null,
+      "created_at": "2026-02-13T06:45:53.426Z",
+      "updated_at": "2026-02-13T06:45:53.426Z"
+    }
+  ],
+  "user_roles": [
+    {
+      "id": "f7d8363f-f5a8-4479-966b-9527d207b6b9",
+      "user_id": "752e99a9-f1ae-4f86-b746-f8e4d93062ab",
+      "role": "admin",
+      "created_at": "2026-02-12T03:14:47.704Z"
+    },
+    {
+      "id": "674c15c8-80ae-4768-a080-7bfbe61d74fe",
+      "user_id": "93983a6e-1134-4d74-8f22-99d1d7b6b150",
+      "role": "seller",
+      "created_at": "2026-02-12T17:16:45.781Z"
+    },
+    {
+      "id": "3ed80e60-531e-4780-a631-cfd0497e8021",
+      "user_id": "bf0a204c-d9b0-4d37-8768-40d07f2959d7",
+      "role": "user",
+      "created_at": "2026-02-13T05:01:59.476Z"
+    },
+    {
+      "id": "ffc50c79-5d61-4de2-9351-3f9716a67939",
+      "user_id": "e5fa0f12-45d0-481b-bf30-b1b32bffa88b",
+      "role": "implantador",
+      "created_at": "2026-02-13T06:45:53.426Z"
+    }
+  ],
+  "clients": [
+    {
+      "id": "11c7f609-eb41-4448-b4a0-bcd33020e2ab",
+      "nome_fantasia": "Leonardo Alves",
+      "razao_social": "Leonardo Alves",
+      "cnpj": "53.214.156/0001-31",
+      "endereco": "rua 1",
+      "contato_nome": "Leonardo Alves",
+      "contato_email": "leonardo.alves@itmizer.com.br",
+      "contato_telefone": "62995340909",
+      "created_at": "2026-02-12T03:45:17.862Z",
+      "updated_at": "2026-02-12T03:45:17.862Z"
+    },
+    {
+      "id": "dd55f77d-a875-4601-83b6-586059767a2b",
+      "nome_fantasia": "SUPERMERCADO LEONEL",
+      "razao_social": "SUPERMERCADO LEONEL",
+      "cnpj": "84.914.185/0001-30",
+      "endereco": "rua 1",
+      "contato_nome": "Leonardo Alves",
+      "contato_email": "leonardo.alves@itmizer.com.br",
+      "contato_telefone": "",
+      "created_at": "2026-02-12T06:22:53.338Z",
+      "updated_at": "2026-02-12T06:22:53.338Z"
+    },
+    {
+      "id": "5c1c1908-e044-479a-8eeb-e1578c8eb348",
+      "nome_fantasia": "SUPERMERCADO SUPER BIG",
+      "razao_social": "SUPERMERCADO E PANIFICADORA SUPER BIG LTDA",
+      "cnpj": "37.338.850/0001-04",
+      "endereco": "Quadra Quadra 69 Lote 10 / 11a Santo Antônio do Descoberto",
+      "contato_nome": "eduardo",
+      "contato_email": "mercadosuperbig3@gmail.com",
+      "contato_telefone": "(61) 36261642",
+      "created_at": "2026-02-13T02:50:21.693Z",
+      "updated_at": "2026-02-13T02:50:21.693Z"
+    },
+    {
+      "id": "ce4042f5-7528-4164-9b61-02e05402908b",
+      "nome_fantasia": "SUPERMERCADO D'MELO LTDA",
+      "razao_social": "SUPERMERCADO D'MELO LTDA",
+      "cnpj": "26.741.564/0001-79",
+      "endereco": "R SENADOR MIGUEL ROCHA LIMA",
+      "contato_nome": "SIRLEY ",
+      "contato_email": "SIRLEY@DMELO.COM.BR",
+      "contato_telefone": "+55 62 9855-3394",
+      "created_at": "2026-02-18T22:29:10.537Z",
+      "updated_at": "2026-02-18T22:29:10.537Z"
+    }
+  ],
+  "assessments": [
+    {
+      "id": "d3b45109-64dd-4185-ade6-007c3d6d5bc7",
+      "user_id": "752e99a9-f1ae-4f86-b746-f8e4d93062ab",
+      "company_name": "SUPERMERCADO SUPER BIG",
+      "cnpj": "37.338.850/0001-04",
+      "status": "rascunho",
+      "porte": null,
+      "data": {
+        "id": "d3b45109-64dd-4185-ade6-007c3d6d5bc7",
+        "cnpj": "37.338.850/0001-04",
+        "pdvs": [],
+        "status": "rascunho",
+        "company": {
+          "cnpj": "37.338.850/0001-04",
+          "lojaNumero": 1,
+          "contatoNome": "eduardo",
+          "contatoEmail": "mercadosuperbig3@gmail.com",
+          "nomeFantasia": "SUPERMERCADO SUPER BIG",
+          "contatoCelular": "",
+          "lojaTotalLojas": 1
+        },
+        "network": {
+          "links": [
+            {
+              "ipFixo": false,
+              "dedicado": false,
+              "provedor": "",
+              "velocidade": ""
+            }
+          ]
+        },
+        "servers": [
+          {
+            "id": "3396b956-5ccc-453f-bc9b-9bbb4d424b01",
+            "isVm": false,
+            "tipo": "application",
+            "tempoUso": "",
+            "discoLivre": "",
+            "discoTotal": "",
+            "memoriaRam": "",
+            "processador": "",
+            "aplicacoesAtuais": "",
+            "sistemaOperacional": ""
+          }
+        ],
+        "systems": {
+          "integracaoCrm": false,
+          "integracaoEcommerce": false,
+          "integracaoMcommerce": false
+        },
+        "clientId": "5c1c1908-e044-479a-8eeb-e1578c8eb348",
+        "createdAt": "2026-02-13T14:07:56.274Z",
+        "updatedAt": "2026-02-13T14:07:56.274Z",
+        "backoffice": [],
+        "companyName": "SUPERMERCADO SUPER BIG",
+        "operational": {
+          "diasPico": [],
+          "expediente": [],
+          "horariosPico": []
+        },
+        "peripherals": {
+          "outros": [],
+          "consultaPreco": [],
+          "coletoresDados": [],
+          "impressorasEtiqueta": []
+        }
+      },
+      "validation_results": null,
+      "created_at": "2026-02-13T17:07:56.274Z",
+      "updated_at": "2026-02-13T17:10:55.244Z",
+      "client_id": "5c1c1908-e044-479a-8eeb-e1578c8eb348",
+      "statusFinanceiro": "pendente"
+    },
+    {
+      "id": "5252b842-50a5-4539-b7aa-33d1149e3f00",
+      "user_id": "752e99a9-f1ae-4f86-b746-f8e4d93062ab",
+      "company_name": "SUPERMERCADO LEONEL",
+      "cnpj": "84.914.185/0001-30",
+      "status": "rascunho",
+      "porte": null,
+      "data": {
+        "id": "5252b842-50a5-4539-b7aa-33d1149e3f00",
+        "cnpj": "84.914.185/0001-30",
+        "pdvs": [
+          {
+            "id": "0ecd21ab-dd04-40c6-9d2a-42da2385b202",
+            "disco": "120",
+            "pinpad": "",
+            "balanca": "",
+            "licenca": "",
+            "scanner": "",
+            "teclado": "",
+            "usaNfce": false,
+            "satAtivo": false,
+            "satMarca": "",
+            "tempoUso": "1",
+            "biometria": "",
+            "satModelo": "",
+            "impressora": "",
+            "memoriaRam": "4",
+            "processador": "I3",
+            "sistemaOperacional": "v"
+          },
+          {
+            "id": "ca8ee7dc-505d-4ded-b2ef-5c192882fda4",
+            "disco": "120",
+            "pinpad": "",
+            "balanca": "",
+            "licenca": "",
+            "scanner": "",
+            "teclado": "",
+            "usaNfce": false,
+            "satAtivo": false,
+            "satMarca": "",
+            "tempoUso": "1",
+            "biometria": "",
+            "satModelo": "",
+            "impressora": "",
+            "memoriaRam": "4",
+            "processador": "I3",
+            "sistemaOperacional": "WINDOWS 10 PRO"
+          }
+        ],
+        "status": "rascunho",
+        "company": {
+          "cnpj": "84.914.185/0001-30",
+          "lojaNumero": 1,
+          "contatoNome": "Tharles Leonel",
+          "contatoEmail": "",
+          "nomeFantasia": "SUPERMERCADO LEONEL",
+          "contatoCelular": "62 9163-1702",
+          "lojaTotalLojas": 1,
+          "executivoVendas": "CAMILA FERRAZ"
+        },
+        "network": {
+          "links": [
+            {
+              "ipFixo": true,
+              "dedicado": false,
+              "provedor": "VIVO",
+              "velocidade": "50"
+            }
+          ],
+          "firewall": true,
+          "antivirusPdv": true,
+          "tipoConexaoPdv": "cabo"
+        },
+        "servers": [
+          {
+            "id": "bb862fb1-7156-458f-9164-e734c32d54ee",
+            "isVm": false,
+            "tipo": "application",
+            "tempoUso": "2",
+            "discoLivre": "",
+            "discoTotal": "240",
+            "memoriaRam": "8",
+            "processador": "SKYLAKE I5 6 GERACAO",
+            "aplicacoesAtuais": "",
+            "sistemaOperacional": "WINDOWS 10 PRO"
+          }
+        ],
+        "systems": {
+          "integracaoCrm": false,
+          "integracaoEcommerce": false,
+          "integracaoMcommerce": false
+        },
+        "clientId": "dd55f77d-a875-4601-83b6-586059767a2b",
+        "approvals": {
+          "bb862fb1-7156-458f-9164-e734c32d54ee-cpu": {
+            "date": "2026-02-12T14:23:19.835Z",
+            "user": "LEONARDO ALVES"
+          },
+          "bb862fb1-7156-458f-9164-e734c32d54ee-ram": {
+            "date": "2026-02-13T14:12:00.821Z",
+            "user": "LEONARDO ALVES"
+          }
+        },
+        "createdAt": "2026-02-12T14:18:34.326Z",
+        "updatedAt": "2026-02-13T14:12:00.823Z",
+        "backoffice": [
+          {
+            "id": "e61d1d6d-958a-4204-987f-78627f5fef15",
+            "disco": "240",
+            "funcao": "FINANCEIRO",
+            "memoriaRam": "8",
+            "processador": "SKYLAKE I5 6 GERACAO",
+            "sistemaOperacional": "WINDOWS 1O PRO"
+          },
+          {
+            "id": "fd3b5e4f-c8da-44c7-a8d4-acc7ee568bb6",
+            "disco": "240",
+            "funcao": "RECEPCAO NOTAS",
+            "memoriaRam": "8",
+            "processador": "SKYLAKE I5 6 GERACAO",
+            "sistemaOperacional": "WINDOWS 1O PRO"
+          }
+        ],
+        "companyName": "SUPERMERCADO LEONEL",
+        "operational": {
+          "diasPico": [],
+          "expediente": [],
+          "horariosPico": []
+        },
+        "peripherals": {
+          "outros": [],
+          "consultaPreco": [],
+          "coletoresDados": [],
+          "impressorasEtiqueta": []
+        }
+      },
+      "validation_results": null,
+      "created_at": "2026-02-12T17:18:34.326Z",
+      "updated_at": "2026-02-18T20:45:41.321Z",
+      "client_id": "dd55f77d-a875-4601-83b6-586059767a2b",
+      "statusFinanceiro": "pendente"
+    }
+  ],
+  "migrations": [
+    {
+      "id": "823278ff-6c55-499a-b3fa-71aad828fb27",
+      "client_id": "5c1c1908-e044-479a-8eeb-e1578c8eb348",
+      "status": "em_validacao",
+      "nome_contato_chave": "EDUARDO",
+      "telefone": "",
+      "acesso_anydesk": "",
+      "senha_anydesk": "",
+      "nome_sistema": "",
+      "nome_software_house": "",
+      "tipo_banco_dados": "GETWAY - MIGRACAO PADRAO",
+      "items": {
+        "cheque": {
+          "migrar": false,
+          "observacoes": "",
+          "tempoEstimado": "4 horas",
+          "controlaPeloSistema": false
+        },
+        "balanca": {
+          "migrar": true,
+          "observacoes": "",
+          "tempoEstimado": "1 hora",
+          "temArquivoBalanca": true
+        },
+        "convenio": {
+          "migrar": false,
+          "observacoes": "",
+          "tempoEstimado": "4 horas"
+        },
+        "fornecedor": {
+          "migrar": true,
+          "observacoes": "",
+          "tempoEstimado": "2 horas"
+        },
+        "contasPagar": {
+          "migrar": false,
+          "observacoes": "",
+          "tempoEstimado": "4 horas",
+          "controlaPeloSistema": false
+        },
+        "mercadologico": {
+          "migrar": true,
+          "observacoes": "",
+          "usarPadraoVR": false,
+          "tempoEstimado": "2 horas",
+          "contratouFerramenta": false
+        },
+        "mapaTributacao": {
+          "migrar": false,
+          "observacoes": "",
+          "tempoEstimado": "2 horas",
+          "empresaResponsavel": ""
+        },
+        "outrasDespesas": {
+          "migrar": false,
+          "observacoes": "",
+          "tempoEstimado": "4 horas",
+          "controlaPeloSistema": false
+        },
+        "cadastroProduto": {
+          "migrar": true,
+          "observacoes": "",
+          "tempoEstimado": "6 horas",
+          "trabalhaAtacado": false,
+          "trazerAtacadoAtual": false,
+          "trabalhaPautaFiscal": false
+        },
+        "creditoRotativo": {
+          "migrar": true,
+          "observacoes": "",
+          "tempoEstimado": "4 horas",
+          "controlaPeloSistema": false
+        },
+        "familiaProdutos": {
+          "migrar": false,
+          "observacoes": "",
+          "tempoEstimado": "1 hora"
+        },
+        "historicoVendas": {
+          "migrar": false,
+          "observacoes": "",
+          "tempoEstimado": "8 horas"
+        },
+        "produtoFornecedor": {
+          "migrar": false,
+          "observacoes": "",
+          "tempoEstimado": "1 hora"
+        },
+        "clientePreferencial": {
+          "migrar": true,
+          "observacoes": "",
+          "tempoEstimado": "2 horas"
+        },
+        "contasReceberFornecedor": {
+          "migrar": false,
+          "observacoes": "",
+          "tempoEstimado": "4 horas",
+          "controlaPeloSistema": false
+        }
+      },
+      "observacoes": "",
+      "created_at": "2026-02-13T02:52:04.283Z",
+      "updated_at": "2026-02-13T07:09:37.881Z",
+      "tipo_migracao": "padrao",
+      "responsavel_id": "752e99a9-f1ae-4f86-b746-f8e4d93062ab",
+      "tipo_cobranca": "hora",
+      "valor_fixo": null,
+      "valor_hora": "30.00",
+      "statusFinanceiro": "pendente"
+    },
+    {
+      "id": "f77b4180-f86c-472d-9cb2-e8b23a0c3369",
+      "client_id": "ce4042f5-7528-4164-9b61-02e05402908b",
+      "status": "pendente",
+      "nome_contato_chave": "SIRLEY",
+      "telefone": "",
+      "acesso_anydesk": "",
+      "senha_anydesk": "",
+      "nome_sistema": "",
+      "nome_software_house": "",
+      "tipo_banco_dados": "",
+      "items": {
+        "cheque": {
+          "migrar": false,
+          "observacoes": "",
+          "tempoEstimado": "4 horas",
+          "controlaPeloSistema": false
+        },
+        "balanca": {
+          "migrar": true,
+          "observacoes": "",
+          "tempoEstimado": "1 hora",
+          "temArquivoBalanca": false
+        },
+        "convenio": {
+          "migrar": false,
+          "observacoes": "",
+          "tempoEstimado": "4 horas"
+        },
+        "fornecedor": {
+          "migrar": true,
+          "observacoes": "",
+          "tempoEstimado": "2 horas"
+        },
+        "contasPagar": {
+          "migrar": false,
+          "observacoes": "",
+          "tempoEstimado": "4 horas",
+          "controlaPeloSistema": false
+        },
+        "mercadologico": {
+          "migrar": true,
+          "observacoes": "",
+          "usarPadraoVR": false,
+          "tempoEstimado": "2 horas",
+          "contratouFerramenta": false
+        },
+        "mapaTributacao": {
+          "migrar": true,
+          "observacoes": "",
+          "tempoEstimado": "2 horas",
+          "empresaResponsavel": ""
+        },
+        "outrasDespesas": {
+          "migrar": false,
+          "observacoes": "",
+          "tempoEstimado": "4 horas",
+          "controlaPeloSistema": false
+        },
+        "cadastroProduto": {
+          "migrar": true,
+          "observacoes": "",
+          "tempoEstimado": "6 horas",
+          "trabalhaAtacado": false,
+          "trazerAtacadoAtual": false,
+          "trabalhaPautaFiscal": false
+        },
+        "creditoRotativo": {
+          "migrar": false,
+          "observacoes": "",
+          "tempoEstimado": "4 horas",
+          "controlaPeloSistema": false
+        },
+        "familiaProdutos": {
+          "migrar": false,
+          "observacoes": "",
+          "tempoEstimado": "1 hora"
+        },
+        "historicoVendas": {
+          "migrar": false,
+          "observacoes": "",
+          "tempoEstimado": "8 horas"
+        },
+        "produtoFornecedor": {
+          "migrar": false,
+          "observacoes": "",
+          "tempoEstimado": "1 hora"
+        },
+        "clientePreferencial": {
+          "migrar": true,
+          "observacoes": "",
+          "tempoEstimado": "2 horas"
+        },
+        "contasReceberFornecedor": {
+          "migrar": false,
+          "observacoes": "",
+          "tempoEstimado": "4 horas",
+          "controlaPeloSistema": false
+        }
+      },
+      "observacoes": "",
+      "created_at": "2026-02-18T22:30:44.687Z",
+      "updated_at": "2026-02-18T22:30:44.687Z",
+      "tipo_migracao": "planilha",
+      "responsavel_id": "752e99a9-f1ae-4f86-b746-f8e4d93062ab",
+      "tipo_cobranca": "hora",
+      "valor_fixo": null,
+      "valor_hora": "29.00",
+      "statusFinanceiro": "pendente"
+    }
+  ],
+  "migration_history": [
+    {
+      "id": "6ee76d3e-c052-4eab-8dee-22b07cf8f7cf",
+      "migration_id": "823278ff-6c55-499a-b3fa-71aad828fb27",
+      "user_id": "752e99a9-f1ae-4f86-b746-f8e4d93062ab",
+      "action": "Migração criada",
+      "details": "Migração de dados iniciada",
+      "old_status": null,
+      "new_status": null,
+      "created_at": "2026-02-13T02:52:04.283Z"
+    },
+    {
+      "id": "14d6bae5-ed6e-4185-a36e-12a589cce24c",
+      "migration_id": "823278ff-6c55-499a-b3fa-71aad828fb27",
+      "user_id": "752e99a9-f1ae-4f86-b746-f8e4d93062ab",
+      "action": "Dados atualizados",
+      "details": "Dados da migração foram atualizados",
+      "old_status": null,
+      "new_status": null,
+      "created_at": "2026-02-13T02:52:33.009Z"
+    },
+    {
+      "id": "fd8000d8-f1c7-4ec2-ab57-c4f3593d159c",
+      "migration_id": "823278ff-6c55-499a-b3fa-71aad828fb27",
+      "user_id": "752e99a9-f1ae-4f86-b746-f8e4d93062ab",
+      "action": "MIGRACAO PRODUTO",
+      "details": "FOI MIGRADO TODOS PRODUTOS",
+      "old_status": null,
+      "new_status": null,
+      "created_at": "2026-02-13T03:34:52.676Z"
+    },
+    {
+      "id": "e2648fa6-537a-407f-bc33-eb0fcc00f683",
+      "migration_id": "823278ff-6c55-499a-b3fa-71aad828fb27",
+      "user_id": "752e99a9-f1ae-4f86-b746-f8e4d93062ab",
+      "action": "Status alterado",
+      "details": "Status alterado de \"pendente\" para \"em_andamento\"",
+      "old_status": "pendente",
+      "new_status": "em_andamento",
+      "created_at": "2026-02-13T03:36:55.684Z"
+    },
+    {
+      "id": "55467996-b114-4f0c-bae3-9f530b4e3d2a",
+      "migration_id": "823278ff-6c55-499a-b3fa-71aad828fb27",
+      "user_id": "752e99a9-f1ae-4f86-b746-f8e4d93062ab",
+      "action": "Dados atualizados",
+      "details": "Dados da migração foram atualizados",
+      "old_status": null,
+      "new_status": null,
+      "created_at": "2026-02-13T03:36:55.684Z"
+    },
+    {
+      "id": "7574d4c7-c4d6-46a3-93d3-a100c0eff612",
+      "migration_id": "823278ff-6c55-499a-b3fa-71aad828fb27",
+      "user_id": "752e99a9-f1ae-4f86-b746-f8e4d93062ab",
+      "action": "Dados atualizados",
+      "details": "Dados da migração foram atualizados",
+      "old_status": null,
+      "new_status": null,
+      "created_at": "2026-02-13T05:00:32.898Z"
+    },
+    {
+      "id": "2c272c9c-8236-4c42-ae73-75bdc7f1ce19",
+      "migration_id": "823278ff-6c55-499a-b3fa-71aad828fb27",
+      "user_id": "752e99a9-f1ae-4f86-b746-f8e4d93062ab",
+      "action": "VALIDACAO",
+      "details": "AGUARDANDO ANALISTA VALIDAR IMPLANTACAO PRA VIRADA GO LIVE.\n\nTESTE",
+      "old_status": null,
+      "new_status": null,
+      "created_at": "2026-02-13T05:01:30.646Z"
+    },
+    {
+      "id": "7b0ae20f-30b3-47a4-8df3-c1e9c8ec66b2",
+      "migration_id": "823278ff-6c55-499a-b3fa-71aad828fb27",
+      "user_id": "bf0a204c-d9b0-4d37-8768-40d07f2959d7",
+      "action": "ENVIO PARA ANALISTA",
+      "details": "ANALISTA ROSILDO IRA VALIDAR",
+      "old_status": null,
+      "new_status": null,
+      "created_at": "2026-02-13T05:03:30.603Z"
+    },
+    {
+      "id": "b85d4cc0-6085-4322-838f-d49e68e327ec",
+      "migration_id": "823278ff-6c55-499a-b3fa-71aad828fb27",
+      "user_id": "752e99a9-f1ae-4f86-b746-f8e4d93062ab",
+      "action": "Status alterado",
+      "details": "Status alterado de \"em_andamento\" para \"pendente\"",
+      "old_status": "em_andamento",
+      "new_status": "pendente",
+      "created_at": "2026-02-13T05:49:41.423Z"
+    },
+    {
+      "id": "06349531-f2e1-4e7b-89be-239319ec8138",
+      "migration_id": "823278ff-6c55-499a-b3fa-71aad828fb27",
+      "user_id": "752e99a9-f1ae-4f86-b746-f8e4d93062ab",
+      "action": "Dados atualizados",
+      "details": "Dados da migração foram atualizados",
+      "old_status": null,
+      "new_status": null,
+      "created_at": "2026-02-13T05:49:41.423Z"
+    },
+    {
+      "id": "72c60f67-ef7c-4be6-9d5d-ada51b58212b",
+      "migration_id": "823278ff-6c55-499a-b3fa-71aad828fb27",
+      "user_id": "752e99a9-f1ae-4f86-b746-f8e4d93062ab",
+      "action": "Status alterado",
+      "details": "Status alterado de \"pendente\" para \"em_validacao\"",
+      "old_status": "pendente",
+      "new_status": "em_validacao",
+      "created_at": "2026-02-13T05:52:27.888Z"
+    },
+    {
+      "id": "a1e76109-cb3b-43b0-a5d3-4377ad3f8e1f",
+      "migration_id": "823278ff-6c55-499a-b3fa-71aad828fb27",
+      "user_id": "752e99a9-f1ae-4f86-b746-f8e4d93062ab",
+      "action": "Dados atualizados",
+      "details": "Dados da migração foram atualizados",
+      "old_status": null,
+      "new_status": null,
+      "created_at": "2026-02-13T05:52:27.888Z"
+    },
+    {
+      "id": "43ec3e37-33b2-4097-883f-87b6fe300bc1",
+      "migration_id": "823278ff-6c55-499a-b3fa-71aad828fb27",
+      "user_id": "752e99a9-f1ae-4f86-b746-f8e4d93062ab",
+      "action": "Dados atualizados",
+      "details": "Dados da migração foram atualizados",
+      "old_status": null,
+      "new_status": null,
+      "created_at": "2026-02-13T05:58:14.651Z"
+    },
+    {
+      "id": "6fbf6660-a01e-43f6-8dcf-132a6dc19321",
+      "migration_id": "823278ff-6c55-499a-b3fa-71aad828fb27",
+      "user_id": "752e99a9-f1ae-4f86-b746-f8e4d93062ab",
+      "action": "Dados atualizados",
+      "details": "Dados da migração foram atualizados",
+      "old_status": null,
+      "new_status": null,
+      "created_at": "2026-02-13T06:12:30.633Z"
+    },
+    {
+      "id": "e147c04a-b613-42a5-bd70-f9f418d3bf5f",
+      "migration_id": "823278ff-6c55-499a-b3fa-71aad828fb27",
+      "user_id": "752e99a9-f1ae-4f86-b746-f8e4d93062ab",
+      "action": "Dados atualizados",
+      "details": "Dados da migração foram atualizados",
+      "old_status": null,
+      "new_status": null,
+      "created_at": "2026-02-13T06:29:22.436Z"
+    },
+    {
+      "id": "5688bb65-4bd2-486c-907f-6cf6f100e031",
+      "migration_id": "823278ff-6c55-499a-b3fa-71aad828fb27",
+      "user_id": "752e99a9-f1ae-4f86-b746-f8e4d93062ab",
+      "action": "Dados atualizados",
+      "details": "Dados da migração foram atualizados",
+      "old_status": null,
+      "new_status": null,
+      "created_at": "2026-02-13T07:08:32.387Z"
+    },
+    {
+      "id": "ae49b13b-a3b3-4db4-b1de-83a2812fade1",
+      "migration_id": "823278ff-6c55-499a-b3fa-71aad828fb27",
+      "user_id": "752e99a9-f1ae-4f86-b746-f8e4d93062ab",
+      "action": "Dados atualizados",
+      "details": "Dados da migração foram atualizados",
+      "old_status": null,
+      "new_status": null,
+      "created_at": "2026-02-13T07:09:37.881Z"
+    },
+    {
+      "id": "96f496bb-8d84-47b8-b1db-51bec419689a",
+      "migration_id": "823278ff-6c55-499a-b3fa-71aad828fb27",
+      "user_id": "752e99a9-f1ae-4f86-b746-f8e4d93062ab",
+      "action": "MAPEAMENTO DE ITENS NAO IMPORTADOS POR UNIFICACAO",
+      "details": "ITENS NAO FORAM IMPORTADOS, NECESSITANDO GERAR  UM BACKUP E NOVA BASE PRA VALIDAR A IMPORTACAO POR UPDATE. E ASSOCIACAO DE CODIGOS",
+      "old_status": null,
+      "new_status": null,
+      "created_at": "2026-02-18T19:58:03.616Z"
+    },
+    {
+      "id": "4ac35f83-4bf3-4f07-afbc-33c49e9c92f9",
+      "migration_id": "823278ff-6c55-499a-b3fa-71aad828fb27",
+      "user_id": "752e99a9-f1ae-4f86-b746-f8e4d93062ab",
+      "action": "PRODUTOS NAO UNIFICADOS ",
+      "details": "O SISTEMA NAO ACEITA IMPORTAR PRODUTOS NAO UNIFICADOS SENDO NECESSARIO REMOVER DA TABELA TEMPORARIAS E RODAR NOVAMENTE A MIGRACAO.",
+      "old_status": null,
+      "new_status": null,
+      "created_at": "2026-02-18T22:03:05.830Z"
+    },
+    {
+      "id": "9eff6be2-4f93-46d5-9bf2-e135f609b1c1",
+      "migration_id": "f77b4180-f86c-472d-9cb2-e8b23a0c3369",
+      "user_id": "752e99a9-f1ae-4f86-b746-f8e4d93062ab",
+      "action": "Migração criada",
+      "details": "Migração de dados iniciada",
+      "old_status": null,
+      "new_status": null,
+      "created_at": "2026-02-18T22:30:44.687Z"
+    }
+  ],
+  "migration_lancamentos": [
+    {
+      "id": "a0522f56-5eda-4fcf-a576-a3a169ba3354",
+      "migration_id": "823278ff-6c55-499a-b3fa-71aad828fb27",
+      "user_id": "752e99a9-f1ae-4f86-b746-f8e4d93062ab",
+      "data": "2026-02-05T03:00:00.000Z",
+      "horas": "4.00",
+      "valor": null,
+      "descricao": "ALINHAMENTO SERVIDOR",
+      "created_at": "2026-02-13T07:07:31.561Z"
+    },
+    {
+      "id": "773414dc-eed4-4cba-9d9e-20f0420c5f37",
+      "migration_id": "823278ff-6c55-499a-b3fa-71aad828fb27",
+      "user_id": "752e99a9-f1ae-4f86-b746-f8e4d93062ab",
+      "data": "2026-02-10T03:00:00.000Z",
+      "horas": "5.00",
+      "valor": null,
+      "descricao": "MIGRACAO PADRAO GETWAY",
+      "created_at": "2026-02-13T07:07:52.419Z"
+    },
+    {
+      "id": "006151fa-237e-4be1-a1af-cb6f2d61133d",
+      "migration_id": "823278ff-6c55-499a-b3fa-71aad828fb27",
+      "user_id": "752e99a9-f1ae-4f86-b746-f8e4d93062ab",
+      "data": "2026-02-11T03:00:00.000Z",
+      "horas": "3.00",
+      "valor": null,
+      "descricao": "CHEGAGEM MIGRACAO",
+      "created_at": "2026-02-13T07:08:12.952Z"
+    },
+    {
+      "id": "0b900d5d-3baf-4a6d-b32c-b5f8242a7ab5",
+      "migration_id": "823278ff-6c55-499a-b3fa-71aad828fb27",
+      "user_id": "752e99a9-f1ae-4f86-b746-f8e4d93062ab",
+      "data": "2026-02-02T03:00:00.000Z",
+      "horas": "3.00",
+      "valor": null,
+      "descricao": "SERVER",
+      "created_at": "2026-02-13T07:08:24.816Z"
+    },
+    {
+      "id": "b55b68ab-7841-4865-93c6-1fd411a94b9e",
+      "migration_id": "823278ff-6c55-499a-b3fa-71aad828fb27",
+      "user_id": "752e99a9-f1ae-4f86-b746-f8e4d93062ab",
+      "data": "2026-02-06T03:00:00.000Z",
+      "horas": "2.00",
+      "valor": null,
+      "descricao": "ALINHAMENTO COM TI DANILO",
+      "created_at": "2026-02-13T07:09:27.952Z"
+    },
+    {
+      "id": "12adc926-5974-44d6-b113-b31807c4a214",
+      "migration_id": "823278ff-6c55-499a-b3fa-71aad828fb27",
+      "user_id": "752e99a9-f1ae-4f86-b746-f8e4d93062ab",
+      "data": "2026-02-18T03:00:00.000Z",
+      "horas": "3.00",
+      "valor": null,
+      "descricao": "AJUSTE MAPEAMENTO DE ITENS ",
+      "created_at": "2026-02-18T19:57:02.638Z"
+    }
+  ],
+  "homologated_peripherals": [],
+  "infrastructure_requirements": [],
+  "server_requirements": [
+    {
+      "id": "e0b5cdc8-77b0-4953-bb2d-f6879991f53f",
+      "role": "Banco de Dados",
+      "os": "Linux",
+      "is_recommended": true,
+      "qnt_pdvs_min": 41,
+      "qnt_pdvs_max": 70,
+      "ram_gb": 16,
+      "cpu_cores": 4,
+      "cpu_model": "Intel Xeon ou AMD Epyc",
+      "storage_type": "SAS-3 (12Gb/s)",
+      "storage_gb": 1000,
+      "recommended_os": "AlmaLinux 8 ou Rocky Linux 8",
+      "software": "Dual channel, frequências iguais",
+      "created_at": "2026-02-12T04:45:19.744Z",
+      "updated_at": "2026-02-12T04:45:19.744Z"
+    },
+    {
+      "id": "cec281a9-dfbd-48dc-9776-60b403402541",
+      "role": "Banco de Dados",
+      "os": "Linux",
+      "is_recommended": true,
+      "qnt_pdvs_min": 71,
+      "qnt_pdvs_max": 100,
+      "ram_gb": 32,
+      "cpu_cores": 8,
+      "cpu_model": "Intel Xeon ou AMD Epyc",
+      "storage_type": "SAS-3 (12Gb/s)",
+      "storage_gb": 2000,
+      "recommended_os": "AlmaLinux 8 ou Rocky Linux 8",
+      "software": "Dual channel, frequências iguais",
+      "created_at": "2026-02-12T04:45:19.745Z",
+      "updated_at": "2026-02-12T04:45:19.745Z"
+    },
+    {
+      "id": "1164d741-9be4-4484-8db6-3d188d16d5b4",
+      "role": "Banco de Dados",
+      "os": "Linux",
+      "is_recommended": true,
+      "qnt_pdvs_min": 101,
+      "qnt_pdvs_max": 999,
+      "ram_gb": 0,
+      "cpu_cores": 0,
+      "cpu_model": "Contate a VR",
+      "storage_type": "SAS-3 (12Gb/s)",
+      "storage_gb": 0,
+      "recommended_os": "AlmaLinux 8 ou Rocky Linux 8",
+      "software": "Contate a VR para avaliação",
+      "created_at": "2026-02-12T04:45:19.746Z",
+      "updated_at": "2026-02-12T04:45:19.746Z"
+    },
+    {
+      "id": "500bff3e-6f4c-485a-a600-e8f2bdeb0ab8",
+      "role": "Banco de Dados",
+      "os": "Windows",
+      "is_recommended": false,
+      "qnt_pdvs_min": 1,
+      "qnt_pdvs_max": 40,
+      "ram_gb": 16,
+      "cpu_cores": 2,
+      "cpu_model": "Intel Xeon ou AMD Epyc",
+      "storage_type": "SAS-3 (12Gb/s)",
+      "storage_gb": 500,
+      "recommended_os": "Windows Server 2019",
+      "software": "Não recomendado pela VR",
+      "created_at": "2026-02-12T04:45:19.746Z",
+      "updated_at": "2026-02-12T04:45:19.746Z"
+    },
+    {
+      "id": "c14eb34f-89bf-479b-aa2e-50e78415f1d7",
+      "role": "Banco de Dados",
+      "os": "Windows",
+      "is_recommended": false,
+      "qnt_pdvs_min": 41,
+      "qnt_pdvs_max": 70,
+      "ram_gb": 32,
+      "cpu_cores": 4,
+      "cpu_model": "Intel Xeon ou AMD Epyc",
+      "storage_type": "SAS-3 (12Gb/s)",
+      "storage_gb": 500,
+      "recommended_os": "Windows Server 2019",
+      "software": "Não recomendado pela VR",
+      "created_at": "2026-02-12T04:45:19.747Z",
+      "updated_at": "2026-02-12T04:45:19.747Z"
+    },
+    {
+      "id": "29b7efd4-e055-4d9e-be33-985128f1c792",
+      "role": "Banco de Dados",
+      "os": "Windows",
+      "is_recommended": false,
+      "qnt_pdvs_min": 71,
+      "qnt_pdvs_max": 100,
+      "ram_gb": 64,
+      "cpu_cores": 8,
+      "cpu_model": "Intel Xeon ou AMD Epyc",
+      "storage_type": "SAS-3 (12Gb/s)",
+      "storage_gb": 1000,
+      "recommended_os": "Windows Server 2019",
+      "software": "Não recomendado pela VR",
+      "created_at": "2026-02-12T04:45:19.748Z",
+      "updated_at": "2026-02-12T04:45:19.748Z"
+    },
+    {
+      "id": "cb7d7de6-010f-4f9a-a500-ccb2b2bddfae",
+      "role": "Banco de Dados",
+      "os": "Windows",
+      "is_recommended": false,
+      "qnt_pdvs_min": 101,
+      "qnt_pdvs_max": 999,
+      "ram_gb": 0,
+      "cpu_cores": 0,
+      "cpu_model": "Contate a VR",
+      "storage_type": "SAS-3 (12Gb/s)",
+      "storage_gb": 0,
+      "recommended_os": "Windows Server 2019",
+      "software": "Contate a VR para avaliação",
+      "created_at": "2026-02-12T04:45:19.749Z",
+      "updated_at": "2026-02-12T04:45:19.749Z"
+    },
+    {
+      "id": "2283e73a-8f1b-4e7d-98a7-f62e42e7842a",
+      "role": "Aplicativos",
+      "os": "Linux",
+      "is_recommended": true,
+      "qnt_pdvs_min": 41,
+      "qnt_pdvs_max": 999,
+      "ram_gb": 16,
+      "cpu_cores": 0,
+      "cpu_model": "i5 5ª geração+ ou equivalente",
+      "storage_type": "SATA (6Gb/s)",
+      "storage_gb": 200,
+      "recommended_os": "VRUbuntu",
+      "software": "Compartilhamento de rede",
+      "created_at": "2026-02-12T04:45:19.750Z",
+      "updated_at": "2026-02-12T05:52:44.832Z"
+    },
+    {
+      "id": "93648d8b-76e8-41db-a8b4-ac6c2afe7abb",
+      "role": "Aplicativos",
+      "os": "Windows",
+      "is_recommended": false,
+      "qnt_pdvs_min": 1,
+      "qnt_pdvs_max": 20,
+      "ram_gb": 16,
+      "cpu_cores": 4,
+      "cpu_model": "i3 5ª geração+ ou equivalente",
+      "storage_type": "SATA (6Gb/s)",
+      "storage_gb": 200,
+      "recommended_os": "Windows 10 Pro",
+      "software": "Compartilhamento de rede",
+      "created_at": "2026-02-12T04:45:19.751Z",
+      "updated_at": "2026-02-12T05:53:00.730Z"
+    },
+    {
+      "id": "11057599-b51e-4e2a-a03d-a25a261fa813",
+      "role": "Aplicativos",
+      "os": "Windows",
+      "is_recommended": true,
+      "qnt_pdvs_min": 21,
+      "qnt_pdvs_max": 999,
+      "ram_gb": 48,
+      "cpu_cores": 12,
+      "cpu_model": "i5 5ª geração+ ou equivalente",
+      "storage_type": "SATA (6Gb/s)",
+      "storage_gb": 200,
+      "recommended_os": "Windows Server 2012-R2+",
+      "software": "Compartilhamento de rede",
+      "created_at": "2026-02-12T04:45:19.752Z",
+      "updated_at": "2026-02-12T05:53:21.362Z"
+    },
+    {
+      "id": "2effb273-6fb6-42c0-9e0c-5389473ff975",
+      "role": "Service Manager",
+      "os": "Linux",
+      "is_recommended": true,
+      "qnt_pdvs_min": 1,
+      "qnt_pdvs_max": 999,
+      "ram_gb": 16,
+      "cpu_cores": 2,
+      "cpu_model": "i5 4ª geração+ ou equivalente",
+      "storage_type": "SATA (6Gb/s)",
+      "storage_gb": 200,
+      "recommended_os": "VRUbuntu 20.04",
+      "software": "Docker Engine 20.10.X+",
+      "created_at": "2026-02-12T04:45:19.752Z",
+      "updated_at": "2026-02-12T05:55:44.181Z"
+    },
+    {
+      "id": "68d36f75-ef71-45c0-935a-995444104763",
+      "role": "Banco de Dados",
+      "os": "Linux",
+      "is_recommended": true,
+      "qnt_pdvs_min": 1,
+      "qnt_pdvs_max": 40,
+      "ram_gb": 16,
+      "cpu_cores": 2,
+      "cpu_model": "Intel Xeon ou AMD Epyc",
+      "storage_type": "SAS-3 (12Gb/s)",
+      "storage_gb": 500,
+      "recommended_os": "AlmaLinux 8 ou Rocky Linux 8",
+      "software": "Dual channel, frequências iguais",
+      "created_at": "2026-02-12T04:45:19.742Z",
+      "updated_at": "2026-02-12T05:56:15.144Z"
+    },
+    {
+      "id": "4dc574d2-1ab4-4c2e-bfd5-0b25dcfc2a28",
+      "role": "Aplicativos",
+      "os": "Windows 10 / Server 2019",
+      "is_recommended": true,
+      "qnt_pdvs_min": 1,
+      "qnt_pdvs_max": 40,
+      "ram_gb": 16,
+      "cpu_cores": 4,
+      "cpu_model": "i3 5ª geração+ ou equivalente",
+      "storage_type": "SATA (6Gb/s)",
+      "storage_gb": 200,
+      "recommended_os": "VRUbuntu",
+      "software": "Compartilhamento de rede",
+      "created_at": "2026-02-12T04:45:19.750Z",
+      "updated_at": "2026-02-12T17:25:03.689Z"
+    }
+  ],
+  "terminal_requirements": [
+    {
+      "id": "61edd178-af5b-4b25-a6c8-a10b64dbc5da",
+      "terminal_type": "PDV",
+      "os": "Windows",
+      "application": "VRPdv",
+      "ram_gb": 4,
+      "cpu_model": "i3 2ª geração+ ou equivalente",
+      "storage_type": "SSD",
+      "storage_gb": 120,
+      "min_resolution": null,
+      "so_distribution": "Windows 7 ou superior",
+      "observations": "SSD obrigatório",
+      "created_at": "2026-02-12T04:45:19.755Z",
+      "updated_at": "2026-02-12T04:45:19.755Z"
+    },
+    {
+      "id": "2eeb943a-e39f-49a3-a873-2ff9faea0151",
+      "terminal_type": "PDV",
+      "os": "Linux",
+      "application": "VRPdv",
+      "ram_gb": 4,
+      "cpu_model": "i3 2ª geração+ ou equivalente",
+      "storage_type": "SSD",
+      "storage_gb": 120,
+      "min_resolution": null,
+      "so_distribution": "VRLubuntu 18.04+",
+      "observations": "SSD obrigatório",
+      "created_at": "2026-02-12T04:45:19.756Z",
+      "updated_at": "2026-02-12T04:45:19.756Z"
+    },
+    {
+      "id": "a97a3358-22ae-400f-9354-7a453f7238ee",
+      "terminal_type": "Retaguarda",
+      "os": "Windows",
+      "application": "VR Master / Financeiro",
+      "ram_gb": 4,
+      "cpu_model": "i3 4ª geração+ ou equivalente",
+      "storage_type": "SSD",
+      "storage_gb": 120,
+      "min_resolution": null,
+      "so_distribution": "Windows 10 ou superior",
+      "observations": "SSD Recomendado",
+      "created_at": "2026-02-12T05:24:33.336Z",
+      "updated_at": "2026-02-12T05:24:33.336Z"
+    },
+    {
+      "id": "0e721029-c9de-489b-b540-a285b2147f3b",
+      "terminal_type": "Retaguarda",
+      "os": "Windows",
+      "application": "VR Master/Retaguarda",
+      "ram_gb": 8,
+      "cpu_model": "i3 2ª geração+ ou equivalente",
+      "storage_type": "SATA (6Gb/s)",
+      "storage_gb": 200,
+      "min_resolution": "1366x768",
+      "so_distribution": "Windows 7 ou superior",
+      "observations": "Acesso via rede",
+      "created_at": "2026-02-12T04:45:19.755Z",
+      "updated_at": "2026-02-12T05:53:41.161Z"
+    },
+    {
+      "id": "b7eac0af-9f2d-4fd4-8c2b-03e7f0b872c1",
+      "terminal_type": "Retaguarda",
+      "os": "Linux",
+      "application": "VR Master/Retaguarda",
+      "ram_gb": 8,
+      "cpu_model": "i3 2ª geração+ ou equivalente",
+      "storage_type": "SATA (6Gb/s)",
+      "storage_gb": 120,
+      "min_resolution": "1366x768",
+      "so_distribution": "Distribuição VR",
+      "observations": "Acesso via rede",
+      "created_at": "2026-02-12T04:45:19.753Z",
+      "updated_at": "2026-02-12T05:54:04.084Z"
+    }
+  ],
+  "internet_requirements": [
+    {
+      "id": "84b79b3f-d1ad-4811-adf9-3587ded791cc",
+      "link_type": "Dedicado",
+      "upload_mb": 2,
+      "download_mb": 2,
+      "observations": "Link dedicado recomendado",
+      "created_at": "2026-02-12T04:45:19.756Z",
+      "updated_at": "2026-02-12T04:45:19.756Z"
+    }
+  ]
+}

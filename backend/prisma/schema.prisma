@@ -1,0 +1,471 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id                   String                @id @default(uuid())
+  email                String                @unique
+  password             String
+  googleId             String?               @unique @map("google_id")
+  isActive             Boolean               @default(true) @map("is_active")
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+  assessments              Assessment[]
+  profile                  Profile?
+  roles                    UserRole[]
+  migrationHistory         MigrationHistory[]
+  migracoesResponsavel     Migration[]              @relation("MigrationResponsavel")
+  lancamentos              MigrationLancamento[]
+  clientHistory            ClientHistory[]
+  assessmentHistory        AssessmentHistory[]
+  deploymentHistories      DeploymentHistory[]
+  recemVrSolicitacoes      RecemVr[]                @relation("RecemVrSolicitante")
+  recemVrAnalisados        RecemVr[]                @relation("RecemVrAnalista")
+  recemVrAcompanhamentos   RecemVrAcompanhamento[]
+  recemVrHistory           RecemVrHistory[]
+
+  @@map("users")
+}
+
+model Profile {
+  id        String   @id
+  fullName  String?  @map("full_name")
+  email     String?
+  theme     String?  @default("light")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  user      User     @relation(fields: [id], references: [id], onDelete: Cascade)
+
+  @@map("profiles")
+}
+
+model UserRole {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  role      AppRole  @default(user)
+  createdAt DateTime @default(now()) @map("created_at")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, role])
+  @@map("user_roles")
+}
+
+model InfrastructureRequirement {
+  id            String     @id @default(uuid())
+  name          String
+  serverType    ServerType @map("server_type")
+  minProcessor  String     @default("Intel Core i3") @map("min_processor")
+  minRamGb      Int        @default(4) @map("min_ram_gb")
+  minDiskGb     Int        @default(100) @map("min_disk_gb")
+  minFreeDiskGb Int        @default(20) @map("min_free_disk_gb")
+  supportedOs   String[]   @default(["Windows Server 2016", "Windows Server 2019", "Windows Server 2022", "Windows 10", "Windows 11"]) @map("supported_os")
+  description   String?
+  isActive      Boolean    @default(true) @map("is_active")
+  createdAt     DateTime   @default(now()) @map("created_at")
+  updatedAt     DateTime   @updatedAt @map("updated_at")
+
+  @@map("infrastructure_requirements")
+}
+
+model Assessment {
+  id                String  @id @default(uuid())
+  userId            String  @map("user_id")
+  companyName       String? @map("company_name")
+  cnpj              String?
+  statusFinanceiro  String  @default("pendente") // pendente, pago
+  status            String  @default("draft")
+  porte             String?
+  data              Json    @default("{}")
+  validationResults Json?   @map("validation_results")
+
+  // Dados da aba Projeto
+  projetoQuantidadeHoras   Int?    @map("projeto_quantidade_horas")
+  projetoEscopoImplantacao String? @map("projeto_escopo_implantacao") @db.Text
+
+  // Dados da aba Migração
+  migracaoTipo           String? @map("migracao_tipo") // padrao_bd, planilhas, consultoria
+  migracaoAcessos        Json?   @map("migracao_acessos") // credenciais e contatos
+  migracaoProdutoPeriodo Int?    @map("migracao_produto_periodo") // 1, 2 ou 3 meses
+  migracaoVendasPeriodo  Int?    @map("migracao_vendas_periodo") // 1, 2 ou 3 meses
+
+  createdAt DateTime            @default(now()) @map("created_at")
+  updatedAt DateTime            @updatedAt @map("updated_at")
+  clientId  String?             @map("client_id")
+  client    Client?             @relation(fields: [clientId], references: [id])
+  user      User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  history   AssessmentHistory[]
+
+  @@map("assessments")
+}
+
+model AssessmentHistory {
+  id           String     @id @default(uuid())
+  assessmentId String     @map("assessment_id")
+  assessment   Assessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  userId       String?    @map("user_id")
+  user         User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action       String
+  details      String?
+  createdAt    DateTime   @default(now()) @map("created_at")
+
+  @@map("assessment_history")
+}
+
+model Client {
+  id              String          @id @default(uuid())
+  nomeFantasia    String          @map("nome_fantasia")
+  razaoSocial     String?         @map("razao_social")
+  cnpj            String          @unique
+  endereco        String?
+  contatoNome     String?         @map("contato_nome")
+  contatoEmail    String?         @map("contato_email")
+  contatoTelefone String?         @map("contato_telefone")
+  driveLink       String?         @map("drive_link")
+  createdAt       DateTime        @default(now()) @map("created_at")
+  updatedAt       DateTime        @updatedAt @map("updated_at")
+  assessments     Assessment[]
+  migrations      Migration[]
+  history         ClientHistory[]
+  deployments     Deployment[]
+  recemVr         RecemVr[]
+
+  @@map("clients")
+}
+
+enum DeploymentStatus {
+  ESCOPO
+  PLANEJAMENTO
+  IMPLANTACAO
+  RECEM_VR
+  CANCELADO
+}
+
+model Deployment {
+  id                String              @id @default(uuid())
+  clientId          String              @map("client_id")
+  client            Client              @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  implantador       String?
+  dataInicio        DateTime?           @map("data_inicio")
+  dataPrevisao      DateTime?           @map("data_previsao")
+  driveDocumentacao String?             @map("drive_documentacao")
+  observacao        String?             @db.Text
+  status            DeploymentStatus    @default(ESCOPO)
+  createdAt         DateTime            @default(now()) @map("created_at")
+  updatedAt         DateTime            @updatedAt @map("updated_at")
+  history           DeploymentHistory[]
+  recemVr           RecemVr?
+
+  @@map("deployments")
+}
+
+model DeploymentHistory {
+  id           String     @id @default(uuid())
+  deploymentId String     @map("deployment_id")
+  deployment   Deployment @relation(fields: [deploymentId], references: [id], onDelete: Cascade)
+  userId       String?    @map("user_id")
+  user         User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action       String
+  details      String?
+  oldStatus    String?    @map("old_status")
+  newStatus    String?    @map("new_status")
+  createdAt    DateTime   @default(now()) @map("created_at")
+
+  @@map("deployment_history")
+}
+
+model ClientHistory {
+  id        String   @id @default(uuid())
+  clientId  String   @map("client_id")
+  client    Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  userId    String?  @map("user_id")
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action    String
+  details   String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("client_history")
+}
+
+model HomologatedPeripheral {
+  id        String   @id @default(uuid())
+  category  String
+  brand     String
+  model     String
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("homologated_peripherals")
+}
+
+model ServerRequirement {
+  id            String   @id @default(uuid())
+  role          String   @map("role")
+  os            String   @map("os")
+  isRecommended Boolean  @default(false) @map("is_recommended")
+  qntPdvsMin    Int      @default(0) @map("qnt_pdvs_min")
+  qntPdvsMax    Int      @default(999) @map("qnt_pdvs_max")
+  ramGb         Int      @map("ram_gb")
+  cpuCores      Int?     @map("cpu_cores")
+  cpuModel      String   @map("cpu_model")
+  storageType   String   @map("storage_type")
+  storageGb     Int      @map("storage_gb")
+  recommendedOs String?  @map("recommended_os")
+  software      String?
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@map("server_requirements")
+}
+
+model TerminalRequirement {
+  id             String   @id @default(uuid())
+  terminalType   String   @map("terminal_type")
+  os             String   @map("os")
+  application    String   @map("application")
+  ramGb          Int      @map("ram_gb")
+  cpuModel       String   @map("cpu_model")
+  storageType    String   @map("storage_type")
+  storageGb      Int      @map("storage_gb")
+  minResolution  String?  @map("min_resolution")
+  soDistribution String?  @map("so_distribution")
+  observations   String?  @map("observations")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@map("terminal_requirements")
+}
+
+model InternetRequirement {
+  id           String   @id @default(uuid())
+  linkType     String   @map("link_type")
+  uploadMb     Int      @map("upload_mb")
+  downloadMb   Int      @map("download_mb")
+  observations String?  @map("observations")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("internet_requirements")
+}
+
+enum AppRole {
+  admin
+  supervisao
+  user
+  support
+  seller
+  migrador
+  implantador
+}
+
+enum PermissionType {
+  CONSULTA
+  INCLUSAO_EDICAO
+  ESPECIAL
+}
+
+enum ServerType {
+  database
+  application
+  service_manager
+}
+
+enum MigrationStatus {
+  pendente
+  em_validacao
+  em_andamento
+  concluida
+  cancelada
+}
+
+model Migration {
+  id           String          @id @default(uuid())
+  clientId     String          @map("client_id")
+  client       Client          @relation(fields: [clientId], references: [id])
+  status       MigrationStatus @default(pendente)
+  tipoMigracao String?         @default("padrao") @map("tipo_migracao")
+
+  // Controle Financeiro
+  responsavelId String?  @map("responsavel_id")
+  responsavel   User?    @relation("MigrationResponsavel", fields: [responsavelId], references: [id], onDelete: SetNull)
+  tipoCobranca  String?  @default("hora") @map("tipo_cobranca") // 'hora' ou 'valor_fixo'
+  valorHora     Decimal? @map("valor_hora") @db.Decimal(10, 2)
+  valorFixo     Decimal? @map("valor_fixo") @db.Decimal(10, 2)
+
+  nomeContatoChave  String? @map("nome_contato_chave")
+  telefone          String?
+  acessoAnydesk     String? @map("acesso_anydesk")
+  senhaAnydesk      String? @map("senha_anydesk")
+  nomeSistema       String? @map("nome_sistema")
+  nomeSoftwareHouse String? @map("nome_software_house")
+  tipoBancoDados    String? @map("tipo_banco_dados")
+
+  items            Json    @default("{}")
+  statusFinanceiro String  @default("pendente") // pendente, pago, faturado
+  observacoes      String?
+
+  dataPrevistaVirada DateTime? @map("data_prevista_virada")
+  dataViradaSistema  DateTime? @map("data_virada_sistema")
+
+  createdAt   DateTime              @default(now()) @map("created_at")
+  updatedAt   DateTime              @updatedAt @map("updated_at")
+  history     MigrationHistory[]
+  lancamentos MigrationLancamento[]
+
+  @@map("migrations")
+}
+
+model MigrationHistory {
+  id          String    @id @default(uuid())
+  migrationId String    @map("migration_id")
+  migration   Migration @relation(fields: [migrationId], references: [id], onDelete: Cascade)
+  userId      String?   @map("user_id")
+  user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action      String
+  details     String?
+  oldStatus   String?   @map("old_status")
+  newStatus   String?   @map("new_status")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  @@map("migration_history")
+}
+
+model MigrationLancamento {
+  id          String    @id @default(uuid())
+  migrationId String    @map("migration_id")
+  migration   Migration @relation(fields: [migrationId], references: [id], onDelete: Cascade)
+  userId      String    @map("user_id")
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  data        DateTime  @default(now())
+  horas       Decimal?  @db.Decimal(5, 2)
+  valor       Decimal?  @db.Decimal(10, 2)
+  descricao   String?
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  @@map("migration_lancamentos")
+}
+
+model Menu {
+  id       String    @id @default(uuid())
+  label    String
+  icon     String?
+  route    String?
+  order    Int       @default(0)
+  isActive Boolean   @default(true) @map("is_active")
+  roles    AppRole[] @default([admin])
+
+  // Permissões granulares por role
+  rolesConsulta       AppRole[] @default([admin]) @map("roles_consulta")
+  rolesInclusaoEdicao AppRole[] @default([admin]) @map("roles_inclusao_edicao")
+  rolesEspecial       AppRole[] @default([admin]) @map("roles_especial")
+
+  submenus  Submenu[]
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  @@map("menus")
+}
+
+model Submenu {
+  id     String    @id @default(uuid())
+  menuId String    @map("menu_id")
+  menu   Menu      @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  label  String
+  icon   String?
+  route  String?
+  order  Int       @default(0)
+  roles  AppRole[] @default([admin])
+
+  // Permissões granulares por role
+  rolesConsulta       AppRole[] @default([admin]) @map("roles_consulta")
+  rolesInclusaoEdicao AppRole[] @default([admin]) @map("roles_inclusao_edicao")
+  rolesEspecial       AppRole[] @default([admin]) @map("roles_especial")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("submenus")
+}
+
+// ============================================================
+// MÓDULO RECÉM VR
+// ============================================================
+
+enum RecemVrCriticidade {
+  BAIXA  // 1 - Cliente estável
+  MEDIA  // 2 - Requer atenção
+  ALTA   // 3 - Cliente em risco
+}
+
+enum RecemVrStatus {
+  PLANEJAMENTO
+  EM_ANDAMENTO
+  CRITICO
+  FINALIZADA
+  CANCELADA
+}
+
+model RecemVr {
+  id           String             @id @default(uuid())
+  clientId     String             @map("client_id")
+  client       Client             @relation(fields: [clientId], references: [id])
+  deploymentId String?            @unique @map("deployment_id")
+  deployment   Deployment?        @relation(fields: [deploymentId], references: [id])
+
+  // === ETAPA 1: Solicitação (Implantação) ===
+  mv067        String?            // Link/referência do Termo de Encerramento no Drive
+  criticidade  RecemVrCriticidade @default(BAIXA)
+  resumo       String             @db.Text
+  solicitanteId String?           @map("solicitante_id")
+  solicitante   User?             @relation("RecemVrSolicitante", fields: [solicitanteId], references: [id], onDelete: SetNull)
+
+  // === ETAPA 2: Planejamento (Suporte) ===
+  status              RecemVrStatus @default(PLANEJAMENTO)
+  analistaId          String?       @map("analista_id")
+  analista            User?         @relation("RecemVrAnalista", fields: [analistaId], references: [id], onDelete: SetNull)
+  dataPrimeiraReuniao DateTime?     @map("data_primeira_reuniao")
+  datasAcompanhamento DateTime[]    @map("datas_acompanhamento")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  acompanhamentos RecemVrAcompanhamento[]
+  history         RecemVrHistory[]
+
+  @@map("recem_vr")
+}
+
+model RecemVrAcompanhamento {
+  id          String   @id @default(uuid())
+  recemVrId   String   @map("recem_vr_id")
+  recemVr     RecemVr  @relation(fields: [recemVrId], references: [id], onDelete: Cascade)
+  userId      String?  @map("user_id")
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  dataReuniao DateTime @map("data_reuniao")
+  ata         String?  @db.Text
+  observacao  String?  @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("recem_vr_acompanhamentos")
+}
+
+model RecemVrHistory {
+  id        String   @id @default(uuid())
+  recemVrId String   @map("recem_vr_id")
+  recemVr   RecemVr  @relation(fields: [recemVrId], references: [id], onDelete: Cascade)
+  userId    String?  @map("user_id")
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action    String
+  details   String?
+  oldStatus String?  @map("old_status")
+  newStatus String?  @map("new_status")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("recem_vr_history")
+}
