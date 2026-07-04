@@ -32,11 +32,13 @@ export class ClientCredentialsController {
   }
 
   @Patch(':id/secret')
+  @Roles(AppRole.admin, AppRole.supervisao)
   updateSecret(@Param('id') id: string, @Body() dto: UpdateClientCredentialSecretDto) {
     return this.service.updateSecret(id, dto);
   }
 
   @Delete(':id')
+  @Roles(AppRole.admin, AppRole.supervisao)
   remove(@Param('id') id: string) {
     return this.service.remove(id);
   }

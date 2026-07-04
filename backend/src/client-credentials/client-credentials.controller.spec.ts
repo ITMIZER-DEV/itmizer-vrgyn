@@ -14,6 +14,8 @@ describe('ClientCredentialsController (reveal/copy role gate)', () => {
   const serviceMock = {
     reveal: jest.fn().mockResolvedValue({ secret: 'plaintext-secreto' }),
     copy: jest.fn().mockResolvedValue({ secret: 'plaintext-secreto' }),
+    updateSecret: jest.fn().mockResolvedValue({ id: 'cred-1', label: 'Anydesk' }),
+    remove: jest.fn().mockResolvedValue(undefined),
   };
 
   async function buildApp() {
@@ -71,5 +73,39 @@ describe('ClientCredentialsController (reveal/copy role gate)', () => {
     await buildApp();
     await request(app.getHttpServer()).post('/client-credentials/cred-1/copy').expect(201);
     expect(serviceMock.copy).toHaveBeenCalledWith('cred-1', 'user-1');
+  });
+
+  it('blocks updateSecret for support (403)', async () => {
+    currentRoles = ['support'];
+    await buildApp();
+    await request(app.getHttpServer())
+      .patch('/client-credentials/cred-1/secret')
+      .send({ secret: 'nova-senha' })
+      .expect(403);
+    expect(serviceMock.updateSecret).not.toHaveBeenCalled();
+  });
+
+  it('allows updateSecret for admin', async () => {
+    currentRoles = ['admin'];
+    await buildApp();
+    await request(app.getHttpServer())
+      .patch('/client-credentials/cred-1/secret')
+      .send({ secret: 'nova-senha' })
+      .expect(200);
+    expect(serviceMock.updateSecret).toHaveBeenCalled();
+  });
+
+  it('blocks remove for support (403)', async () => {
+    currentRoles = ['support'];
+    await buildApp();
+    await request(app.getHttpServer()).delete('/client-credentials/cred-1').expect(403);
+    expect(serviceMock.remove).not.toHaveBeenCalled();
+  });
+
+  it('allows remove for admin', async () => {
+    currentRoles = ['admin'];
+    await buildApp();
+    await request(app.getHttpServer()).delete('/client-credentials/cred-1').expect(200);
+    expect(serviceMock.remove).toHaveBeenCalled();
   });
 });

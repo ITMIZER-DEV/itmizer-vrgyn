@@ -75,7 +75,7 @@ export class ClientCredentialsService {
 
   async remove(id: string) {
     await this.findRaw(id);
-    return this.prisma.clientCredential.delete({ where: { id } });
+    return this.prisma.clientCredential.delete({ where: { id }, select: METADATA_SELECT });
   }
 
   async reveal(id: string, userId?: string) {
