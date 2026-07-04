@@ -247,7 +247,7 @@ export default function ClientCredentialsTab({ clientId }: Props) {
                     {revealedId === credential.id ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </Button>
                 )}
-                {canEdit && (
+                {canReveal && (
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <Button variant="ghost" size="icon"><Trash2 className="w-4 h-4 text-destructive" /></Button>
