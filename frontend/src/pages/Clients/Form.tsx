@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -22,7 +22,7 @@ import ClientInfrastructureTab from './ClientInfrastructureTab';
 import ClientCredentialsTab from './ClientCredentialsTab';
 
 const SECTIONS = [
-    { value: 'visao-geral', label: 'Visão Geral' },
+    { value: 'dados-cadastrais', label: 'Dados cadastrais' },
     { value: 'validacoes', label: 'Validações' },
     { value: 'migracoes', label: 'Migrações' },
     { value: 'implantacoes', label: 'Implantações' },
@@ -38,7 +38,7 @@ export default function ClientForm() {
     const { toast } = useToast();
     const queryClient = useQueryClient();
     const isEditing = !!id;
-    const [activeSection, setActiveSection] = useState<string>('visao-geral');
+    const [activeSection, setActiveSection] = useState<string>('dados-cadastrais');
 
     const { register, handleSubmit, reset } = useForm<CreateClientDto>();
 
@@ -107,6 +107,35 @@ export default function ClientForm() {
             </DashboardLayout>
         )
     }
+
+    const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
+
+    useEffect(() => {
+        if (!isEditing) return;
+        const observer = new IntersectionObserver(
+            (entries) => {
+                const visible = entries.filter((entry) => entry.isIntersecting);
+                if (visible.length === 0) return;
+                const top = visible.reduce((best, entry) =>
+                    entry.intersectionRatio > best.intersectionRatio ? entry : best
+                );
+                setActiveSection(top.target.id);
+            },
+            { rootMargin: '-110px 0px -60% 0px', threshold: [0, 0.25, 0.5, 0.75, 1] }
+        );
+
+        SECTIONS.forEach((section) => {
+            const el = sectionRefs.current[section.value];
+            if (el) observer.observe(el);
+        });
+
+        return () => observer.disconnect();
+    }, [isEditing]);
+
+    const scrollToSection = (value: string) => {
+        setActiveSection(value);
+        sectionRefs.current[value]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
 
     const cadastralForm = (
         <Card>
