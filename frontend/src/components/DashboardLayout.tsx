@@ -17,6 +17,7 @@ import {
     Moon
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { BrandLogo } from '@/components/BrandLogo';
 import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
 import {
@@ -123,12 +124,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                 {/* Sidebar Header */}
                 <div className="h-16 flex items-center justify-between px-4 border-b border-border/30">
                     <Link to="/" className="flex items-center gap-2 overflow-hidden shrink-0">
-                        <img src="/logo.png" alt="VRGYN Logo" className="h-9 w-auto object-contain shrink-0" />
-                        {!isCollapsed && (
-                            <span className="font-display font-bold text-lg text-orange-600 transition-all duration-300 tracking-wider">
-                                VRGYN
-                            </span>
-                        )}
+                        <BrandLogo showWordmark={!isCollapsed} />
                     </Link>
                     {!isCollapsed && (
                         <Button
@@ -365,10 +361,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                 )}
             >
                 <div className="p-6 border-b border-border flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <img src="/logo_mobile.png" alt="VRGYN Logo" className="h-10 w-auto object-contain" />
-                        <span className="font-display font-bold text-lg text-orange-600">VRGYN</span>
-                    </div>
+                    <BrandLogo />
                     <Button variant="ghost" size="icon" onClick={() => setIsSidebarOpen(false)} className="rounded-xl">
                         <X className="w-5 h-5" />
                     </Button>
