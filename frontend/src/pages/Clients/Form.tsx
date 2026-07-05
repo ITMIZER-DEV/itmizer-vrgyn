@@ -100,14 +100,6 @@ export default function ClientForm() {
         mutation.mutate(data);
     };
 
-    if (isEditing && isLoading) {
-        return (
-            <DashboardLayout>
-                <div className="flex justify-center p-8">Carregando...</div>
-            </DashboardLayout>
-        )
-    }
-
     const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
 
     useEffect(() => {
@@ -136,6 +128,14 @@ export default function ClientForm() {
         setActiveSection(value);
         sectionRefs.current[value]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
+
+    if (isEditing && isLoading) {
+        return (
+            <DashboardLayout>
+                <div className="flex justify-center p-8">Carregando...</div>
+            </DashboardLayout>
+        )
+    }
 
     const cadastralForm = (
         <Card>
