@@ -120,13 +120,13 @@
 
 @layer utilities {
   .glass-card {
-    @apply bg-card/80 backdrop-blur-sm border border-border/50 shadow-lg;
+    @apply bg-card border border-border;
   }
   .glass-card-premium {
-    @apply bg-card/50 backdrop-blur-md border border-border/40 shadow-xl shadow-black/5 dark:shadow-black/20 transition-all duration-300;
+    @apply bg-card border border-border transition-all duration-300;
   }
   .glass-header {
-    @apply sticky top-0 z-40 w-full border-b border-border/30 bg-card/50 backdrop-blur-md transition-all duration-300;
+    @apply sticky top-0 z-40 w-full border-b border-border bg-card transition-all duration-300;
   }
   .gradient-premium-active {
     background: linear-gradient(135deg, rgba(37, 99, 235, 0.12) 0%, rgba(16, 185, 129, 0.08) 100%);
@@ -136,7 +136,7 @@
     @apply transition-all duration-300 rounded-xl hover:bg-muted/70 active:scale-[0.98];
   }
   .gradient-primary {
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(217 91% 65%) 100%);
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(25 100% 65%) 100%);
   }
   .gradient-success {
     background: linear-gradient(135deg, hsl(var(--success)) 0%, hsl(142 71% 55%) 100%);
