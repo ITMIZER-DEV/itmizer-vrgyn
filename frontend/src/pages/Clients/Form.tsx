@@ -120,7 +120,7 @@ export default function ClientForm() {
         });
 
         return () => observer.disconnect();
-    }, [isEditing]);
+    }, [isEditing, isLoading]);
 
     const scrollToSection = (value: string) => {
         setActiveSection(value);
