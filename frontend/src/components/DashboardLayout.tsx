@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { BrandLogo } from '@/components/BrandLogo';
+import { CommandPalette, CommandPaletteItem } from '@/components/CommandPalette';
 import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
 import {
@@ -95,6 +96,17 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
         fetchMenus();
     }, []);
 
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+                e.preventDefault();
+                setPaletteOpen(true);
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, []);
+
     const handleSignOut = () => {
         signOut();
     };
@@ -114,6 +126,19 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
     };
 
     const activeSectionLabel = standardMenus.find(isActive)?.label;
+
+    const paletteItems: CommandPaletteItem[] = standardMenus.flatMap((item) => {
+        const entries: CommandPaletteItem[] = [];
+        if (item.route) {
+            entries.push({ id: item.id, label: item.label, route: item.route, icon: item.icon, kind: 'Página' });
+        }
+        item.submenus?.forEach((sub) => {
+            if (sub.route) {
+                entries.push({ id: sub.id, label: sub.label, route: sub.route, icon: sub.icon, kind: 'Página' });
+            }
+        });
+        return entries;
+    });
 
     const toggleSubmenu = (menuId: string) => {
         if (isCollapsed) {
@@ -507,6 +532,8 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                     </Button>
                 </div>
             </aside>
+
+            <CommandPalette open={paletteOpen} onOpenChange={setPaletteOpen} items={paletteItems} />
         </div>
     );
 }
