@@ -85,7 +85,13 @@ Para:
 
 - [ ] **Step 4: Adicionar refs, o efeito de scroll-spy e o helper de clique**
 
-Logo depois do bloco:
+**Importante:** este bloco precisa ficar ANTES do `if (isEditing && isLoading) { return (...) }` (que é um retorno antecipado condicional) — hooks (`useRef`/`useEffect`) nunca podem ser chamados depois de um `return` condicional, senão a contagem de hooks muda entre renders assim que `isLoading` virar `false` e o React quebra em runtime ("Rendered fewer hooks than expected"). Inserir logo depois de:
+```tsx
+    const onSubmit = (data: CreateClientDto) => {
+        mutation.mutate(data);
+    };
+```
+e ANTES de:
 ```tsx
     if (isEditing && isLoading) {
         return (
