@@ -118,7 +118,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
             <aside
                 className={cn(
                     "hidden lg:flex flex-col border-r border-border/30 glass-card-premium fixed inset-y-0 left-0 z-30 transition-all duration-300 ease-in-out select-none",
-                    isCollapsed ? "w-20" : "w-64"
+                    isCollapsed ? "w-14" : "w-56"
                 )}
             >
                 {/* Sidebar Header */}
@@ -152,15 +152,24 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                                         <button
                                             onClick={() => toggleSubmenu(item.id)}
                                             className={cn(
-                                                "w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200",
+                                                "w-full flex items-center justify-between px-2 py-1.5 rounded-md text-sm font-medium transition-all duration-200",
                                                 active && !isCollapsed
-                                                    ? "bg-primary/5 text-primary"
+                                                    ? "border-l-2 border-primary bg-[var(--orange-tint)] text-[var(--brand-text)]"
                                                     : "text-muted-foreground hover:text-foreground hover:bg-muted/40",
                                                 isCollapsed ? "justify-center" : ""
                                             )}
                                         >
-                                            <div className="flex items-center gap-3">
-                                                {item.icon && <DynamicIcon name={item.icon} className="w-5 h-5 shrink-0" />}
+                                            <div className="flex items-center gap-2.5">
+                                                {item.icon && (
+                                                    <span
+                                                        className={cn(
+                                                            "flex items-center justify-center shrink-0 w-5 h-5 rounded-[5px]",
+                                                            active && !isCollapsed ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                                                        )}
+                                                    >
+                                                        <DynamicIcon name={item.icon} className="w-3.5 h-3.5" />
+                                                    </span>
+                                                )}
                                                 {!isCollapsed && <span>{item.label}</span>}
                                             </div>
                                             {!isCollapsed && (
@@ -196,14 +205,23 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                                     <Link to={item.route || '#'}>
                                         <div
                                             className={cn(
-                                                "flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200",
+                                                "flex items-center gap-2.5 px-2 py-1.5 rounded-md text-sm font-medium transition-all duration-200",
                                                 active
-                                                    ? "gradient-premium-active font-semibold"
+                                                    ? "border-l-2 border-primary bg-[var(--orange-tint)] text-[var(--brand-text)] font-semibold"
                                                     : "text-muted-foreground hover:text-foreground hover:bg-muted/40",
                                                 isCollapsed ? "justify-center" : ""
                                             )}
                                         >
-                                            {item.icon && <DynamicIcon name={item.icon} className="w-5 h-5 shrink-0" />}
+                                            {item.icon && (
+                                                <span
+                                                    className={cn(
+                                                        "flex items-center justify-center shrink-0 w-5 h-5 rounded-[5px]",
+                                                        active ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                                                    )}
+                                                >
+                                                    <DynamicIcon name={item.icon} className="w-3.5 h-3.5" />
+                                                </span>
+                                            )}
                                             {!isCollapsed && <span>{item.label}</span>}
                                         </div>
                                     </Link>
@@ -212,6 +230,21 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                         );
                     })}
                 </nav>
+
+                {/* Badge VRGYN */}
+                <div
+                    className={cn(
+                        "mx-2 mb-2 flex items-center gap-2 rounded-md border border-border bg-background px-2.5 py-2",
+                        isCollapsed ? "justify-center" : ""
+                    )}
+                >
+                    <span className="w-2 h-2 rounded-sm bg-success shrink-0" />
+                    {!isCollapsed && (
+                        <span className="text-2xs text-muted-foreground whitespace-nowrap">
+                            Vinculado ao <span className="font-display font-bold text-primary">VRGYN</span>
+                        </span>
+                    )}
+                </div>
 
                 {/* Sidebar Footer (Desktop Collapse Button if Collapsed) */}
                 {isCollapsed && (
@@ -232,7 +265,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
             <div
                 className={cn(
                     "flex-1 min-h-screen flex flex-col transition-all duration-300 ease-in-out",
-                    isCollapsed ? "lg:pl-20" : "lg:pl-64"
+                    isCollapsed ? "lg:pl-14" : "lg:pl-56"
                 )}
             >
                 {/* Top Compact Header */}
