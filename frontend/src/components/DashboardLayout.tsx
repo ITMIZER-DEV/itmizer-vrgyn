@@ -14,7 +14,8 @@ import {
     ChevronLeft,
     ChevronRight,
     Sun,
-    Moon
+    Moon,
+    Search
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { BrandLogo } from '@/components/BrandLogo';
@@ -31,6 +32,18 @@ import { menuService, MenuItem as ApiMenuItem } from '@/services/menuService';
 import { useTheme } from 'next-themes';
 import { userService } from '@/services/userService';
 
+function getInitials(nameOrEmail: string): string {
+    const base = nameOrEmail.split('@')[0].trim();
+    const parts = base.split(/\s+/).filter(Boolean);
+    if (parts.length >= 2) {
+        return (parts[0][0] + parts[1][0]).toUpperCase();
+    }
+    if (parts.length === 1 && parts[0].length >= 2) {
+        return parts[0].slice(0, 2).toUpperCase();
+    }
+    return (parts[0]?.[0] || '?').toUpperCase();
+}
+
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isCollapsed, setIsCollapsed] = useState(() => {
@@ -40,6 +53,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
     const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>({});
     const [standardMenus, setStandardMenus] = useState<ApiMenuItem[]>([]);
     const [adminMenu, setAdminMenu] = useState<ApiMenuItem | null>(null);
+    const [paletteOpen, setPaletteOpen] = useState(false);
     const { user, isAdmin, signOut } = useAuth();
     const location = useLocation();
     const { theme, setTheme } = useTheme();
@@ -98,6 +112,8 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
         }
         return false;
     };
+
+    const activeSectionLabel = standardMenus.find(isActive)?.label;
 
     const toggleSubmenu = (menuId: string) => {
         if (isCollapsed) {
@@ -269,16 +285,10 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                 )}
             >
                 {/* Top Compact Header */}
-                <header className="glass-header h-16 border-b border-border/30 shrink-0">
+                <header className="glass-header h-[46px] border-b border-border/30 shrink-0">
                     <div className="h-full max-w-7xl mx-auto px-4 lg:px-8 flex items-center justify-between">
                         {/* Botão de Expandir/Colapsar (Visível só se estiver no estado Colapsado ou Mobile) */}
                         <div className="flex items-center gap-4">
-                            {!isCollapsed && (
-                                <div className="lg:hidden flex items-center gap-2">
-                                    <img src="/logo.png" alt="VRGYN Logo" className="h-9 w-auto object-contain" />
-                                    <span className="font-display font-bold text-lg text-orange-600">VRGYN</span>
-                                </div>
-                            )}
                             {isCollapsed && (
                                 <Button
                                     variant="ghost"
@@ -289,10 +299,23 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                                     <PanelLeftOpen className="w-4 h-4 text-muted-foreground" />
                                 </Button>
                             )}
+                            {activeSectionLabel && (
+                                <span className="text-sm text-muted-foreground whitespace-nowrap">{activeSectionLabel}</span>
+                            )}
                         </div>
 
                         {/* Ações do Lado Direito */}
                         <div className="flex items-center gap-3 ml-auto">
+                            <button
+                                type="button"
+                                onClick={() => setPaletteOpen(true)}
+                                className="hidden sm:flex items-center gap-2 rounded-[7px] border border-input bg-background px-2.5 py-1 text-sm text-muted-foreground min-w-[200px]"
+                            >
+                                <Search className="w-3.5 h-3.5 shrink-0" />
+                                <span className="flex-1 text-left">Buscar telas…</span>
+                                <span className="text-2xs font-semibold border border-border rounded-sm px-1 bg-card">⌘K</span>
+                            </button>
+
                             {isSuperAdmin && adminMenu && (
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
@@ -326,7 +349,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                             <Button
                                 variant="ghost"
                                 size="icon"
-                                className="rounded-xl h-10 w-10 hover:bg-muted text-muted-foreground hover:text-foreground relative"
+                                className="rounded-[7px] h-[30px] w-[30px] hover:bg-muted text-muted-foreground hover:text-foreground relative"
                                 onClick={handleThemeToggle}
                             >
                                 <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 text-amber-500" />
@@ -340,8 +363,8 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                     <Button variant="ghost" className="gap-2.5 pl-2 pr-4 h-10 border border-border/30 bg-background/40 backdrop-blur rounded-xl hover:bg-muted/50">
-                                        <div className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center">
-                                            <UserCircle className="w-4 h-4" />
+                                        <div className="w-7 h-7 rounded-[7px] bg-foreground text-background flex items-center justify-center text-2xs font-semibold shrink-0">
+                                            {getInitials(user?.profile?.fullName || user?.email || '')}
                                         </div>
                                         <span className="text-sm font-semibold text-foreground/90">{user?.profile?.fullName || user?.email?.split('@')[0]}</span>
                                         <ChevronDown className="w-3.5 h-3.5 ml-0.5 opacity-55" />
