@@ -75,7 +75,7 @@ export default function RecemVrList() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900 flex items-center gap-3">
+            <h1 className="text-2xl font-bold tracking-tight flex items-center gap-3">
               <Sparkles className="w-8 h-8 text-emerald-600" />
               Recém VR
             </h1>
@@ -87,7 +87,7 @@ export default function RecemVrList() {
           {canEdit && (
             <Button
               onClick={() => navigate('/recem-vr/new')}
-              className="gap-2 shrink-0 bg-emerald-600 hover:bg-emerald-700 shadow-md"
+              className="gap-2 shrink-0 gradient-primary"
             >
               <Plus className="w-4 h-4" /> Nova Solicitação
             </Button>
@@ -95,16 +95,16 @@ export default function RecemVrList() {
         </div>
 
         {/* Tabela */}
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div className="bg-card border border-border rounded-md overflow-hidden">
           {/* Filtros */}
-          <div className="p-4 border-b border-slate-100 flex flex-col sm:flex-row gap-3 bg-slate-50/50">
+          <div className="p-4 border-b border-border flex flex-col sm:flex-row gap-3">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input
                 placeholder="Buscar por cliente ou analista..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-9 bg-white border-slate-200 focus-visible:ring-emerald-500 rounded-full"
+                className="pl-9 rounded-full"
               />
             </div>
 
@@ -112,7 +112,7 @@ export default function RecemVrList() {
               value={filterStatus}
               onValueChange={(v) => setFilterStatus(v as RecemVrStatus | 'TODOS')}
             >
-              <SelectTrigger className="w-full sm:w-48 bg-white">
+              <SelectTrigger className="w-full sm:w-48">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent>
@@ -129,7 +129,7 @@ export default function RecemVrList() {
               value={filterCriticidade}
               onValueChange={(v) => setFilterCriticidade(v as RecemVrCriticidade | 'TODAS')}
             >
-              <SelectTrigger className="w-full sm:w-48 bg-white">
+              <SelectTrigger className="w-full sm:w-48">
                 <SelectValue placeholder="Criticidade" />
               </SelectTrigger>
               <SelectContent>
@@ -145,14 +145,14 @@ export default function RecemVrList() {
 
           <div className="overflow-x-auto">
             <Table>
-              <TableHeader className="bg-slate-50">
-                <TableRow className="hover:bg-slate-50">
-                  <TableHead className="font-semibold text-slate-700 h-12">Cliente</TableHead>
-                  <TableHead className="font-semibold text-slate-700 h-12">Criticidade</TableHead>
-                  <TableHead className="font-semibold text-slate-700 h-12">Status</TableHead>
-                  <TableHead className="font-semibold text-slate-700 h-12">Analista</TableHead>
-                  <TableHead className="font-semibold text-slate-700 h-12">Próxima Reunião</TableHead>
-                  <TableHead className="font-semibold text-slate-700 h-12">Reuniões</TableHead>
+              <TableHeader className="bg-muted/30">
+                <TableRow>
+                  <TableHead>Cliente</TableHead>
+                  <TableHead>Criticidade</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Analista</TableHead>
+                  <TableHead>Próxima Reunião</TableHead>
+                  <TableHead>Reuniões</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -182,17 +182,17 @@ export default function RecemVrList() {
                       return (
                         <TableRow
                           key={rv.id}
-                          className={`group hover:bg-slate-50/80 transition-colors cursor-pointer ${
+                          className={`group cursor-pointer ${
                             isAlta ? 'border-l-4 border-l-red-400' : ''
                           }`}
                           onClick={() => navigate(`/recem-vr/${rv.id}`)}
                         >
-                          <TableCell className="font-medium text-slate-900">
+                          <TableCell className="font-medium text-foreground">
                             <div className="flex items-center gap-2">
                               {isAlta && (
                                 <AlertTriangle className="w-4 h-4 text-red-500 shrink-0" />
                               )}
-                              <span className="hover:text-emerald-600 transition-colors">
+                              <span className="hover:text-primary transition-colors">
                                 {rv.client?.nomeFantasia}
                               </span>
                             </div>
@@ -216,28 +216,28 @@ export default function RecemVrList() {
                             </Badge>
                           </TableCell>
 
-                          <TableCell className="text-slate-600">
+                          <TableCell className="text-muted-foreground">
                             <div className="flex items-center gap-1">
-                              <Users className="w-3.5 h-3.5 text-slate-400" />
+                              <Users className="w-3.5 h-3.5 text-muted-foreground" />
                               {rv.analista?.profile?.fullName ??
                                 rv.analista?.email ?? (
-                                  <span className="text-slate-400 italic">Não atribuído</span>
+                                  <span className="text-muted-foreground italic">Não atribuído</span>
                                 )}
                             </div>
                           </TableCell>
 
                           <TableCell>
                             {proximaReuniao ? (
-                              <div className="flex items-center gap-1.5 text-slate-600">
-                                <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                              <div className="flex items-center gap-1.5 text-muted-foreground">
+                                <Calendar className="w-3.5 h-3.5 text-muted-foreground" />
                                 {format(proximaReuniao, 'dd/MM/yyyy', { locale: ptBR })}
                               </div>
                             ) : (
-                              <span className="text-slate-400 italic text-sm">Sem agenda</span>
+                              <span className="text-muted-foreground italic text-sm">Sem agenda</span>
                             )}
                           </TableCell>
 
-                          <TableCell className="text-slate-600 text-sm">
+                          <TableCell className="text-muted-foreground text-sm">
                             {rv._count?.acompanhamentos ?? 0} registros
                           </TableCell>
                         </TableRow>
