@@ -15,9 +15,10 @@ import { DeploymentsModule } from './deployments/deployments.module';
 import { RecemVrModule } from './recem-vr/recem-vr.module';
 import { ClientInfrastructureModule } from './client-infrastructure/client-infrastructure.module';
 import { ClientCredentialsModule } from './client-credentials/client-credentials.module';
+import { ClientTicketsModule } from './client-tickets/client-tickets.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true }), PrismaModule, AuthModule, UsersModule, AssessmentsModule, AppConfigModule, ClientsModule, InfrastructureModule, MigrationModule, MenusModule, DeploymentsModule, RecemVrModule, ClientInfrastructureModule, ClientCredentialsModule],
+  imports: [ConfigModule.forRoot({ isGlobal: true }), PrismaModule, AuthModule, UsersModule, AssessmentsModule, AppConfigModule, ClientsModule, InfrastructureModule, MigrationModule, MenusModule, DeploymentsModule, RecemVrModule, ClientInfrastructureModule, ClientCredentialsModule, ClientTicketsModule],
   controllers: [AppController],
   providers: [AppService],
 })
