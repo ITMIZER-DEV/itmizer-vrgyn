@@ -233,7 +233,7 @@ export default function MigrationList() {
             <div className="flex flex-col gap-6">
                 <div className="flex items-center justify-between flex-wrap gap-4">
                     <div>
-                        <h1 className="text-3xl font-bold font-display">Migrações</h1>
+                        <h1 className="text-2xl font-bold font-display">Migrações</h1>
                         <p className="text-muted-foreground">Gerencie as migrações de dados por cliente</p>
                     </div>
                     {canEdit && (
@@ -244,7 +244,7 @@ export default function MigrationList() {
                     )}
                 </div>
 
-                <Card className="glass-card shadow-lg border-2">
+                <Card className="glass-card">
                     <CardHeader className="pb-4">
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                             <h2 className="text-xl font-display font-semibold flex items-center gap-2">

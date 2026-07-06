@@ -98,7 +98,7 @@ export default function Infrastructure() {
     return (
         <DashboardLayout>
             <div className="mb-8">
-                <h1 className="font-display text-3xl font-bold">Configurações de Infraestrutura</h1>
+                <h1 className="font-display text-2xl font-bold">Configurações de Infraestrutura</h1>
                 <p className="text-muted-foreground mt-1">Requisitos homologados para implantação do sistema VR Software</p>
             </div>
 

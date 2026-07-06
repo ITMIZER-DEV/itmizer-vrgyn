@@ -488,7 +488,7 @@ export default function Index() {
     <DashboardLayout>
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="font-display text-3xl font-bold">
+          <h1 className="font-display text-2xl font-bold">
             Validações de Infraestrutura
           </h1>
           <p className="text-muted-foreground mt-1">
@@ -604,12 +604,12 @@ export default function Index() {
             </CardContent>
           </Card>
         ) : (
-      <Card className="glass-card shadow-lg border-2">
+      <Card className="glass-card">
         <CardContent className="p-6">
-          <DataTable 
-            columns={columns} 
-            data={assessments} 
-            searchKey="company_nomeFantasia" 
+          <DataTable
+            columns={columns}
+            data={assessments}
+            searchKey="company_nomeFantasia"
             filename="validacoes-itmizer"
           />
         </CardContent>

@@ -92,7 +92,7 @@ export function UsersListContent({ roleFilter, title }: UsersListProps) {
         <div className="flex flex-col gap-6">
             <div className="flex justify-between items-center mb-6">
                 <div>
-                    <h1 className="text-3xl font-bold font-display">{title || 'Gestão de Usuários'}</h1>
+                    <h1 className="text-2xl font-bold font-display">{title || 'Gestão de Usuários'}</h1>
                     <p className="text-muted-foreground">Gerencie o acesso ao sistema</p>
                 </div>
                 <UserModal />
