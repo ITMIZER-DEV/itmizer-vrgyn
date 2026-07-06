@@ -118,6 +118,29 @@ export default function ClientForm() {
         setDriveLinkDialogOpen(true);
     };
 
+    const isSafeHttpUrl = (value: string) => {
+        try {
+            const parsed = new URL(value);
+            return parsed.protocol === 'https:' || parsed.protocol === 'http:';
+        } catch {
+            return false;
+        }
+    };
+
+    const handleSaveDriveLink = () => {
+        if (!isSafeHttpUrl(driveLinkInput)) {
+            toast({ title: 'URL inválida', description: 'Informe um link http:// ou https:// válido.', variant: 'destructive' });
+            return;
+        }
+        driveLinkMutation.mutate(driveLinkInput);
+    };
+
+    const openDriveLink = () => {
+        if (client?.driveLink && isSafeHttpUrl(client.driveLink)) {
+            window.open(client.driveLink, '_blank', 'noopener,noreferrer');
+        }
+    };
+
     if (isEditing && isLoading) {
         return (
             <DashboardLayout>
@@ -216,7 +239,7 @@ export default function ClientForm() {
                                         variant="outline"
                                         size="sm"
                                         className="gap-2"
-                                        onClick={() => window.open(client.driveLink, '_blank', 'noopener,noreferrer')}
+                                        onClick={openDriveLink}
                                     >
                                         <LinkIcon className="w-4 h-4" />
                                         Documentação
@@ -485,7 +508,7 @@ export default function ClientForm() {
                     </div>
                     <DialogFooter>
                         <Button
-                            onClick={() => driveLinkMutation.mutate(driveLinkInput)}
+                            onClick={handleSaveDriveLink}
                             disabled={driveLinkMutation.isPending || !driveLinkInput}
                         >
                             {driveLinkMutation.isPending ? 'Salvando...' : 'Salvar'}
