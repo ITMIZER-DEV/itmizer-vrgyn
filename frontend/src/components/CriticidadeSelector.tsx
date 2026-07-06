@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+import { CRITICIDADE_PERIODICIDADE } from '@/types/recemVr';
 import type { RecemVrCriticidade } from '@/types/recemVr';
 
 const OPTIONS: {
@@ -90,6 +91,9 @@ export function CriticidadeSelector({ value, onChange, disabled }: CriticidadeSe
             </span>
             <span className="text-xs text-muted-foreground text-center leading-tight">
               {opt.desc}
+            </span>
+            <span className="text-xs text-muted-foreground text-center leading-tight">
+              {CRITICIDADE_PERIODICIDADE[opt.value]}
             </span>
 
             {/* Indicador selecionado */}
