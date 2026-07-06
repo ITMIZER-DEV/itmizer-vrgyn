@@ -27,7 +27,7 @@ import {
 
 import { recemVrService } from '@/services/recemVrService';
 import {
-  CRITICIDADE_LABELS, CRITICIDADE_COLORS, STATUS_LABELS, STATUS_COLORS,
+  CRITICIDADE_LABELS, CRITICIDADE_COLORS, CRITICIDADE_PERIODICIDADE, STATUS_LABELS, STATUS_COLORS,
   type RecemVrStatus, type RecemVrCriticidade,
 } from '@/types/recemVr';
 import { CriticidadeSelector } from '@/components/CriticidadeSelector';
@@ -175,7 +175,7 @@ export default function RecemVrDetail() {
             <div className="flex gap-2 mt-2 flex-wrap items-center justify-between">
               <div className="flex gap-2">
                 <Badge variant="outline" className={`${CRITICIDADE_COLORS[rv.criticidade]} border-0`}>
-                  {CRITICIDADE_LABELS[rv.criticidade]}
+                  {CRITICIDADE_LABELS[rv.criticidade]} · {CRITICIDADE_PERIODICIDADE[rv.criticidade]}
                 </Badge>
                 <Badge variant="outline" className={`${STATUS_COLORS[rv.status]} border-0`}>
                   {STATUS_LABELS[rv.status]}
@@ -342,7 +342,7 @@ export default function RecemVrDetail() {
                     variant="outline"
                     className={`${CRITICIDADE_COLORS[rv.criticidade]} border-0 text-sm px-3 py-1`}
                   >
-                    {CRITICIDADE_LABELS[rv.criticidade]}
+                    {CRITICIDADE_LABELS[rv.criticidade]} · {CRITICIDADE_PERIODICIDADE[rv.criticidade]}
                   </Badge>
                 )}
               </div>
