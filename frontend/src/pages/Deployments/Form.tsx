@@ -132,11 +132,11 @@ export default function DeploymentForm() {
         <DashboardLayout>
             <div className="max-w-4xl mx-auto space-y-6">
                 <div className="flex items-center gap-4">
-                    <Button variant="ghost" size="icon" onClick={() => navigate('/deployments')} className="shrink-0 bg-white shadow-sm border border-slate-200">
+                    <Button variant="ghost" size="icon" onClick={() => navigate('/deployments')} className="shrink-0 bg-card shadow-sm border border-border">
                         <ArrowLeft className="w-5 h-5" />
                     </Button>
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+                        <h1 className="text-2xl font-bold tracking-tight">
                             {isEditing ? 'Editar Ficha de Implantação' : 'Nova Ficha de Implantação'}
                         </h1>
                         <p className="text-muted-foreground mt-1">Preencha os dados abaixo.</p>
@@ -144,12 +144,12 @@ export default function DeploymentForm() {
                 </div>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                    <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-6">
+                    <div className="bg-card p-6 rounded-xl border border-border space-y-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                             {/* Look-up Cliente */}
                             <div className="space-y-3">
-                                <Label className="text-slate-700 font-medium">Cliente *</Label>
+                                <Label>Cliente *</Label>
                                 <Popover open={openClientCombo} onOpenChange={setOpenClientCombo}>
                                     <PopoverTrigger asChild>
                                         <Button
@@ -157,13 +157,13 @@ export default function DeploymentForm() {
                                             role="combobox"
                                             aria-expanded={openClientCombo}
                                             disabled={isReadOnly}
-                                            className={cn("w-full justify-between h-11 border-slate-300", !watch('clientId') && "text-muted-foreground")}
+                                            className={cn("w-full justify-between h-11", !watch('clientId') && "text-muted-foreground")}
                                         >
                                             {watch('clientId') ? selectedClientName : "Selecione um cliente..."}
                                             <ChevronsUpDown className="w-4 h-4 ml-2 shrink-0 opacity-50" />
                                         </Button>
                                     </PopoverTrigger>
-                                    <PopoverContent className="w-[400px] p-0 shadow-lg border-slate-200" align="start">
+                                    <PopoverContent className="w-[400px] p-0 border-border" align="start">
                                         <Command shouldFilter={false}>
                                             <CommandInput
                                                 placeholder="Digite p/ buscar (mín. 4 letras)..."
@@ -176,7 +176,7 @@ export default function DeploymentForm() {
                                                     <CommandEmpty className="p-4 text-center text-sm">Nenhum cliente encontrado.</CommandEmpty>
                                                 )}
                                                 {!isSearchingClient && clientSearch.length < 4 && (
-                                                    <CommandEmpty className="p-4 text-center text-sm text-slate-500">Digite pelo menos 4 caracteres para buscar de forma inteligente.</CommandEmpty>
+                                                    <CommandEmpty className="p-4 text-center text-sm text-muted-foreground">Digite pelo menos 4 caracteres para buscar de forma inteligente.</CommandEmpty>
                                                 )}
                                                 <CommandGroup>
                                                     {clientOptions.map((cli) => (
@@ -198,28 +198,28 @@ export default function DeploymentForm() {
                                         </Command>
                                     </PopoverContent>
                                 </Popover>
-                                {errors.clientId && <span className="text-sm text-red-500 font-medium">O cliente é obrigatório.</span>}
+                                {errors.clientId && <span className="text-sm text-destructive font-medium">O cliente é obrigatório.</span>}
                             </div>
 
                             <div className="space-y-3">
-                                <Label htmlFor="implantador" className="text-slate-700 font-medium">Implantador</Label>
-                                <Input id="implantador" {...register('implantador')} disabled={isReadOnly} className="h-11 border-slate-300" placeholder="Nome do responsável" />
+                                <Label htmlFor="implantador">Implantador</Label>
+                                <Input id="implantador" {...register('implantador')} disabled={isReadOnly} className="h-11" placeholder="Nome do responsável" />
                             </div>
 
                             <div className="space-y-3 flex flex-col pt-1">
-                                <Label className="text-slate-700 font-medium mb-1">Data de Início</Label>
+                                <Label className="mb-1">Data de Início</Label>
                                 <Controller
                                     control={control}
                                     name="dataInicio"
                                     render={({ field }) => (
                                         <Popover>
                                             <PopoverTrigger asChild>
-                                                <Button variant={"outline"} disabled={isReadOnly} className={cn("w-full pl-3 text-left font-normal h-11 border-slate-300", !field.value && "text-muted-foreground")}>
+                                                <Button variant={"outline"} disabled={isReadOnly} className={cn("w-full pl-3 text-left font-normal h-11", !field.value && "text-muted-foreground")}>
                                                     {field.value ? format(field.value, "PPP", { locale: ptBR }) : <span>Selecione uma data</span>}
                                                     <CalendarIcon className="w-4 h-4 ml-auto opacity-50" />
                                                 </Button>
                                             </PopoverTrigger>
-                                            <PopoverContent className="w-auto p-0 border-slate-200 shadow-lg" align="start">
+                                            <PopoverContent className="w-auto p-0 border-border" align="start">
                                                 <Calendar mode="single" selected={field.value as Date} onSelect={field.onChange} disabled={(date) => date < new Date("1900-01-01")} initialFocus />
                                             </PopoverContent>
                                         </Popover>
@@ -228,19 +228,19 @@ export default function DeploymentForm() {
                             </div>
 
                             <div className="space-y-3 flex flex-col pt-1">
-                                <Label className="text-slate-700 font-medium mb-1">Data Previsão</Label>
+                                <Label className="mb-1">Data Previsão</Label>
                                 <Controller
                                     control={control}
                                     name="dataPrevisao"
                                     render={({ field }) => (
                                         <Popover>
                                             <PopoverTrigger asChild>
-                                                <Button variant={"outline"} disabled={isReadOnly} className={cn("w-full pl-3 text-left font-normal h-11 border-slate-300", !field.value && "text-muted-foreground")}>
+                                                <Button variant={"outline"} disabled={isReadOnly} className={cn("w-full pl-3 text-left font-normal h-11", !field.value && "text-muted-foreground")}>
                                                     {field.value ? format(field.value, "PPP", { locale: ptBR }) : <span>Selecione uma data</span>}
                                                     <CalendarIcon className="w-4 h-4 ml-auto opacity-50" />
                                                 </Button>
                                             </PopoverTrigger>
-                                            <PopoverContent className="w-auto p-0 border-slate-200 shadow-lg" align="start">
+                                            <PopoverContent className="w-auto p-0 border-border" align="start">
                                                 <Calendar mode="single" selected={field.value as Date} onSelect={field.onChange} disabled={(date) => date < new Date("1900-01-01")} initialFocus />
                                             </PopoverContent>
                                         </Popover>
@@ -249,19 +249,19 @@ export default function DeploymentForm() {
                             </div>
 
                             <div className="space-y-3">
-                                <Label htmlFor="drive" className="text-slate-700 font-medium">Link do GDrive (Documentação)</Label>
-                                <Input id="drive" type="url" {...register('driveDocumentacao')} disabled={isReadOnly} className="h-11 border-slate-300" placeholder="https://drive.google.com/..." />
+                                <Label htmlFor="drive">Link do GDrive (Documentação)</Label>
+                                <Input id="drive" type="url" {...register('driveDocumentacao')} disabled={isReadOnly} className="h-11" placeholder="https://drive.google.com/..." />
                             </div>
 
                             <div className="space-y-3">
-                                <Label htmlFor="status" className="text-slate-700 font-medium">Status da Implantação</Label>
+                                <Label htmlFor="status">Status da Implantação</Label>
                                 <Controller
                                     name="status"
                                     control={control}
                                     rules={{ required: true }}
                                     render={({ field }) => (
                                         <Select value={field.value} onValueChange={field.onChange} disabled={isReadOnly}>
-                                            <SelectTrigger className="w-full h-11 border-slate-300 bg-white">
+                                            <SelectTrigger className="w-full h-11">
                                                 <SelectValue placeholder="Selecione..." />
                                             </SelectTrigger>
                                             <SelectContent>
@@ -272,23 +272,23 @@ export default function DeploymentForm() {
                                         </Select>
                                     )}
                                 />
-                                {errors.status && <span className="text-sm text-red-500 font-medium">O status é obrigatório.</span>}
+                                {errors.status && <span className="text-sm text-destructive font-medium">O status é obrigatório.</span>}
                             </div>
 
                             <div className="space-y-3 md:col-span-2">
-                                <Label htmlFor="observacao" className="text-slate-700 font-medium">Observações</Label>
-                                <Textarea id="observacao" {...register('observacao')} disabled={isReadOnly} className="min-h-[120px] resize-y border-slate-300" placeholder="Anotações gerais sobre a implantação..." />
+                                <Label htmlFor="observacao">Observações</Label>
+                                <Textarea id="observacao" {...register('observacao')} disabled={isReadOnly} className="min-h-[120px] resize-y" placeholder="Anotações gerais sobre a implantação..." />
                             </div>
 
                         </div>
                     </div>
 
-                    <div className="flex justify-end gap-3 pt-4 border-t border-slate-200">
-                        <Button type="button" variant="outline" onClick={() => navigate('/deployments')} className="min-w-[120px] font-medium border-slate-300">
+                    <div className="flex justify-end gap-3 pt-4 border-t border-border">
+                        <Button type="button" variant="outline" onClick={() => navigate('/deployments')} className="min-w-[120px] font-medium">
                             {isReadOnly ? 'Voltar' : 'Cancelar'}
                         </Button>
                         {!isReadOnly && (
-                            <Button type="submit" disabled={mutation.isPending} className="bg-blue-600 hover:bg-blue-700 min-w-[140px] font-medium gap-2 shadow-md">
+                            <Button type="submit" disabled={mutation.isPending} className="gradient-primary min-w-[140px] font-medium gap-2">
                                 <Save className="w-4 h-4" />
                                 {mutation.isPending ? 'Salvando...' : 'Salvar Ficha'}
                             </Button>
