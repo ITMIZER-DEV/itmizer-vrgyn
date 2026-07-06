@@ -137,7 +137,7 @@ export default function RecemVrDetail() {
   if (isLoading) {
     return (
       <DashboardLayout>
-        <div className="space-y-4 max-w-3xl mx-auto">
+        <div className="space-y-4 max-w-5xl mx-auto">
           <Skeleton className="h-10 w-64" />
           <Skeleton className="h-64 w-full rounded-xl" />
         </div>
@@ -151,7 +151,7 @@ export default function RecemVrDetail() {
 
   return (
     <DashboardLayout>
-      <div className="max-w-3xl mx-auto space-y-6">
+      <div className="max-w-5xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex items-start gap-3">
           <Button variant="ghost" size="icon" onClick={() => navigate('/recem-vr')}>
@@ -187,7 +187,7 @@ export default function RecemVrDetail() {
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <Button variant="outline" size="sm"
-                      className="text-orange-600 border-orange-200 hover:bg-orange-50 gap-1.5">
+                      className="text-primary border-primary/20 hover:bg-primary/10 gap-1.5">
                       <Trash2 className="w-3.5 h-3.5" /> Cancelar
                     </Button>
                   </AlertDialogTrigger>
@@ -201,7 +201,7 @@ export default function RecemVrDetail() {
                     <AlertDialogFooter>
                       <AlertDialogCancel>Voltar</AlertDialogCancel>
                       <AlertDialogAction
-                        className="bg-orange-600 hover:bg-orange-700 text-white"
+                        className="gradient-primary"
                         onClick={() => cancelarMutation.mutate()}
                       >
                         Confirmar Cancelamento
@@ -215,7 +215,7 @@ export default function RecemVrDetail() {
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <Button variant="outline" size="sm"
-                      className="text-red-600 border-red-200 hover:bg-red-50 gap-1.5">
+                      className="text-destructive border-destructive/20 hover:bg-destructive/10 gap-1.5">
                       <Trash2 className="w-3.5 h-3.5" /> Excluir
                     </Button>
                   </AlertDialogTrigger>
@@ -229,7 +229,7 @@ export default function RecemVrDetail() {
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancelar</AlertDialogCancel>
                       <AlertDialogAction
-                        className="bg-red-600 hover:bg-red-700 text-white"
+                        className="bg-destructive hover:bg-destructive/90"
                         onClick={() => removeMutation.mutate()}
                       >
                         Excluir Permanentemente
@@ -255,7 +255,7 @@ export default function RecemVrDetail() {
 
           {/* ABA: SOLICITAÇÃO */}
           <TabsContent value="solicitacao">
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-4">
+            <div className="bg-card rounded-xl border border-border p-6 space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Cliente</p>
@@ -292,7 +292,7 @@ export default function RecemVrDetail() {
                       value={novoMv067}
                       onChange={(e) => setNovoMv067(e.target.value)}
                     />
-                    <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 shrink-0"
+                    <Button size="sm" className="gradient-primary shrink-0"
                       disabled={solicitacaoMutation.isPending}
                       onClick={() => solicitacaoMutation.mutate({ mv067: novoMv067 } as any)}>
                       Salvar
@@ -301,7 +301,7 @@ export default function RecemVrDetail() {
                   </div>
                 ) : rv.mv067 ? (
                   <a href={rv.mv067} target="_blank" rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-sm text-emerald-600 hover:underline">
+                    className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline">
                     <FileText className="w-4 h-4" />
                     Abrir Termo de Encerramento
                     <ExternalLink className="w-3 h-3" />
@@ -329,7 +329,7 @@ export default function RecemVrDetail() {
                       onChange={(v) => setNovaCriticidade(v)}
                     />
                     <div className="flex gap-2">
-                      <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700"
+                      <Button size="sm" className="gradient-primary"
                         disabled={solicitacaoMutation.isPending}
                         onClick={() => solicitacaoMutation.mutate({ criticidade: (novaCriticidade || rv.criticidade) as RecemVrCriticidade })}>
                         Salvar
@@ -350,7 +350,7 @@ export default function RecemVrDetail() {
               {/* RESUMO */}
               <div>
                 <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">Resumo</p>
-                <div className="bg-slate-50 p-3 rounded-md border text-sm text-slate-700 whitespace-pre-wrap">
+                <div className="bg-muted p-3 rounded-md border text-sm text-foreground whitespace-pre-wrap">
                   {rv.resumo}
                 </div>
               </div>
@@ -363,7 +363,7 @@ export default function RecemVrDetail() {
 
           {/* ABA: PLANEJAMENTO */}
           <TabsContent value="planejamento">
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-5">
+            <div className="bg-card rounded-xl border border-border p-6 space-y-5">
 
               {/* Status */}
               <div className="space-y-2">
@@ -387,7 +387,7 @@ export default function RecemVrDetail() {
                     <Button
                       onClick={() => planejamentoMutation.mutate({ status: (status || rv.status) as RecemVrStatus })}
                       disabled={planejamentoMutation.isPending}
-                      className="bg-emerald-600 hover:bg-emerald-700"
+                      className="gradient-primary"
                     >
                       Salvar
                     </Button>
@@ -419,7 +419,7 @@ export default function RecemVrDetail() {
                     <Button
                       onClick={() => planejamentoMutation.mutate({ analistaId: analistaId || rv.analistaId || undefined })}
                       disabled={planejamentoMutation.isPending}
-                      className="bg-emerald-600 hover:bg-emerald-700"
+                      className="gradient-primary"
                     >
                       Salvar
                     </Button>
@@ -446,7 +446,7 @@ export default function RecemVrDetail() {
                     <Button
                       onClick={() => planejamentoMutation.mutate({ dataPrimeiraReuniao: dataPrimeira })}
                       disabled={planejamentoMutation.isPending || !dataPrimeira}
-                      className="bg-emerald-600 hover:bg-emerald-700"
+                      className="gradient-primary"
                     >
                       Salvar
                     </Button>
@@ -466,8 +466,8 @@ export default function RecemVrDetail() {
                 {rv.datasAcompanhamento.length > 0 ? (
                   <ul className="space-y-1">
                     {rv.datasAcompanhamento.map((d, i) => (
-                      <li key={i} className="flex items-center gap-2 text-sm bg-slate-50 border rounded px-3 py-1.5">
-                        <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                      <li key={i} className="flex items-center gap-2 text-sm bg-muted border rounded px-3 py-1.5">
+                        <Calendar className="w-3.5 h-3.5 text-muted-foreground" />
                         {format(new Date(d), 'dd/MM/yyyy', { locale: ptBR })}
                       </li>
                     ))}
@@ -497,8 +497,8 @@ export default function RecemVrDetail() {
             <div className="space-y-4">
               {/* Form nova reunião */}
               {canEdit && (
-                <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5 space-y-4">
-                  <h3 className="font-semibold text-slate-800">Registrar Reunião Realizada</h3>
+                <div className="bg-card rounded-xl border border-border p-5 space-y-4">
+                  <h3 className="font-semibold text-foreground">Registrar Reunião Realizada</h3>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-1">
                       <Label>Data da Reunião *</Label>
@@ -517,7 +517,7 @@ export default function RecemVrDetail() {
                   </div>
                   <Button onClick={() => acompanhamentoMutation.mutate()}
                     disabled={!dataReuniao || acompanhamentoMutation.isPending}
-                    className="bg-emerald-600 hover:bg-emerald-700 w-full">
+                    className="gradient-primary w-full">
                     {acompanhamentoMutation.isPending ? 'Salvando...' : 'Registrar Reunião'}
                   </Button>
                 </div>
@@ -527,10 +527,10 @@ export default function RecemVrDetail() {
               {rv.acompanhamentos && rv.acompanhamentos.length > 0 ? (
                 <div className="space-y-3">
                   {rv.acompanhamentos.map((ac) => (
-                    <div key={ac.id} className="bg-white rounded-xl border border-slate-200 shadow-sm p-4">
+                    <div key={ac.id} className="bg-card rounded-xl border border-border p-4">
                       <div className="flex justify-between items-start">
                         <div className="flex items-center gap-2 text-sm font-medium">
-                          <Calendar className="w-4 h-4 text-emerald-600" />
+                          <Calendar className="w-4 h-4 text-primary" />
                           {format(new Date(ac.dataReuniao), "dd/MM/yyyy", { locale: ptBR })}
                           {ac.user?.profile?.fullName && (
                             <span className="text-muted-foreground font-normal">• {ac.user.profile.fullName}</span>
@@ -539,7 +539,7 @@ export default function RecemVrDetail() {
                         {canEdit && (
                           <AlertDialog>
                             <AlertDialogTrigger asChild>
-                              <Button variant="ghost" size="icon" className="text-slate-400 hover:text-red-500">
+                              <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-destructive">
                                 <Trash2 className="w-4 h-4" />
                               </Button>
                             </AlertDialogTrigger>
@@ -550,7 +550,7 @@ export default function RecemVrDetail() {
                               </AlertDialogHeader>
                               <AlertDialogFooter>
                                 <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                                <AlertDialogAction className="bg-red-600 hover:bg-red-700 text-white"
+                                <AlertDialogAction className="bg-destructive hover:bg-destructive/90"
                                   onClick={() => removeAcompMutation.mutate(ac.id)}>
                                   Remover
                                 </AlertDialogAction>
@@ -564,14 +564,14 @@ export default function RecemVrDetail() {
                           <span className="font-medium text-muted-foreground">Ata: </span>
                           {ac.ata.startsWith('http') ? (
                             <a href={ac.ata} target="_blank" rel="noopener noreferrer"
-                              className="text-emerald-600 hover:underline">Abrir link</a>
+                              className="text-primary hover:underline">Abrir link</a>
                           ) : (
-                            <span className="whitespace-pre-wrap text-slate-700">{ac.ata}</span>
+                            <span className="whitespace-pre-wrap text-foreground">{ac.ata}</span>
                           )}
                         </div>
                       )}
                       {ac.observacao && (
-                        <p className="mt-2 text-sm text-slate-600 bg-slate-50 rounded p-2 border">
+                        <p className="mt-2 text-sm text-muted-foreground bg-muted rounded p-2 border">
                           {ac.observacao}
                         </p>
                       )}
@@ -579,7 +579,7 @@ export default function RecemVrDetail() {
                   ))}
                 </div>
               ) : (
-                <div className="bg-white rounded-xl border border-slate-100 p-8 text-center text-muted-foreground italic">
+                <div className="bg-card rounded-xl border border-border p-8 text-center text-muted-foreground italic">
                   Nenhuma reunião registrada ainda.
                 </div>
               )}
@@ -588,23 +588,23 @@ export default function RecemVrDetail() {
 
           {/* ABA: HISTÓRICO */}
           <TabsContent value="historico">
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5 space-y-4">
+            <div className="bg-card rounded-xl border border-border p-5 space-y-4">
               {rv.history && rv.history.length > 0 ? (
                 <div className="space-y-4">
                   {rv.history.map((h) => (
-                    <div key={h.id} className="relative pl-4 border-l-2 border-slate-200 pb-2">
-                      <div className="absolute w-2.5 h-2.5 bg-emerald-500 rounded-full -left-[6px] top-1.5 ring-4 ring-white" />
+                    <div key={h.id} className="relative pl-4 border-l-2 border-border pb-2">
+                      <div className="absolute w-2.5 h-2.5 bg-primary rounded-full -left-[6px] top-1.5 ring-4 ring-background" />
                       <div className="flex justify-between items-start mb-1">
-                        <span className="text-sm font-medium text-slate-800">{h.action}</span>
+                        <span className="text-sm font-medium text-foreground">{h.action}</span>
                         <span className="text-xs text-muted-foreground">
                           {format(new Date(h.createdAt), "dd/MM/yyyy HH:mm", { locale: ptBR })}
                         </span>
                       </div>
                       {h.user?.profile?.fullName && (
-                        <p className="text-xs text-slate-500 mb-1">Por: {h.user.profile.fullName}</p>
+                        <p className="text-xs text-muted-foreground mb-1">Por: {h.user.profile.fullName}</p>
                       )}
                       {h.details && (
-                        <div className="text-sm text-slate-600 bg-slate-50 px-3 py-2 rounded border">
+                        <div className="text-sm text-muted-foreground bg-muted px-3 py-2 rounded border">
                           {h.details}
                         </div>
                       )}
@@ -613,7 +613,7 @@ export default function RecemVrDetail() {
                 </div>
               ) : (
                 <div className="text-center text-muted-foreground italic py-8">
-                  <Clock className="w-8 h-8 mx-auto mb-2 text-slate-300" />
+                  <Clock className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
                   Nenhum histórico ainda.
                 </div>
               )}
