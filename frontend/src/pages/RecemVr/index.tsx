@@ -31,6 +31,7 @@ import { recemVrService } from '@/services/recemVrService';
 import {
   CRITICIDADE_LABELS,
   CRITICIDADE_COLORS,
+  CRITICIDADE_PERIODICIDADE,
   STATUS_LABELS,
   STATUS_COLORS,
   type RecemVrCriticidade,
@@ -203,7 +204,7 @@ export default function RecemVrList() {
                               variant="outline"
                               className={`${CRITICIDADE_COLORS[rv.criticidade]} border-0 rounded-full px-3 py-1 font-medium`}
                             >
-                              {CRITICIDADE_LABELS[rv.criticidade]}
+                              {CRITICIDADE_LABELS[rv.criticidade]} · {CRITICIDADE_PERIODICIDADE[rv.criticidade]}
                             </Badge>
                           </TableCell>
 
