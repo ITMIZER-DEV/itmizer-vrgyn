@@ -87,7 +87,7 @@ export default function RecemVrForm() {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-5">
+        <form onSubmit={handleSubmit} className="bg-card rounded-xl border border-border p-6 space-y-5">
 
           {/* CLIENTE — Autocomplete */}
           <div className="space-y-2">
@@ -160,7 +160,7 @@ export default function RecemVrForm() {
                   href={form.mv067}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-emerald-600"
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary"
                   tabIndex={-1}
                 >
                   <ExternalLink className="w-4 h-4" />
@@ -201,7 +201,7 @@ export default function RecemVrForm() {
             <Button
               type="submit"
               disabled={createMutation.isPending}
-              className="flex-1 bg-emerald-600 hover:bg-emerald-700"
+              className="flex-1 gradient-primary"
             >
               {createMutation.isPending ? 'Criando...' : 'Criar Solicitação'}
             </Button>
