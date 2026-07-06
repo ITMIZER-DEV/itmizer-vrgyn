@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowLeft, Save, FileText, Database, Clock, History as HistoryIcon, MapIcon, LifeBuoy } from 'lucide-react';
+import { ArrowLeft, Save, FileText, Database, Clock, History as HistoryIcon, MapIcon, LifeBuoy, Link as LinkIcon } from 'lucide-react';
 import { assessmentService } from '@/services/assessmentService';
 import { migrationService, MigrationStatusLabels } from '@/services/migrationService';
 import { deploymentService, DeploymentStatusLabels } from '@/services/deploymentService';
@@ -18,6 +18,8 @@ import { STATUS_LABELS as RECEM_VR_STATUS_LABELS } from '@/types/recemVr';
 import { cn } from '@/lib/utils';
 import ClientInfrastructureTab from './ClientInfrastructureTab';
 import ClientCredentialsTab from './ClientCredentialsTab';
+import { usePermissions } from '@/hooks/usePermissions';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 
 const SECTIONS = [
     { value: 'dados-cadastrais', label: 'Dados cadastrais' },
@@ -37,6 +39,9 @@ export default function ClientForm() {
     const queryClient = useQueryClient();
     const isEditing = !!id;
     const [activeSection, setActiveSection] = useState<string>('dados-cadastrais');
+    const { canSpecial } = usePermissions('/clients');
+    const [driveLinkDialogOpen, setDriveLinkDialogOpen] = useState(false);
+    const [driveLinkInput, setDriveLinkInput] = useState('');
 
     const { register, handleSubmit, reset } = useForm<CreateClientDto>();
 
@@ -96,6 +101,21 @@ export default function ClientForm() {
 
     const onSubmit = (data: CreateClientDto) => {
         mutation.mutate(data);
+    };
+
+    const driveLinkMutation = useMutation({
+        mutationFn: (driveLink: string) => clientService.update(id!, { driveLink }),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['client', id] });
+            setDriveLinkDialogOpen(false);
+            toast({ title: 'Sucesso', description: 'Link de documentação salvo.' });
+        },
+        onError: () => toast({ title: 'Erro', description: 'Falha ao salvar o link.', variant: 'destructive' }),
+    });
+
+    const openDriveLinkDialog = () => {
+        setDriveLinkInput(client?.driveLink || '');
+        setDriveLinkDialogOpen(true);
     };
 
     if (isEditing && isLoading) {
@@ -190,15 +210,33 @@ export default function ClientForm() {
                             </Button>
                             <h1 className="font-display text-2xl font-bold">{client?.nomeFantasia}</h1>
                             <span className="font-mono text-xs text-muted-foreground">#{id?.slice(0, 8).toUpperCase()}</span>
-                            <Button
-                                variant="outline"
-                                size="sm"
-                                className="ml-auto gap-2"
-                                onClick={() => navigate(`/?clientId=${id}&create=true`)}
-                            >
-                                <FileText className="w-4 h-4" />
-                                Criar Validação
-                            </Button>
+                            <div className="ml-auto flex items-center gap-2">
+                                {client?.driveLink ? (
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        className="gap-2"
+                                        onClick={() => window.open(client.driveLink, '_blank', 'noopener,noreferrer')}
+                                    >
+                                        <LinkIcon className="w-4 h-4" />
+                                        Documentação
+                                    </Button>
+                                ) : canSpecial ? (
+                                    <Button variant="outline" size="sm" className="gap-2" onClick={openDriveLinkDialog}>
+                                        <LinkIcon className="w-4 h-4" />
+                                        Adicionar Link
+                                    </Button>
+                                ) : null}
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="gap-2"
+                                    onClick={() => navigate(`/?clientId=${id}&create=true`)}
+                                >
+                                    <FileText className="w-4 h-4" />
+                                    Criar Validação
+                                </Button>
+                            </div>
                         </div>
                         <div className="px-4 lg:px-8 overflow-x-auto">
                             <div className="flex gap-1 min-w-max">
@@ -430,6 +468,31 @@ export default function ClientForm() {
                     </div>
                 </div>
             )}
+
+            <Dialog open={driveLinkDialogOpen} onOpenChange={setDriveLinkDialogOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Link de Documentação (Drive)</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-2">
+                        <Label htmlFor="driveLinkInput">URL do Drive</Label>
+                        <Input
+                            id="driveLinkInput"
+                            value={driveLinkInput}
+                            onChange={(e) => setDriveLinkInput(e.target.value)}
+                            placeholder="https://drive.google.com/..."
+                        />
+                    </div>
+                    <DialogFooter>
+                        <Button
+                            onClick={() => driveLinkMutation.mutate(driveLinkInput)}
+                            disabled={driveLinkMutation.isPending || !driveLinkInput}
+                        >
+                            {driveLinkMutation.isPending ? 'Salvando...' : 'Salvar'}
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </DashboardLayout>
     );
 }
