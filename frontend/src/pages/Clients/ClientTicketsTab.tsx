@@ -178,7 +178,7 @@ export default function ClientTicketsTab({ clientId }: Props) {
                 <TableCell className="text-sm">{new Date(item.data).toLocaleDateString('pt-BR')}</TableCell>
                 <TableCell className="font-medium">{item.numero}</TableCell>
                 <TableCell className="text-sm text-muted-foreground">{item.assunto}</TableCell>
-                <TableCell><Badge className={TICKET_URGENCIA_COLORS[item.classificacao]}>{TICKET_URGENCIA_LABELS[item.classificacao]}</Badge></TableCell>
+                <TableCell><Badge variant="outline" className={TICKET_URGENCIA_COLORS[item.classificacao]}>{TICKET_URGENCIA_LABELS[item.classificacao]}</Badge></TableCell>
                 {canEdit && (
                   <TableCell className="text-right space-x-1">
                     <Button variant="ghost" size="icon" onClick={() => openEdit(item)}>
