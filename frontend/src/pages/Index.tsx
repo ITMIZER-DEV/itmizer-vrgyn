@@ -606,10 +606,10 @@ export default function Index() {
         ) : (
       <Card className="glass-card">
         <CardContent className="p-6">
-          <DataTable
-            columns={columns}
-            data={assessments}
-            searchKey="company_nomeFantasia"
+          <DataTable 
+            columns={columns} 
+            data={assessments} 
+            searchKey="company_nomeFantasia" 
             filename="validacoes-itmizer"
           />
         </CardContent>
