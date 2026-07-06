@@ -7,6 +7,12 @@ export const CRITICIDADE_LABELS: Record<RecemVrCriticidade, string> = {
   ALTA: '3 - Alta',
 };
 
+export const CRITICIDADE_PERIODICIDADE: Record<RecemVrCriticidade, string> = {
+  BAIXA: '30 dias · mensal',
+  MEDIA: '15 dias · quinzenal',
+  ALTA: '7 dias · semanal',
+};
+
 export const STATUS_LABELS: Record<RecemVrStatus, string> = {
   PLANEJAMENTO: 'Planejamento',
   EM_ANDAMENTO: 'Em Andamento',
