@@ -18,6 +18,7 @@ import { STATUS_LABELS as RECEM_VR_STATUS_LABELS } from '@/types/recemVr';
 import { cn } from '@/lib/utils';
 import ClientInfrastructureTab from './ClientInfrastructureTab';
 import ClientCredentialsTab from './ClientCredentialsTab';
+import ClientTicketsTab from './ClientTicketsTab';
 import { usePermissions } from '@/hooks/usePermissions';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 
@@ -27,6 +28,7 @@ const SECTIONS = [
     { value: 'migracoes', label: 'Migrações' },
     { value: 'implantacoes', label: 'Implantações' },
     { value: 'recem-vr', label: 'Recém VR' },
+    { value: 'tickets', label: 'Tickets' },
     { value: 'infraestrutura', label: 'Infraestrutura' },
     { value: 'vault', label: 'Vault de Acessos' },
     { value: 'historico', label: 'Histórico' },
@@ -415,6 +417,14 @@ export default function ClientForm() {
                                     ) : (
                                         <p className="text-sm text-muted-foreground text-center py-4">Nenhum Recém VR encontrado.</p>
                                     )}
+                                </CardContent>
+                            </Card>
+                        )}
+
+                        {activeSection === 'tickets' && (
+                            <Card>
+                                <CardContent className="pt-6">
+                                    <ClientTicketsTab clientId={id!} />
                                 </CardContent>
                             </Card>
                         )}
