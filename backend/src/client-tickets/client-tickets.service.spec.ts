@@ -33,9 +33,19 @@ describe('ClientTicketsService', () => {
       classificacao: 'ALTA' as any,
     });
     expect(prismaMock.clientTicket.create).toHaveBeenCalledWith({
-      data: { clientId: 'c1', data: '2026-07-06', numero: '1001', assunto: 'Erro ao emitir NF-e', classificacao: 'ALTA' },
+      data: { clientId: 'c1', data: new Date('2026-07-06'), numero: '1001', assunto: 'Erro ao emitir NF-e', classificacao: 'ALTA' },
     });
     expect(result.id).toBe('1');
+  });
+
+  it('converts the date string to a Date when updating', async () => {
+    prismaMock.clientTicket.findUnique.mockResolvedValue({ id: '1' });
+    prismaMock.clientTicket.update.mockResolvedValue({ id: '1', numero: '9999' });
+    await service.update('1', { data: '2026-08-01', numero: '9999' } as any);
+    expect(prismaMock.clientTicket.update).toHaveBeenCalledWith({
+      where: { id: '1' },
+      data: { data: new Date('2026-08-01'), numero: '9999' },
+    });
   });
 
   it('lists tickets filtered by clientId ordered by data desc', async () => {

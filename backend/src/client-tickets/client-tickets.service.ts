@@ -7,8 +7,8 @@ import { UpdateClientTicketDto } from './dto/update-client-ticket.dto';
 export class ClientTicketsService {
   constructor(private prisma: PrismaService) {}
 
-  create(data: CreateClientTicketDto) {
-    return this.prisma.clientTicket.create({ data });
+  create(dto: CreateClientTicketDto) {
+    return this.prisma.clientTicket.create({ data: { ...dto, data: new Date(dto.data) } });
   }
 
   findByClient(clientId: string) {
@@ -24,9 +24,12 @@ export class ClientTicketsService {
     return item;
   }
 
-  async update(id: string, data: UpdateClientTicketDto) {
+  async update(id: string, dto: UpdateClientTicketDto) {
     await this.findOne(id);
-    return this.prisma.clientTicket.update({ where: { id }, data });
+    return this.prisma.clientTicket.update({
+      where: { id },
+      data: { ...dto, ...(dto.data ? { data: new Date(dto.data) } : {}) },
+    });
   }
 
   async remove(id: string) {
