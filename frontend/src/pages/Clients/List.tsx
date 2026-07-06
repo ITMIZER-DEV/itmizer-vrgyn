@@ -155,13 +155,13 @@ export default function ClientsList() {
             <div className="flex flex-col gap-6">
                 <div className="flex items-center justify-between flex-wrap gap-4">
                     <div>
-                        <h1 className="text-3xl font-bold font-display">Clientes</h1>
+                        <h1 className="text-2xl font-bold font-display">Clientes</h1>
                         <p className="text-muted-foreground">Gerencie a base de clientes para validações</p>
                     </div>
                     <ClientModal />
                 </div>
 
-                <Card className="glass-card shadow-lg border-2">
+                <Card className="glass-card">
                     <CardHeader className="pb-4">
                         <CardTitle className="text-xl font-display font-semibold flex items-center gap-2">
                             <Building2 className="w-5 h-5 text-primary" />
