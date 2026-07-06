@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -96,35 +96,6 @@ export default function ClientForm() {
 
     const onSubmit = (data: CreateClientDto) => {
         mutation.mutate(data);
-    };
-
-    const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
-
-    useEffect(() => {
-        if (!isEditing) return;
-        const observer = new IntersectionObserver(
-            (entries) => {
-                const visible = entries.filter((entry) => entry.isIntersecting);
-                if (visible.length === 0) return;
-                const top = visible.reduce((best, entry) =>
-                    entry.intersectionRatio > best.intersectionRatio ? entry : best
-                );
-                setActiveSection(top.target.id);
-            },
-            { rootMargin: '-110px 0px -60% 0px', threshold: [0, 0.25, 0.5, 0.75, 1] }
-        );
-
-        SECTIONS.forEach((section) => {
-            const el = sectionRefs.current[section.value];
-            if (el) observer.observe(el);
-        });
-
-        return () => observer.disconnect();
-    }, [isEditing, isLoading]);
-
-    const scrollToSection = (value: string) => {
-        setActiveSection(value);
-        sectionRefs.current[value]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
 
     if (isEditing && isLoading) {
@@ -235,7 +206,7 @@ export default function ClientForm() {
                                     <button
                                         key={section.value}
                                         type="button"
-                                        onClick={() => scrollToSection(section.value)}
+                                        onClick={() => setActiveSection(section.value)}
                                         className={cn(
                                             "px-3 py-2.5 text-sm font-medium whitespace-nowrap border-b-2 transition-colors",
                                             activeSection === section.value
@@ -251,19 +222,9 @@ export default function ClientForm() {
                     </div>
 
                     <div className="flex flex-col gap-8 pb-8">
-                        <section
-                            id="dados-cadastrais"
-                            ref={(el) => (sectionRefs.current['dados-cadastrais'] = el)}
-                            className="scroll-mt-[110px]"
-                        >
-                            {cadastralForm}
-                        </section>
+                        {activeSection === 'dados-cadastrais' && cadastralForm}
 
-                        <section
-                            id="validacoes"
-                            ref={(el) => (sectionRefs.current['validacoes'] = el)}
-                            className="scroll-mt-[110px]"
-                        >
+                        {activeSection === 'validacoes' && (
                             <Card>
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-2">
@@ -292,13 +253,9 @@ export default function ClientForm() {
                                     )}
                                 </CardContent>
                             </Card>
-                        </section>
+                        )}
 
-                        <section
-                            id="migracoes"
-                            ref={(el) => (sectionRefs.current['migracoes'] = el)}
-                            className="scroll-mt-[110px]"
-                        >
+                        {activeSection === 'migracoes' && (
                             <Card>
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-2">
@@ -333,13 +290,9 @@ export default function ClientForm() {
                                     )}
                                 </CardContent>
                             </Card>
-                        </section>
+                        )}
 
-                        <section
-                            id="implantacoes"
-                            ref={(el) => (sectionRefs.current['implantacoes'] = el)}
-                            className="scroll-mt-[110px]"
-                        >
+                        {activeSection === 'implantacoes' && (
                             <Card>
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-2">
@@ -370,13 +323,9 @@ export default function ClientForm() {
                                     )}
                                 </CardContent>
                             </Card>
-                        </section>
+                        )}
 
-                        <section
-                            id="recem-vr"
-                            ref={(el) => (sectionRefs.current['recem-vr'] = el)}
-                            className="scroll-mt-[110px]"
-                        >
+                        {activeSection === 'recem-vr' && (
                             <Card>
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-2">
@@ -407,38 +356,26 @@ export default function ClientForm() {
                                     )}
                                 </CardContent>
                             </Card>
-                        </section>
+                        )}
 
-                        <section
-                            id="infraestrutura"
-                            ref={(el) => (sectionRefs.current['infraestrutura'] = el)}
-                            className="scroll-mt-[110px]"
-                        >
+                        {activeSection === 'infraestrutura' && (
                             <Card>
                                 <CardContent className="pt-6">
                                     <ClientInfrastructureTab clientId={id!} />
                                 </CardContent>
                             </Card>
-                        </section>
+                        )}
 
-                        <section
-                            id="vault"
-                            ref={(el) => (sectionRefs.current['vault'] = el)}
-                            className="scroll-mt-[110px]"
-                        >
+                        {activeSection === 'vault' && (
                             <Card>
                                 <CardContent className="pt-6">
                                     <ClientCredentialsTab clientId={id!} />
                                 </CardContent>
                             </Card>
-                        </section>
+                        )}
 
-                        <section
-                            id="historico"
-                            ref={(el) => (sectionRefs.current['historico'] = el)}
-                            className="scroll-mt-[110px]"
-                        >
-                            {(client as any)?.history && (client as any).history.length > 0 ? (
+                        {activeSection === 'historico' && (
+                            (client as any)?.history && (client as any).history.length > 0 ? (
                                 <Card>
                                     <CardHeader>
                                         <CardTitle className="flex items-center gap-2">
@@ -488,8 +425,8 @@ export default function ClientForm() {
                                 </Card>
                             ) : (
                                 <p className="text-sm text-muted-foreground text-center py-8">Nenhuma alteração registrada ainda.</p>
-                            )}
-                        </section>
+                            )
+                        )}
                     </div>
                 </div>
             )}
