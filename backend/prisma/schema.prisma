@@ -139,6 +139,7 @@ model Client {
   recemVr         RecemVr[]
   infrastructure  ClientInfrastructure[]
   credentials     ClientCredential[]
+  tickets         ClientTicket[]
 
   @@map("clients")
 }
@@ -243,6 +244,27 @@ enum ClientCredentialType {
   VPN
   SISTEMA_APLICACAO
   OUTRO
+}
+
+enum TicketUrgencia {
+  BAIXA
+  MEDIA
+  ALTA
+  CRITICA
+}
+
+model ClientTicket {
+  id            String         @id @default(uuid())
+  clientId      String         @map("client_id")
+  client        Client         @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  data          DateTime
+  numero        String
+  assunto       String
+  classificacao TicketUrgencia
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
+
+  @@map("client_tickets")
 }
 
 model ClientCredential {
