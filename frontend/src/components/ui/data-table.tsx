@@ -112,7 +112,7 @@ export function DataTable<TData, TValue>({
       head: [headers],
       body: body,
       theme: 'grid',
-      headStyles: { fillColor: [37, 99, 235] }, // VR Primary Blue roughly
+      headStyles: { fillColor: [255, 106, 0] }, // VR Brand Orange (#FF6A00)
       styles: { fontSize: 8 },
     });
 
@@ -130,7 +130,7 @@ export function DataTable<TData, TValue>({
               onChange={(event) =>
                 table.getColumn(searchKey)?.setFilterValue(event.target.value)
               }
-              className="max-w-sm h-10"
+              className="max-w-sm h-8 text-xs"
             />
           </div>
         )}
@@ -159,8 +159,8 @@ export function DataTable<TData, TValue>({
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="h-10 gap-2">
-                <Settings2 className="w-4 h-4" />
+              <Button variant="outline" size="sm" className="h-8 gap-2 text-xs">
+                <Settings2 className="w-3.5 h-3.5" />
                 Colunas
               </Button>
             </DropdownMenuTrigger>
