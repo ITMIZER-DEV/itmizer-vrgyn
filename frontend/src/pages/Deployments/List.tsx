@@ -106,7 +106,7 @@ export default function DeploymentList() {
             <div className="space-y-6">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight text-gray-900 group flex items-center gap-3">
+                        <h1 className="text-2xl font-bold tracking-tight group flex items-center gap-3">
                             <MapIcon className="w-8 h-8 text-orange-600 group-hover:rotate-12 transition-transform" />
                             Guia de Implantação
                         </h1>
@@ -116,34 +116,34 @@ export default function DeploymentList() {
                     </div>
 
                     {canEdit && (
-                        <Button onClick={() => navigate('/deployments/new')} className="gap-2 shrink-0 bg-blue-600 hover:bg-blue-700 shadow-md">
+                        <Button onClick={() => navigate('/deployments/new')} className="gap-2 shrink-0 gradient-primary">
                             <Plus className="w-4 h-4" /> Nova Implantação
                         </Button>
                     )}
                 </div>
 
-                <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                    <div className="p-4 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-4 bg-slate-50/50">
+                <div className="bg-card border border-border rounded-md overflow-hidden">
+                    <div className="p-4 border-b border-border flex flex-col sm:flex-row justify-between items-center gap-4">
                         <div className="relative w-full sm:w-96">
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                             <Input
                                 placeholder="Buscar por cliente ou implantador..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="pl-9 bg-white border-slate-200 focus-visible:ring-blue-500 rounded-full"
+                                className="pl-9 rounded-full"
                             />
                         </div>
                     </div>
 
                     <div className="overflow-x-auto">
                         <Table>
-                            <TableHeader className="bg-slate-50">
-                                <TableRow className="hover:bg-slate-50">
-                                    <TableHead className="font-semibold text-slate-700 h-12">Cliente</TableHead>
-                                    <TableHead className="font-semibold text-slate-700 h-12">Implantador</TableHead>
-                                    <TableHead className="font-semibold text-slate-700 h-12">Data Previsão</TableHead>
-                                    <TableHead className="font-semibold text-slate-700 h-12">Status</TableHead>
-                                    {canEdit && <TableHead className="font-semibold text-slate-700 h-12 w-[100px] text-right">Ações</TableHead>}
+                            <TableHeader className="bg-muted/30">
+                                <TableRow>
+                                    <TableHead>Cliente</TableHead>
+                                    <TableHead>Implantador</TableHead>
+                                    <TableHead>Data Previsão</TableHead>
+                                    <TableHead>Status</TableHead>
+                                    {canEdit && <TableHead className="w-[100px] text-right">Ações</TableHead>}
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -165,13 +165,13 @@ export default function DeploymentList() {
                                     </TableRow>
                                 ) : (
                                     filtered?.map((dep) => (
-                                        <TableRow key={dep.id} className="group hover:bg-slate-50/80 transition-colors cursor-pointer" onClick={(e) => {
+                                        <TableRow key={dep.id} className="group cursor-pointer" onClick={(e) => {
                                             if ((e.target as HTMLElement).closest('.action-button')) return;
                                             setSelectedDeployment(dep);
                                         }}>
-                                            <TableCell className="font-medium text-slate-900">
+                                            <TableCell className="font-medium text-foreground">
                                                 <div
-                                                    className="inline-flex items-center gap-2 cursor-pointer hover:bg-slate-100 p-1.5 -ml-1.5 rounded-md transition-colors hover:underline text-blue-600 action-button"
+                                                    className="inline-flex items-center gap-2 cursor-pointer hover:bg-muted p-1.5 -ml-1.5 rounded-md transition-colors hover:underline text-primary action-button"
                                                     onClick={(e) => {
                                                         e.stopPropagation();
                                                         setSelectedDeployment(dep);
@@ -180,17 +180,17 @@ export default function DeploymentList() {
                                                     {dep.client?.nomeFantasia || 'Cliente não encontrado'}
                                                 </div>
                                             </TableCell>
-                                            <TableCell className="text-slate-600">
-                                                {dep.implantador || <span className="text-slate-400 italic">Não atribuído</span>}
+                                            <TableCell className="text-muted-foreground">
+                                                {dep.implantador || <span className="text-muted-foreground italic">Não atribuído</span>}
                                             </TableCell>
                                             <TableCell>
                                                 {dep.dataPrevisao ? (
-                                                    <div className="flex items-center gap-2 text-slate-600">
-                                                        <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                                                    <div className="flex items-center gap-2 text-muted-foreground">
+                                                        <Calendar className="w-3.5 h-3.5 text-muted-foreground" />
                                                         {format(new Date(dep.dataPrevisao), "dd/MM/yyyy", { locale: ptBR })}
                                                     </div>
                                                 ) : (
-                                                    <span className="text-slate-400 italic">Sem previsão</span>
+                                                    <span className="text-muted-foreground italic">Sem previsão</span>
                                                 )}
                                             </TableCell>
                                             <TableCell>
@@ -204,7 +204,7 @@ export default function DeploymentList() {
                                                         <Button
                                                             variant="ghost"
                                                             size="icon"
-                                                            className="text-slate-400 hover:text-blue-600 hover:bg-blue-50 action-button"
+                                                            className="text-muted-foreground hover:text-primary hover:bg-primary/10 action-button"
                                                             onClick={(e) => {
                                                                 e.stopPropagation();
                                                                 navigate(`/deployments/${dep.id}`);
@@ -217,7 +217,7 @@ export default function DeploymentList() {
                                                                 <Button
                                                                     variant="ghost"
                                                                     size="icon"
-                                                                    className="text-slate-400 hover:text-red-600 hover:bg-red-50 action-button"
+                                                                    className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 action-button"
                                                                     onClick={(e) => e.stopPropagation()}
                                                                 >
                                                                     <Trash2 className="w-4 h-4" />
@@ -233,7 +233,7 @@ export default function DeploymentList() {
                                                                 <AlertDialogFooter>
                                                                     <AlertDialogCancel>Cancelar</AlertDialogCancel>
                                                                     <AlertDialogAction
-                                                                        className="bg-red-600 hover:bg-red-700 text-white"
+                                                                        className="bg-destructive hover:bg-destructive/90"
                                                                         onClick={() => deleteMutation.mutate(dep.id)}
                                                                     >
                                                                         Excluir
