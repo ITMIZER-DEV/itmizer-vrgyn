@@ -30,6 +30,9 @@ import DeploymentForm from "./pages/Deployments/Form";
 import RecemVrList from "./pages/RecemVr/index";
 import RecemVrForm from "./pages/RecemVr/RecemVrForm";
 import RecemVrDetail from "./pages/RecemVr/RecemVrDetail";
+import SupportCredentialsList from "./pages/Support/CredentialsList";
+import CriticalCasesList from "./pages/Support/CriticalCases/List";
+import CriticalCaseForm from "./pages/Support/CriticalCases/Form";
 
 const queryClient = new QueryClient();
 
@@ -74,6 +77,10 @@ const App = () => (
                 <Route path="/recem-vr" element={<RecemVrList />} />
                 <Route path="/recem-vr/new" element={<RecemVrForm />} />
                 <Route path="/recem-vr/:id" element={<RecemVrDetail />} />
+                <Route path="/support/credentials" element={<SupportCredentialsList />} />
+                <Route path="/support/critical-cases" element={<CriticalCasesList />} />
+                <Route path="/support/critical-cases/new" element={<CriticalCaseForm />} />
+                <Route path="/support/critical-cases/:id" element={<CriticalCaseForm />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

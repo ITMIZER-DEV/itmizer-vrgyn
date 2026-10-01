@@ -15,10 +15,15 @@ import { migrationService, MigrationStatusLabels } from '@/services/migrationSer
 import { deploymentService, DeploymentStatusLabels } from '@/services/deploymentService';
 import { recemVrService } from '@/services/recemVrService';
 import { STATUS_LABELS as RECEM_VR_STATUS_LABELS } from '@/types/recemVr';
+import { AssessmentData } from '@/types/assessment';
+import { AssessmentForm } from '@/components/assessment/AssessmentForm';
+import MigrationForm from '@/pages/Migration/Form';
+import DeploymentForm from '@/pages/Deployments/Form';
 import { cn } from '@/lib/utils';
 import ClientInfrastructureTab from './ClientInfrastructureTab';
 import ClientCredentialsTab from './ClientCredentialsTab';
 import ClientTicketsTab from './ClientTicketsTab';
+import ClientCriticalCasesTab from './ClientCriticalCasesTab';
 import { usePermissions } from '@/hooks/usePermissions';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 
@@ -29,6 +34,7 @@ const SECTIONS = [
     { value: 'implantacoes', label: 'Implantações' },
     { value: 'recem-vr', label: 'Recém VR' },
     { value: 'tickets', label: 'Tickets' },
+    { value: 'casos-criticos', label: 'Casos Críticos' },
     { value: 'infraestrutura', label: 'Infraestrutura' },
     { value: 'vault', label: 'Vault de Acessos' },
     { value: 'historico', label: 'Histórico' },
@@ -42,8 +48,20 @@ export default function ClientForm() {
     const isEditing = !!id;
     const [activeSection, setActiveSection] = useState<string>('dados-cadastrais');
     const { canSpecial } = usePermissions('/clients');
+    const { canView: canViewValidacoes } = usePermissions('/assessments');
+    const { canView: canViewMigracoes } = usePermissions('/migration');
+    const { canView: canViewImplantacoes } = usePermissions('/deployments');
+    const visibleSections = SECTIONS.filter((section) => {
+        if (section.value === 'validacoes') return canViewValidacoes;
+        if (section.value === 'migracoes') return canViewMigracoes;
+        if (section.value === 'implantacoes') return canViewImplantacoes;
+        return true;
+    });
     const [driveLinkDialogOpen, setDriveLinkDialogOpen] = useState(false);
     const [driveLinkInput, setDriveLinkInput] = useState('');
+    const [activeAssessment, setActiveAssessment] = useState<AssessmentData | null>(null);
+    const [activeMigrationId, setActiveMigrationId] = useState<string | null>(null);
+    const [activeDeploymentId, setActiveDeploymentId] = useState<string | null>(null);
 
     const { register, handleSubmit, reset } = useForm<CreateClientDto>();
 
@@ -141,6 +159,55 @@ export default function ClientForm() {
         if (client?.driveLink && isSafeHttpUrl(client.driveLink)) {
             window.open(client.driveLink, '_blank', 'noopener,noreferrer');
         }
+    };
+
+    const createAssessmentMutation = useMutation({
+        mutationFn: () => assessmentService.create({
+            clientId: id,
+            status: 'rascunho',
+            company: {
+                nomeFantasia: client?.nomeFantasia,
+                cnpj: client?.cnpj,
+                lojaNumero: 1,
+                lojaTotalLojas: 1,
+                contatoNome: client?.contatoNome || '',
+                contatoEmail: client?.contatoEmail || '',
+                contatoCelular: (client as any)?.contatoCelular || '',
+            },
+            companyName: client?.nomeFantasia,
+            cnpj: client?.cnpj,
+        }),
+        onSuccess: (data) => {
+            queryClient.invalidateQueries({ queryKey: ['client-assessments', id] });
+            setActiveSection('validacoes');
+            setActiveAssessment(data);
+        },
+        onError: () => {
+            toast({ title: 'Erro', description: 'Não foi possível criar a validação.', variant: 'destructive' });
+        },
+    });
+
+    const handleCloseAssessment = async () => {
+        if (activeAssessment) {
+            try {
+                await assessmentService.update(activeAssessment.id, activeAssessment);
+            } catch (error) {
+                console.error('Erro ao salvar validação', error);
+                toast({ title: 'Erro', description: 'Falha ao salvar a validação.', variant: 'destructive' });
+            }
+        }
+        queryClient.invalidateQueries({ queryKey: ['client-assessments', id] });
+        setActiveAssessment(null);
+    };
+
+    const handleCloseMigration = () => {
+        setActiveMigrationId(null);
+        queryClient.invalidateQueries({ queryKey: ['client-migrations', id] });
+    };
+
+    const handleCloseDeployment = () => {
+        setActiveDeploymentId(null);
+        queryClient.invalidateQueries({ queryKey: ['client-deployments', id] });
     };
 
     if (isEditing && isLoading) {
@@ -252,20 +319,23 @@ export default function ClientForm() {
                                         Adicionar Link
                                     </Button>
                                 ) : null}
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    className="gap-2"
-                                    onClick={() => navigate(`/?clientId=${id}&create=true`)}
-                                >
-                                    <FileText className="w-4 h-4" />
-                                    Criar Validação
-                                </Button>
+                                {canViewValidacoes && (
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        className="gap-2"
+                                        onClick={() => createAssessmentMutation.mutate()}
+                                        disabled={createAssessmentMutation.isPending}
+                                    >
+                                        <FileText className="w-4 h-4" />
+                                        Criar Validação
+                                    </Button>
+                                )}
                             </div>
                         </div>
                         <div className="px-4 lg:px-8 overflow-x-auto">
                             <div className="flex gap-1 min-w-max">
-                                {SECTIONS.map((section) => (
+                                {visibleSections.map((section) => (
                                     <button
                                         key={section.value}
                                         type="button"
@@ -287,7 +357,23 @@ export default function ClientForm() {
                     <div className="flex flex-col gap-8 pb-8">
                         {activeSection === 'dados-cadastrais' && cadastralForm}
 
-                        {activeSection === 'validacoes' && (
+                        {activeSection === 'validacoes' && canViewValidacoes && (
+                            activeAssessment ? (
+                                <Card>
+                                    <CardHeader className="flex flex-row items-center justify-between space-y-0">
+                                        <CardTitle className="flex items-center gap-2">
+                                            <FileText className="w-5 h-5 text-primary" />
+                                            Validação de {new Date(activeAssessment.createdAt).toLocaleDateString('pt-BR')}
+                                        </CardTitle>
+                                        <Button variant="outline" size="sm" onClick={handleCloseAssessment}>
+                                            Voltar à lista
+                                        </Button>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <AssessmentForm data={activeAssessment} onChange={setActiveAssessment} />
+                                    </CardContent>
+                                </Card>
+                            ) : (
                             <Card>
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-2">
@@ -305,7 +391,7 @@ export default function ClientForm() {
                                                         <p className="font-medium text-sm">Validado em {new Date(assessment.createdAt).toLocaleDateString('pt-BR')}</p>
                                                         <p className="text-xs text-muted-foreground uppercase">{assessment.status}</p>
                                                     </div>
-                                                    <Button variant="ghost" size="sm" onClick={() => navigate(`/?clientId=${id}&view=${assessment.id}`)}>
+                                                    <Button variant="ghost" size="sm" onClick={() => setActiveAssessment(assessment)}>
                                                         Abrir
                                                     </Button>
                                                 </div>
@@ -316,9 +402,26 @@ export default function ClientForm() {
                                     )}
                                 </CardContent>
                             </Card>
+                            )
                         )}
 
-                        {activeSection === 'migracoes' && (
+                        {activeSection === 'migracoes' && canViewMigracoes && (
+                            activeMigrationId ? (
+                                <Card>
+                                    <CardHeader className="flex flex-row items-center justify-between space-y-0">
+                                        <CardTitle className="flex items-center gap-2">
+                                            <Database className="w-5 h-5 text-primary" />
+                                            Migração
+                                        </CardTitle>
+                                        <Button variant="outline" size="sm" onClick={handleCloseMigration}>
+                                            Voltar à lista
+                                        </Button>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <MigrationForm migrationId={activeMigrationId} embedded onBack={handleCloseMigration} />
+                                    </CardContent>
+                                </Card>
+                            ) : (
                             <Card>
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-2">
@@ -342,7 +445,7 @@ export default function ClientForm() {
                                                             {MigrationStatusLabels[migration.status] || migration.status}
                                                         </span>
                                                     </div>
-                                                    <Button variant="ghost" size="sm" onClick={() => navigate(`/migration/${migration.id}`)}>
+                                                    <Button variant="ghost" size="sm" onClick={() => setActiveMigrationId(migration.id)}>
                                                         Abrir
                                                     </Button>
                                                 </div>
@@ -353,9 +456,26 @@ export default function ClientForm() {
                                     )}
                                 </CardContent>
                             </Card>
+                            )
                         )}
 
-                        {activeSection === 'implantacoes' && (
+                        {activeSection === 'implantacoes' && canViewImplantacoes && (
+                            activeDeploymentId ? (
+                                <Card>
+                                    <CardHeader className="flex flex-row items-center justify-between space-y-0">
+                                        <CardTitle className="flex items-center gap-2">
+                                            <MapIcon className="w-5 h-5 text-primary" />
+                                            Implantação
+                                        </CardTitle>
+                                        <Button variant="outline" size="sm" onClick={handleCloseDeployment}>
+                                            Voltar à lista
+                                        </Button>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <DeploymentForm deploymentId={activeDeploymentId} embedded onBack={handleCloseDeployment} />
+                                    </CardContent>
+                                </Card>
+                            ) : (
                             <Card>
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-2">
@@ -375,7 +495,7 @@ export default function ClientForm() {
                                                             {DeploymentStatusLabels[deployment.status]}
                                                         </span>
                                                     </div>
-                                                    <Button variant="ghost" size="sm" onClick={() => navigate(`/deployments/${deployment.id}`)}>
+                                                    <Button variant="ghost" size="sm" onClick={() => setActiveDeploymentId(deployment.id)}>
                                                         Abrir
                                                     </Button>
                                                 </div>
@@ -386,6 +506,7 @@ export default function ClientForm() {
                                     )}
                                 </CardContent>
                             </Card>
+                            )
                         )}
 
                         {activeSection === 'recem-vr' && (
@@ -425,6 +546,14 @@ export default function ClientForm() {
                             <Card>
                                 <CardContent className="pt-6">
                                     <ClientTicketsTab clientId={id!} />
+                                </CardContent>
+                            </Card>
+                        )}
+
+                        {activeSection === 'casos-criticos' && (
+                            <Card>
+                                <CardContent className="pt-6">
+                                    <ClientCriticalCasesTab clientId={id!} />
                                 </CardContent>
                             </Card>
                         )}

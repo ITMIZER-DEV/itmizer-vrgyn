@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { DashboardLayout } from '@/components/DashboardLayout';
@@ -131,14 +131,29 @@ function MigrationItemRow({ label, itemKey, items, setItems, subQuestions, isRea
 
 import { usePermissions } from '@/hooks/usePermissions';
 
-export default function MigrationForm() {
-    const { id } = useParams();
+interface MigrationFormProps {
+    migrationId?: string;
+    embedded?: boolean;
+    onBack?: () => void;
+}
+
+export default function MigrationForm({ migrationId, embedded, onBack }: MigrationFormProps = {}) {
+    const params = useParams();
+    const id = migrationId ?? params.id;
     const navigate = useNavigate();
     const { toast } = useToast();
     const queryClient = useQueryClient();
     const isEditing = !!id;
     const { canEdit } = usePermissions('/migration');
     const isReadOnly = !canEdit;
+    const goBack = () => {
+        if (onBack) {
+            onBack();
+        } else {
+            navigate('/migration');
+        }
+    };
+    const Wrapper = embedded ? Fragment : DashboardLayout;
 
     const [clientId, setClientId] = useState('');
     const [status, setStatus] = useState<MigrationStatus>('pendente');
@@ -281,7 +296,7 @@ export default function MigrationForm() {
             }
             queryClient.invalidateQueries({ queryKey: ['migrations'] });
             toast({ title: 'Sucesso', description: `Migração ${isEditing ? 'atualizada' : 'criada'} com sucesso.` });
-            navigate('/migration');
+            goBack();
         } catch {
             toast({ title: 'Erro', description: 'Falha ao salvar migração.', variant: 'destructive' });
         } finally {
@@ -553,21 +568,23 @@ export default function MigrationForm() {
 
     if (isEditing && isLoading) {
         return (
-            <DashboardLayout>
+            <Wrapper>
                 <div className="flex items-center justify-center py-20">
                     <Loader2 className="h-8 w-8 animate-spin text-primary" />
                 </div>
-            </DashboardLayout>
+            </Wrapper>
         );
     }
 
     return (
-        <DashboardLayout>
+        <Wrapper>
             <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-4">
-                    <Button variant="ghost" size="icon" onClick={() => navigate('/migration')}>
-                        <ArrowLeft className="w-4 h-4" />
-                    </Button>
+                    {!embedded && (
+                        <Button variant="ghost" size="icon" onClick={goBack}>
+                            <ArrowLeft className="w-4 h-4" />
+                        </Button>
+                    )}
                     <div>
                         <h1 className="text-3xl font-bold font-display">
                             {isEditing ? (isReadOnly ? 'Detalhes da Migração' : 'Editar Migração') : 'Nova Migração'}
@@ -1273,6 +1290,6 @@ export default function MigrationForm() {
                     </Card>
                 )}
             </div>
-        </DashboardLayout >
+        </Wrapper>
     );
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Fragment } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -28,13 +28,28 @@ interface ClientSearchDto {
     cnpj: string;
 }
 
-export default function DeploymentForm() {
-    const { id } = useParams<{ id: string }>();
+interface DeploymentFormProps {
+    deploymentId?: string;
+    embedded?: boolean;
+    onBack?: () => void;
+}
+
+export default function DeploymentForm({ deploymentId, embedded, onBack }: DeploymentFormProps = {}) {
+    const params = useParams<{ id: string }>();
+    const id = deploymentId ?? params.id;
     const isEditing = !!id;
     const navigate = useNavigate();
     const { toast } = useToast();
     const queryClient = useQueryClient();
     const { canEdit, loading: loadingPerms } = usePermissions('/deployments');
+    const goBack = () => {
+        if (onBack) {
+            onBack();
+        } else {
+            navigate('/deployments');
+        }
+    };
+    const Wrapper = embedded ? Fragment : DashboardLayout;
 
     // Estado pro Combobox Look-up do Cliente
     const [openClientCombo, setOpenClientCombo] = useState(false);
@@ -105,7 +120,7 @@ export default function DeploymentForm() {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['deployments'] });
             toast({ title: 'Sucesso', description: `Implantação ${isEditing ? 'salva' : 'criada'} com sucesso.` });
-            navigate('/deployments');
+            goBack();
         },
         onError: () => {
             toast({ title: 'Erro', description: 'Ocorreu um erro ao salvar.', variant: 'destructive' });
@@ -123,18 +138,20 @@ export default function DeploymentForm() {
     };
 
     if (isEditing && isLoadingDeployment || loadingPerms) {
-        return <DashboardLayout><div className="p-8 text-center text-muted-foreground flex items-center justify-center gap-2"><Loader2 className="w-4 h-4 animate-spin" /> Carregando dados...</div></DashboardLayout>;
+        return <Wrapper><div className="p-8 text-center text-muted-foreground flex items-center justify-center gap-2"><Loader2 className="w-4 h-4 animate-spin" /> Carregando dados...</div></Wrapper>;
     }
 
     const isReadOnly = !canEdit;
 
     return (
-        <DashboardLayout>
+        <Wrapper>
             <div className="max-w-4xl mx-auto space-y-6">
                 <div className="flex items-center gap-4">
-                    <Button variant="ghost" size="icon" onClick={() => navigate('/deployments')} className="shrink-0 bg-card shadow-sm border border-border">
+                    {!embedded && (
+                    <Button variant="ghost" size="icon" onClick={goBack} className="shrink-0 bg-card shadow-sm border border-border">
                         <ArrowLeft className="w-5 h-5" />
                     </Button>
+                    )}
                     <div>
                         <h1 className="text-2xl font-bold tracking-tight">
                             {isEditing ? 'Editar Ficha de Implantação' : 'Nova Ficha de Implantação'}
@@ -284,7 +301,7 @@ export default function DeploymentForm() {
                     </div>
 
                     <div className="flex justify-end gap-3 pt-4 border-t border-border">
-                        <Button type="button" variant="outline" onClick={() => navigate('/deployments')} className="min-w-[120px] font-medium">
+                        <Button type="button" variant="outline" onClick={goBack} className="min-w-[120px] font-medium">
                             {isReadOnly ? 'Voltar' : 'Cancelar'}
                         </Button>
                         {!isReadOnly && (
@@ -296,6 +313,6 @@ export default function DeploymentForm() {
                     </div>
                 </form>
             </div>
-        </DashboardLayout>
+        </Wrapper>
     );
 }

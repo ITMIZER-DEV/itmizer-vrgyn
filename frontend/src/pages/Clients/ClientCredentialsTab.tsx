@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { KeyRound, Plus, Trash2, Copy, Eye, EyeOff } from 'lucide-react';
+import { KeyRound, Plus, Trash2, Copy, Eye, EyeOff, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -92,13 +92,28 @@ export default function ClientCredentialsTab({ clientId }: Props) {
     setOpen(true);
   };
 
+  const isAnydesk = (credential: ClientCredential) =>
+    credential.type === 'ACESSO_REMOTO' && credential.label.toLowerCase().includes('anydesk');
+
   const handleCopy = async (credential: ClientCredential) => {
     try {
       const secret = await clientCredentialService.copy(credential.id);
-      await navigator.clipboard.writeText(secret);
-      toast({ title: 'Copiado', description: `Senha de "${credential.label}" copiada para a área de transferência.` });
+      const parts = credential.username ? [`Usuário/ID Acesso: ${credential.username}`, `Senha: ${secret}`] : [`Senha: ${secret}`];
+      await navigator.clipboard.writeText(parts.join('\n'));
+      toast({ title: 'Copiado', description: `Dados de acesso de "${credential.label}" copiados para a área de transferência.` });
     } catch {
       toast({ title: 'Erro', description: 'Não foi possível copiar a credencial.', variant: 'destructive' });
+    }
+  };
+
+  const handleOpenAccess = async (credential: ClientCredential) => {
+    try {
+      const secret = await clientCredentialService.copy(credential.id);
+      await navigator.clipboard.writeText(secret);
+      window.open(`anydesk:${credential.username}`, '_blank');
+      toast({ title: 'Abrindo Anydesk', description: 'Senha copiada para a área de transferência. Cole quando o Anydesk solicitar.' });
+    } catch {
+      toast({ title: 'Erro', description: 'Não foi possível abrir o acesso.', variant: 'destructive' });
     }
   };
 
@@ -166,9 +181,9 @@ export default function ClientCredentialsTab({ clientId }: Props) {
                   <Label htmlFor="label">Rótulo *</Label>
                   <Input id="label" {...register('label', { required: true })} placeholder="Ex: Anydesk Servidor Principal" />
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="username">Usuário</Label>
+                    <Label htmlFor="username">Usuário/ID Acesso</Label>
                     <Input id="username" {...register('username')} />
                   </div>
                   <div className="space-y-2">
@@ -178,7 +193,7 @@ export default function ClientCredentialsTab({ clientId }: Props) {
                 </div>
                 <div className="pt-2 border-t space-y-4">
                   <p className="text-sm font-medium text-muted-foreground">Responsável pela liberação (contato do cliente)</p>
-                  <div className="grid grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="responsavelNome">Nome</Label>
                       <Input id="responsavelNome" {...register('responsavelNome')} />
@@ -214,7 +229,7 @@ export default function ClientCredentialsTab({ clientId }: Props) {
             <TableRow>
               <TableHead>Tipo</TableHead>
               <TableHead>Rótulo</TableHead>
-              <TableHead>Usuário</TableHead>
+              <TableHead>Usuário/ID Acesso</TableHead>
               <TableHead>Responsável pela liberação</TableHead>
               <TableHead>Senha</TableHead>
               <TableHead className="text-right">Ações</TableHead>
@@ -240,9 +255,14 @@ export default function ClientCredentialsTab({ clientId }: Props) {
                   {revealedId === credential.id ? revealedValue : '••••••••'}
                 </TableCell>
                 <TableCell className="text-right space-x-1">
-                  <Button variant="ghost" size="icon" title="Copiar" onClick={() => handleCopy(credential)}>
+                  <Button variant="ghost" size="icon" title="Copiar dados de acesso" onClick={() => handleCopy(credential)}>
                     <Copy className="w-4 h-4" />
                   </Button>
+                  {isAnydesk(credential) && credential.username && (
+                    <Button variant="ghost" size="icon" title="Abrir no Anydesk" onClick={() => handleOpenAccess(credential)}>
+                      <ExternalLink className="w-4 h-4" />
+                    </Button>
+                  )}
                   {canReveal && (
                     <Button variant="ghost" size="icon" title="Revelar" onClick={() => handleReveal(credential)}>
                       {revealedId === credential.id ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}

@@ -71,7 +71,10 @@ export default function ClientsList() {
                 )
             },
             cell: ({ row }) => (
-                <div className="flex items-center gap-2">
+                <div
+                    className="flex items-center gap-2 cursor-pointer hover:text-primary transition-colors"
+                    onClick={() => navigate(`/clients/${row.original.id}`)}
+                >
                     <Building2 className="w-4 h-4 text-primary/50" />
                     {row.getValue("nomeFantasia")}
                 </div>

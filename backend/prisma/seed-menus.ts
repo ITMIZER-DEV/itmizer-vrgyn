@@ -43,11 +43,44 @@ async function main() {
       ]
     },
     {
+      id: 'menu-suporte',
+      label: 'Suporte',
+      icon: 'LifeBuoy',
+      route: null,
+      order: 4,
+      roles: [AppRole.admin, AppRole.supervisao, AppRole.support],
+      rolesConsulta: [AppRole.admin, AppRole.supervisao, AppRole.support],
+      rolesInclusaoEdicao: [AppRole.admin, AppRole.supervisao, AppRole.support],
+      rolesEspecial: [AppRole.admin, AppRole.supervisao],
+      submenus: [
+        {
+          label: 'Dados de Acesso',
+          icon: 'KeyRound',
+          route: '/support/credentials',
+          order: 1,
+          roles: [AppRole.admin, AppRole.supervisao, AppRole.support],
+          rolesConsulta: [AppRole.admin, AppRole.supervisao, AppRole.support],
+          rolesInclusaoEdicao: [AppRole.admin, AppRole.supervisao, AppRole.support],
+          rolesEspecial: [AppRole.admin, AppRole.supervisao],
+        },
+        {
+          label: 'Casos Críticos',
+          icon: 'AlertTriangle',
+          route: '/support/critical-cases',
+          order: 2,
+          roles: [AppRole.admin, AppRole.supervisao, AppRole.support],
+          rolesConsulta: [AppRole.admin, AppRole.supervisao, AppRole.support],
+          rolesInclusaoEdicao: [AppRole.admin, AppRole.supervisao, AppRole.support],
+          rolesEspecial: [AppRole.admin, AppRole.supervisao],
+        },
+      ]
+    },
+    {
       id: 'menu-admin',
       label: 'Painel Administrativo',
       icon: 'Shield',
       route: null,
-      order: 4,
+      order: 5,
       roles: [AppRole.admin],
       submenus: [
         { label: 'Infraestrutura', icon: 'HardDrive', route: '/infrastructure', order: 1, roles: [AppRole.admin] },

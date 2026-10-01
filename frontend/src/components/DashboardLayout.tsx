@@ -163,20 +163,23 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                 )}
             >
                 {/* Sidebar Header */}
-                <div className="h-16 flex items-center justify-between px-4 border-b border-border/30">
+                <div
+                    className={cn(
+                        "flex items-center border-b border-border/30 px-4",
+                        isCollapsed ? "flex-col gap-2 py-3" : "h-16 justify-between"
+                    )}
+                >
                     <Link to="/" className="flex items-center gap-2 overflow-hidden shrink-0">
                         <BrandLogo showWordmark={!isCollapsed} />
                     </Link>
-                    {!isCollapsed && (
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8 hover:bg-muted text-muted-foreground hover:text-foreground"
-                            onClick={() => setIsCollapsed(true)}
-                        >
-                            <PanelLeftClose className="w-4 h-4" />
-                        </Button>
-                    )}
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 shrink-0 hover:bg-muted text-muted-foreground hover:text-foreground"
+                        onClick={() => setIsCollapsed(!isCollapsed)}
+                    >
+                        {isCollapsed ? <PanelLeftOpen className="w-4 h-4" /> : <PanelLeftClose className="w-4 h-4" />}
+                    </Button>
                 </div>
 
                 {/* Sidebar Menu Items */}
@@ -287,19 +290,6 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                     )}
                 </div>
 
-                {/* Sidebar Footer (Desktop Collapse Button if Collapsed) */}
-                {isCollapsed && (
-                    <div className="p-3 border-t border-border/30 flex justify-center">
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-9 w-9 rounded-xl hover:bg-muted"
-                            onClick={() => setIsCollapsed(false)}
-                        >
-                            <PanelLeftOpen className="w-5 h-5 text-muted-foreground" />
-                        </Button>
-                    </div>
-                )}
             </aside>
 
             {/* Layout Direito (Header + Main) */}
@@ -312,18 +302,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                 {/* Top Compact Header */}
                 <header className="glass-header h-[46px] border-b border-border/30 shrink-0">
                     <div className="h-full max-w-7xl mx-auto px-4 lg:px-8 flex items-center justify-between">
-                        {/* Botão de Expandir/Colapsar (Visível só se estiver no estado Colapsado ou Mobile) */}
                         <div className="flex items-center gap-4">
-                            {isCollapsed && (
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="hidden lg:flex h-9 w-9 rounded-xl hover:bg-muted"
-                                    onClick={() => setIsCollapsed(false)}
-                                >
-                                    <PanelLeftOpen className="w-4 h-4 text-muted-foreground" />
-                                </Button>
-                            )}
                             {activeSectionLabel && (
                                 <span className="text-sm text-muted-foreground whitespace-nowrap">{activeSectionLabel}</span>
                             )}

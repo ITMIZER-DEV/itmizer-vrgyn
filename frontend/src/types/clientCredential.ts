@@ -11,6 +11,13 @@ export const CLIENT_CREDENTIAL_TYPE_LABELS: Record<ClientCredentialType, string>
 export interface ClientCredential {
   id: string;
   clientId: string;
+  client?: {
+    id: string;
+    nomeFantasia: string;
+    razaoSocial?: string | null;
+    cnpj: string;
+    driveLink?: string | null;
+  };
   type: ClientCredentialType;
   label: string;
   username?: string | null;

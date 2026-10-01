@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EFF1F4;font-family:Inter,system-ui,sans-serif}
+.dv-turn{padding:40px 44px 32px;border-bottom:1px solid rgba(0,0,0,.08);scroll-margin-top:16px}
+.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 8px}
+.dv-tid{font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1a1a1a;color:#fff;border-radius:4px;text-decoration:none}
+.dv-tname{font:600 13px/1.2 Inter,system-ui,sans-serif;color:#1a1a1a}
+.dv-intro{max-width:760px;font:400 12px/1.55 Inter,system-ui,sans-serif;color:rgba(0,0,0,.55);margin:0 0 24px}
+.dv-opts{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start}
+.dv-opt{flex:none;display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px}
+.dv-oid{font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px;text-decoration:none}
+.dv-olabel{display:flex;align-items:baseline;gap:8px;font:400 11px/1.3 Inter,system-ui,sans-serif;color:rgba(0,0,0,.55)}
+.dv-card{max-width:100%;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.06);overflow:hidden}
+.dv-opt:target .dv-oid{background:#FF6A00;color:#fff}
+.dv-next{margin:22px 0 0;font:12px/1.5 Inter,system-ui,sans-serif;color:rgba(0,0,0,.5)}
+</style>
+</helmet>
+
+<section class="dv-turn" id="t1">
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">ITmizer-VR — Design System: 3 direções</span></div>
+<p class="dv-intro">Decisões comuns às três: <strong>laranja #FF6A00 é a cor de marca</strong> (o azul vira cor semântica de status); light-first; Sora para títulos, Inter para UI; densidade compacta; glass mantido — mas dosado diferente em cada direção. Cada folha mostra tokens, tipo, componentes, tabela e um mock em miniatura do padrão de página aplicado ao Cliente 360.</p>
+<div class="dv-opts">
+
+<!-- ============ 1a ============ -->
+<div class="dv-opt" id="1a">
+<div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a>Base sólida — shadcn refinado, glass no chrome, Cliente 360 com rail lateral</div>
+<div class="dv-card" style="width:1020px;background:#F7F8FA">
+  <div style="display:flex;align-items:center;gap:10px;padding:18px 24px;border-bottom:1px solid #E7E9EE;background:#fff">
+    <svg width="22" height="24" viewBox="0 0 20 22"><polygon points="10,0 19,5.5 19,16.5 10,22 1,16.5 1,5.5" fill="#FF6A00"></polygon></svg>
+    <div style="font:700 15px Sora,sans-serif;color:#0D1117">IT<span style="color:#FF6A00">MIZER</span> · Base sólida</div>
+    <div style="margin-left:auto;font:500 10px ui-monospace,monospace;color:#6B7280">radius 10px · base 13px · sombras suaves</div>
+  </div>
+  <div style="padding:22px 24px;display:flex;flex-direction:column;gap:22px">
+
+    <div style="display:flex;gap:28px;flex-wrap:wrap">
+      <div>
+        <div style="font:600 10px Inter;letter-spacing:.08em;color:#6B7280;text-transform:uppercase;margin-bottom:8px">Cores</div>
+        <div style="display:flex;gap:8px">
+          <div style="width:64px"><div style="height:44px;border-radius:8px;background:#FF6A00"></div><div style="font:500 9.5px ui-monospace,monospace;color:#374151;margin-top:4px">primary<br>#FF6A00</div></div>
+          <div style="width:64px"><div style="height:44px;border-radius:8px;background:#0D1117"></div><div style="font:500 9.5px ui-monospace,monospace;color:#374151;margin-top:4px">ink<br>#0D1117</div></div>
+          <div style="width:64px"><div style="height:44px;border-radius:8px;background:#FFFFFF;border:1px solid #E7E9EE"></div><div style="font:500 9.5px ui-monospace,monospace;color:#374151;margin-top:4px">surface<br>#FFFFFF</div></div>
+          <div style="width:64px"><div style="height:44px;border-radius:8px;background:#F7F8FA;border:1px solid #E7E9EE"></div><div style="font:500 9.5px ui-monospace,monospace;color:#374151;margin-top:4px">bg<br>#F7F8FA</div></div>
+          <div style="width:64px"><div style="height:44px;border-radius:8px;background:#E7E9EE"></div><div style="font:500 9.5px ui-monospace,monospace;color:#374151;margin-top:4px">border<br>#E7E9EE</div></div>
+          <div style="width:64px"><div style="height:44px;border-radius:8px;background:#6B7280"></div><div style="font:500 9.5px ui-monospace,monospace;color:#374151;margin-top:4px">muted<br>#6B7280</div></div>
+        </div>
+      </div>
+      <div>
+        <div style="font:600 10px Inter;letter-spacing:.08em;color:#6B7280;text-transform:uppercase;margin-bottom:8px">Semânticas (o azul vira status)</div>
+        <div style="display:flex;gap:8px">
+          <div style="width:64px"><div style="height:44px;border-radius:8px;background:#2563EB"></div><div style="font:500 9.5px ui-monospace,monospace;color:#374151;margin-top:4px">info<br>#2563EB</div></div>
+          <div style="width:64px"><div style="height:44px;border-radius:8px;background:#22C55E"></div><div style="font:500 9.5px ui-monospace,monospace;color:#374151;margin-top:4px">success<br>#22C55E</div></div>
+          <div style="width:64px"><div style="height:44px;border-radius:8px;background:#F59E0B"></div><div style="font:500 9.5px ui-monospace,monospace;color:#374151;margin-top:4px">warning<br>#F59E0B</div></div>
+          <div style="width:64px"><div style="height:44px;border-radius:8px;background:#DC2626"></div><div style="font:500 9.5px ui-monospace,monospace;color:#374151;margin-top:4px">danger<br>#DC2626</div></div>
+          <div style="width:64px"><div style="height:44px;border-radius:8px;background:#7C3AED"></div><div style="font:500 9.5px ui-monospace,monospace;color:#374151;margin-top:4px">accent<br>#7C3AED</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:28px;flex-wrap:wrap;align-items:flex-start">
+      <div style="flex:1;min-width:300px">
+        <div style="font:600 10px Inter;letter-spacing:.08em;color:#6B7280;text-transform:uppercase;margin-bottom:8px">Tipografia</div>
+        <div style="background:#fff;border:1px solid #E7E9EE;border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:6px">
+          <div style="font:600 20px Sora,sans-serif;color:#0D1117">Cliente 360 — Sora SemiBold</div>
+          <div style="font:600 14px Sora,sans-serif;color:#0D1117">Seção / card title 14</div>
+          <div style="font:400 13px/1.5 Inter;color:#374151">Corpo Inter 13/1.5 — denso mas legível para uso diário.</div>
+          <div style="font:500 11px Inter;color:#6B7280">Label 11 · <span style="font-family:ui-monospace,monospace">dados 12 mono</span></div>
+        </div>
+      </div>
+      <div style="flex:1.4;min-width:420px">
+        <div style="font:600 10px Inter;letter-spacing:.08em;color:#6B7280;text-transform:uppercase;margin-bottom:8px">Componentes</div>
+        <div style="background:#fff;border:1px solid #E7E9EE;border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <button style="font:600 12.5px Inter;color:#fff;background:#FF6A00;border:none;border-radius:8px;padding:8px 14px;box-shadow:0 1px 2px rgba(255,106,0,.35);cursor:pointer">Nova validação</button>
+            <button style="font:600 12.5px Inter;color:#0D1117;background:#fff;border:1px solid #D8DBE2;border-radius:8px;padding:8px 14px;cursor:pointer">Exportar</button>
+            <button style="font:600 12.5px Inter;color:#374151;background:transparent;border:none;border-radius:8px;padding:8px 10px;cursor:pointer">Cancelar</button>
+            <button style="font:600 12.5px Inter;color:#DC2626;background:#FDECEC;border:1px solid #F6C9C9;border-radius:8px;padding:8px 14px;cursor:pointer">Excluir</button>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <div style="flex:1;min-width:180px">
+              <div style="font:500 11px Inter;color:#374151;margin-bottom:4px">CNPJ</div>
+              <div style="font:400 13px Inter;color:#0D1117;background:#fff;border:1px solid #D8DBE2;border-radius:8px;padding:7px 10px">04.251.312/0001-77</div>
+            </div>
+            <div style="flex:1;min-width:180px">
+              <div style="font:500 11px Inter;color:#FF6A00;margin-bottom:4px">Fase (focus)</div>
+              <div style="font:400 13px Inter;color:#0D1117;background:#fff;border:1px solid #FF6A00;box-shadow:0 0 0 3px rgba(255,106,0,.15);border-radius:8px;padding:7px 10px">Migração de dados</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span style="font:600 10.5px Inter;color:#2563EB;background:#EFF4FF;border-radius:999px;padding:3px 9px">Validação</span>
+            <span style="font:600 10.5px Inter;color:#B45309;background:#FFF6E6;border-radius:999px;padding:3px 9px">Em migração</span>
+            <span style="font:600 10.5px Inter;color:#7C3AED;background:#F4EFFF;border-radius:999px;padding:3px 9px">Implantação</span>
+            <span style="font:600 10.5px Inter;color:#C2410C;background:#FFF0E5;border-radius:999px;padding:3px 9px">Recém VR</span>
+            <span style="font:600 10.5px Inter;color:#15803D;background:#EAF9F0;border-radius:999px;padding:3px 9px">Concluído</span>
+            <span style="font:600 10.5px Inter;color:#fff;background:#DC2626;border-radius:999px;padding:3px 9px">Crítico</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div style="font:600 10px Inter;letter-spacing:.08em;color:#6B7280;text-transform:uppercase;margin-bottom:8px">Tabela compacta</div>
+      <div style="background:#fff;border:1px solid #E7E9EE;border-radius:10px;overflow:hidden">
+        <div style="display:grid;grid-template-columns:2fr 1.2fr 1.2fr 1fr;gap:12px;padding:8px 14px;background:#F7F8FA;border-bottom:1px solid #E7E9EE;font:600 10.5px Inter;color:#6B7280;text-transform:uppercase;letter-spacing:.05em"><div>Servidor</div><div>Tipo</div><div>SO</div><div>Status</div></div>
+        <div style="display:grid;grid-template-columns:2fr 1.2fr 1.2fr 1fr;gap:12px;padding:9px 14px;border-bottom:1px solid #F0F1F4;font:400 12.5px Inter;color:#0D1117;align-items:center"><div style="font-weight:500">SRV-PDV-01</div><div>Servidor PDV</div><div style="font-family:ui-monospace,monospace;font-size:11.5px">Ubuntu 22.04</div><div><span style="font:600 10.5px Inter;color:#15803D;background:#EAF9F0;border-radius:999px;padding:2px 8px">Homologado</span></div></div>
+        <div style="display:grid;grid-template-columns:2fr 1.2fr 1.2fr 1fr;gap:12px;padding:9px 14px;border-bottom:1px solid #F0F1F4;font:400 12.5px Inter;color:#0D1117;align-items:center;background:#FFFAF5"><div style="font-weight:500">SRV-RET-02</div><div>Retaguarda</div><div style="font-family:ui-monospace,monospace;font-size:11.5px">Win Server 2016</div><div><span style="font:600 10.5px Inter;color:#B45309;background:#FFF6E6;border-radius:999px;padding:2px 8px">Atenção</span></div></div>
+        <div style="display:grid;grid-template-columns:2fr 1.2fr 1.2fr 1fr;gap:12px;padding:9px 14px;font:400 12.5px Inter;color:#0D1117;align-items:center"><div style="font-weight:500">EST-CX-04</div><div>Estação caixa</div><div style="font-family:ui-monospace,monospace;font-size:11.5px">Win 10 Pro</div><div><span style="font:600 10.5px Inter;color:#fff;background:#DC2626;border-radius:999px;padding:2px 8px">Reprovar</span></div></div>
+      </div>
+    </div>
+
+    <div>
+      <div style="font:600 10px Inter;letter-spacing:.08em;color:#6B7280;text-transform:uppercase;margin-bottom:8px">Padrão de página — Cliente 360 com rail lateral (miniatura)</div>
+      <div style="border:1px solid #E7E9EE;border-radius:10px;overflow:hidden;display:flex;height:340px;background:#F7F8FA">
+        <div style="width:150px;background:#fff;border-right:1px solid #E7E9EE;padding:10px 8px;display:flex;flex-direction:column;gap:2px;flex:none">
+          <div style="display:flex;align-items:center;gap:6px;padding:4px 8px 10px"><svg width="14" height="16" viewBox="0 0 20 22"><polygon points="10,0 19,5.5 19,16.5 10,22 1,16.5 1,5.5" fill="#FF6A00"></polygon></svg><span style="font:700 10px Sora,sans-serif;color:#0D1117">IT<span style="color:#FF6A00">MIZER</span></span></div>
+          <div style="font:500 10px Inter;color:#374151;padding:5px 8px;border-radius:6px">Dashboard</div>
+          <div style="font:600 10px Inter;color:#C2410C;background:#FFF0E5;padding:5px 8px;border-radius:6px">Clientes</div>
+          <div style="font:500 10px Inter;color:#374151;padding:5px 8px;border-radius:6px">Validações</div>
+          <div style="font:500 10px Inter;color:#374151;padding:5px 8px;border-radius:6px">Migração</div>
+          <div style="font:500 10px Inter;color:#374151;padding:5px 8px;border-radius:6px">Implantações</div>
+          <div style="font:500 10px Inter;color:#374151;padding:5px 8px;border-radius:6px">Recém VR</div>
+          <div style="font:500 10px Inter;color:#374151;padding:5px 8px;border-radius:6px">Infraestrutura</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;min-width:0">
+          <div style="height:38px;background:rgba(255,255,255,.75);backdrop-filter:blur(8px);border-bottom:1px solid #E7E9EE;display:flex;align-items:center;gap:8px;padding:0 14px;flex:none">
+            <div style="font:400 10px Inter;color:#6B7280">Clientes / <span style="color:#0D1117;font-weight:600">Supermercado Andrade</span></div>
+            <div style="margin-left:auto;display:flex;gap:6px"><span style="font:600 9px Inter;color:#B45309;background:#FFF6E6;border-radius:999px;padding:2px 8px">Em migração</span><button style="font:600 10px Inter;color:#fff;background:#FF6A00;border:none;border-radius:6px;padding:4px 10px">Ações</button></div>
+          </div>
+          <div style="flex:1;display:flex;min-height:0">
+            <div style="width:118px;padding:10px 6px 10px 12px;display:flex;flex-direction:column;gap:1px;flex:none">
+              <div style="font:600 9.5px Inter;color:#C2410C;background:#FFF0E5;padding:4px 8px;border-radius:6px;border-left:2px solid #FF6A00">Dados</div>
+              <div style="font:500 9.5px Inter;color:#374151;padding:4px 8px">Validações</div>
+              <div style="font:500 9.5px Inter;color:#374151;padding:4px 8px">Migrações</div>
+              <div style="font:500 9.5px Inter;color:#374151;padding:4px 8px">Implantações</div>
+              <div style="font:500 9.5px Inter;color:#374151;padding:4px 8px">Recém VR</div>
+              <div style="font:500 9.5px Inter;color:#374151;padding:4px 8px">Infraestrutura</div>
+              <div style="font:500 9.5px Inter;color:#374151;padding:4px 8px">Vault</div>
+              <div style="font:500 9.5px Inter;color:#374151;padding:4px 8px">Histórico</div>
+            </div>
+            <div style="flex:1;padding:10px 12px 10px 6px;display:flex;flex-direction:column;gap:8px;min-width:0">
+              <div style="font:600 13px Sora,sans-serif;color:#0D1117">Dados cadastrais</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+                <div style="background:#fff;border:1px solid #E7E9EE;border-radius:8px;padding:8px"><div style="font:500 8.5px Inter;color:#6B7280">CNPJ</div><div style="font:600 10.5px Inter;color:#0D1117">04.251.312/0001-77</div></div>
+                <div style="background:#fff;border:1px solid #E7E9EE;border-radius:8px;padding:8px"><div style="font:500 8.5px Inter;color:#6B7280">Fase atual</div><div style="font:600 10.5px Inter;color:#C2410C">Migração de dados</div></div>
+                <div style="background:#fff;border:1px solid #E7E9EE;border-radius:8px;padding:8px"><div style="font:500 8.5px Inter;color:#6B7280">Consultor</div><div style="font:600 10.5px Inter;color:#0D1117">M. Ferreira</div></div>
+              </div>
+              <div style="flex:1;background:#fff;border:1px solid #E7E9EE;border-radius:8px;padding:8px">
+                <div style="font:600 10px Inter;color:#374151;margin-bottom:6px">Servidores e estações</div>
+                <div style="height:8px;background:#F0F1F4;border-radius:3px;margin-bottom:4px"></div>
+                <div style="height:8px;background:#F7F8FA;border-radius:3px;margin-bottom:4px"></div>
+                <div style="height:8px;background:#F0F1F4;border-radius:3px;margin-bottom:4px"></div>
+                <div style="height:8px;background:#F7F8FA;border-radius:3px"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="font:400 10.5px Inter;color:#6B7280;margin-top:6px">Conteúdo em largura total (sem max-w-3xl); rail marca a seção ativa com a mesma linguagem do menu principal. Glass só no header sticky.</div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- ============ 1b ============ -->
+<div class="dv-opt" id="1b">
+<div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a>Console técnico — hairlines, mono nos dados, laranja cirúrgico, Cliente 360 em scroll único + sumário sticky</div>
+<div class="dv-card" style="width:1020px;background:#FAFAFB">
+  <div style="display:flex;align-items:center;gap:10px;padding:18px 24px;border-bottom:1px solid #ECEDF0;background:#fff">
+    <svg width="22" height="24" viewBox="0 0 20 22"><polygon points="10,0 19,5.5 19,16.5 10,22 1,16.5 1,5.5" fill="none" stroke="#FF6A00" stroke-width="2"></polygon></svg>
+    <div style="font:700 15px Sora,sans-serif;color:#0D1117">IT<span style="color:#FF6A00">MIZER</span> · Console técnico</div>
+    <div style="margin-left:auto;font:500 10px ui-monospace,monospace;color:#6B7280">radius 6px · base 12.5px · flat, sem sombras</div>
+  </div>
+  <div style="padding:22px 24px;display:flex;flex-direction:column;gap:22px">
+
+    <div style="display:flex;gap:28px;flex-wrap:wrap">
+      <div>
+        <div style="font:600 10px ui-monospace,monospace;letter-spacing:.08em;color:#6B7280;text-transform:uppercase;margin-bottom:8px">// cores</div>
+        <div style="display:flex;gap:8px">
+          <div style="width:64px"><div style="height:44px;border-radius:5px;background:#FF6A00"></div><div style="font:500 9.5px ui-monospace,monospace;color:#374151;margin-top:4px">primary<br>#FF6A00</div></div>
+          <div style="width:64px"><div style="height:44px;border-radius:5px;background:#0D1117"></div><div style="font:500 9.5px ui-monospace,monospace;color:#374151;margin-top:4px">ink<br>#0D1117</div></div>
+          <div style="width:64px"><div style="height:44px;border-radius:5px;background:#FAFAFB;border:1px solid #ECEDF0"></div><div style="font:500 9.5px ui-monospace,monospace;color:#374151;margin-top:4px">bg<br>#FAFAFB</div></div>
+          <div style="width:64px"><div style="height:44px;border-radius:5px;background:#ECEDF0"></div><div style="font:500 9.5px ui-monospace,monospace;color:#374151;margin-top:4px">hairline<br>#ECEDF0</div></div>
+          <div style="width:64px"><div style="height:44px;border-radius:5px;background:#1F2937"></div><div style="font:500 9.5px ui-monospace,monospace;color:#374151;margin-top:4px">text-2<br>#1F2937</div></div>
+        </div>
+      </div>
+      <div>
+        <div style="font:600 10px ui-monospace,monospace;letter-spacing:.08em;color:#6B7280;text-transform:uppercase;margin-bottom:8px">// laranja: só onde há ação ou estado ativo</div>
+        <div style="display:flex;flex-direction:column;gap:5px;font:400 11.5px Inter;color:#374151">
+          <div>✓ botão primário, link, item ativo, focus ring, progresso</div>
+          <div>✗ nunca em fundos grandes, ícones decorativos ou texto longo</div>
+          <div>→ status usam as semânticas (azul/verde/âmbar/vermelho), não o laranja</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:28px;flex-wrap:wrap;align-items:flex-start">
+      <div style="flex:1;min-width:300px">
+        <div style="font:600 10px ui-monospace,monospace;letter-spacing:.08em;color:#6B7280;text-transform:uppercase;margin-bottom:8px">// tipografia</div>
+        <div style="background:#fff;border:1px solid #ECEDF0;border-radius:6px;padding:14px 16px;display:flex;flex-direction:column;gap:6px">
+          <div style="font:600 18px Sora,sans-serif;color:#0D1117;letter-spacing:-.01em">Cliente 360 — Sora 18</div>
+          <div style="font:600 12px Inter;color:#0D1117;text-transform:uppercase;letter-spacing:.06em">Seção em caps 12</div>
+          <div style="font:400 12.5px/1.5 Inter;color:#1F2937">Corpo Inter 12.5 — densidade Linear-like.</div>
+          <div style="font:500 12px ui-monospace,monospace;color:#0D1117">04.251.312/0001-77 · IDs, CNPJ, IP, versões em mono</div>
+        </div>
+      </div>
+      <div style="flex:1.4;min-width:420px">
+        <div style="font:600 10px ui-monospace,monospace;letter-spacing:.08em;color:#6B7280;text-transform:uppercase;margin-bottom:8px">// componentes</div>
+        <div style="background:#fff;border:1px solid #ECEDF0;border-radius:6px;padding:14px 16px;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <button style="font:600 12px Inter;color:#fff;background:#FF6A00;border:none;border-radius:5px;padding:7px 13px;cursor:pointer">Nova validação</button>
+            <button style="font:600 12px Inter;color:#0D1117;background:#fff;border:1px solid #D8DBE2;border-radius:5px;padding:7px 13px;cursor:pointer">Exportar</button>
+            <button style="font:600 12px Inter;color:#374151;background:#F1F2F4;border:none;border-radius:5px;padding:7px 13px;cursor:pointer">Filtros ⌘K</button>
+            <button style="font:600 12px Inter;color:#DC2626;background:transparent;border:1px solid #F0C9C9;border-radius:5px;padding:7px 13px;cursor:pointer">Excluir</button>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <div style="flex:1;min-width:180px">
+              <div style="font:500 10.5px Inter;color:#6B7280;margin-bottom:3px;text-transform:uppercase;letter-spacing:.05em">CNPJ</div>
+              <div style="font:500 12px ui-monospace,monospace;color:#0D1117;background:#fff;border:1px solid #D8DBE2;border-radius:5px;padding:6px 9px">04.251.312/0001-77</div>
+            </div>
+            <div style="flex:1;min-width:180px">
+              <div style="font:500 10.5px Inter;color:#FF6A00;margin-bottom:3px;text-transform:uppercase;letter-spacing:.05em">Fase (focus)</div>
+              <div style="font:400 12.5px Inter;color:#0D1117;background:#fff;border:1px solid #FF6A00;border-radius:5px;padding:6px 9px">Migração de dados</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span style="display:inline-flex;align-items:center;gap:5px;font:500 11px Inter;color:#1F2937;border:1px solid #ECEDF0;border-radius:4px;padding:2px 8px"><span style="width:7px;height:7px;border-radius:2px;background:#2563EB"></span>Validação</span>
+            <span style="display:inline-flex;align-items:center;gap:5px;font:500 11px Inter;color:#1F2937;border:1px solid #ECEDF0;border-radius:4px;padding:2px 8px"><span style="width:7px;height:7px;border-radius:2px;background:#F59E0B"></span>Em migração</span>
+            <span style="display:inline-flex;align-items:center;gap:5px;font:500 11px Inter;color:#1F2937;border:1px solid #ECEDF0;border-radius:4px;padding:2px 8px"><span style="width:7px;height:7px;border-radius:2px;background:#7C3AED"></span>Implantação</span>
+            <span style="display:inline-flex;align-items:center;gap:5px;font:500 11px Inter;color:#1F2937;border:1px solid #ECEDF0;border-radius:4px;padding:2px 8px"><span style="width:7px;height:7px;border-radius:2px;background:#FF6A00"></span>Recém VR</span>
+            <span style="display:inline-flex;align-items:center;gap:5px;font:500 11px Inter;color:#1F2937;border:1px solid #ECEDF0;border-radius:4px;padding:2px 8px"><span style="width:7px;height:7px;border-radius:2px;background:#22C55E"></span>Concluído</span>
+            <span style="display:inline-flex;align-items:center;gap:5px;font:600 11px Inter;color:#DC2626;border:1px solid #F0C9C9;border-radius:4px;padding:2px 8px"><span style="width:7px;height:7px;border-radius:2px;background:#DC2626"></span>Crítico</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div style="font:600 10px ui-monospace,monospace;letter-spacing:.08em;color:#6B7280;text-transform:uppercase;margin-bottom:8px">// tabela — linhas 32px, zebra sutil</div>
+      <div style="background:#fff;border:1px solid #ECEDF0;border-radius:6px;overflow:hidden">
+        <div style="display:grid;grid-template-columns:2fr 1.2fr 1.2fr 1fr;gap:12px;padding:6px 12px;border-bottom:1px solid #ECEDF0;font:600 10px ui-monospace,monospace;color:#6B7280;text-transform:uppercase;letter-spacing:.06em"><div>servidor</div><div>tipo</div><div>so</div><div>status</div></div>
+        <div style="display:grid;grid-template-columns:2fr 1.2fr 1.2fr 1fr;gap:12px;padding:7px 12px;border-bottom:1px solid #F3F4F6;font:400 12px Inter;color:#0D1117;align-items:center"><div style="font:500 11.5px ui-monospace,monospace">SRV-PDV-01</div><div>Servidor PDV</div><div style="font:400 11.5px ui-monospace,monospace">Ubuntu 22.04</div><div style="display:flex;align-items:center;gap:5px;font:500 11px Inter;color:#15803D"><span style="width:7px;height:7px;border-radius:2px;background:#22C55E"></span>Homologado</div></div>
+        <div style="display:grid;grid-template-columns:2fr 1.2fr 1.2fr 1fr;gap:12px;padding:7px 12px;border-bottom:1px solid #F3F4F6;font:400 12px Inter;color:#0D1117;align-items:center;background:#FAFAFB"><div style="font:500 11.5px ui-monospace,monospace">SRV-RET-02</div><div>Retaguarda</div><div style="font:400 11.5px ui-monospace,monospace">WinSrv 2016</div><div style="display:flex;align-items:center;gap:5px;font:500 11px Inter;color:#B45309"><span style="width:7px;height:7px;border-radius:2px;background:#F59E0B"></span>Atenção</div></div>
+        <div style="display:grid;grid-template-columns:2fr 1.2fr 1.2fr 1fr;gap:12px;padding:7px 12px;font:400 12px Inter;color:#0D1117;align-items:center"><div style="font:500 11.5px ui-monospace,monospace">EST-CX-04</div><div>Estação caixa</div><div style="font:400 11.5px ui-monospace,monospace">Win 10 Pro</div><div style="display:flex;align-items:center;gap:5px;font:600 11px Inter;color:#DC2626"><span style="width:7px;height:7px;border-radius:2px;background:#DC2626"></span>Reprovar</div></div>
+      </div>
+    </div>
+
+    <div>
+      <div style="font:600 10px ui-monospace,monospace;letter-spacing:.08em;color:#6B7280;text-transform:uppercase;margin-bottom:8px">// padrão de página — Cliente 360 em scroll único + sumário sticky (miniatura)</div>
+      <div style="border:1px solid #ECEDF0;border-radius:6px;overflow:hidden;display:flex;height:340px;background:#FAFAFB">
+        <div style="width:44px;background:#fff;border-right:1px solid #ECEDF0;padding:10px 0;display:flex;flex-direction:column;align-items:center;gap:8px;flex:none">
+          <svg width="16" height="18" viewBox="0 0 20 22"><polygon points="10,0 19,5.5 19,16.5 10,22 1,16.5 1,5.5" fill="#FF6A00"></polygon></svg>
+          <div style="width:22px;height:22px;border-radius:5px;background:#FFF0E5;border:1px solid #FFD9BD"></div>
+          <div style="width:22px;height:22px;border-radius:5px;background:#F1F2F4"></div>
+          <div style="width:22px;height:22px;border-radius:5px;background:#F1F2F4"></div>
+          <div style="width:22px;height:22px;border-radius:5px;background:#F1F2F4"></div>
+          <div style="width:22px;height:22px;border-radius:5px;background:#F1F2F4"></div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;min-width:0">
+          <div style="background:#fff;border-bottom:1px solid #ECEDF0;padding:8px 14px;flex:none">
+            <div style="display:flex;align-items:baseline;gap:8px"><div style="font:600 13px Sora,sans-serif;color:#0D1117">Supermercado Andrade</div><div style="font:500 10px ui-monospace,monospace;color:#6B7280">#CLI-0412</div><span style="display:inline-flex;align-items:center;gap:4px;font:500 9.5px Inter;color:#1F2937;border:1px solid #ECEDF0;border-radius:4px;padding:1px 6px"><span style="width:6px;height:6px;border-radius:2px;background:#F59E0B"></span>Em migração</span></div>
+            <div style="display:flex;gap:2px;margin-top:7px">
+              <div style="font:600 9.5px Inter;color:#FF6A00;border-bottom:2px solid #FF6A00;padding:2px 8px 4px">Dados</div>
+              <div style="font:500 9.5px Inter;color:#6B7280;padding:2px 8px 4px">Validações</div>
+              <div style="font:500 9.5px Inter;color:#6B7280;padding:2px 8px 4px">Migrações</div>
+              <div style="font:500 9.5px Inter;color:#6B7280;padding:2px 8px 4px">Implantações</div>
+              <div style="font:500 9.5px Inter;color:#6B7280;padding:2px 8px 4px">Recém VR</div>
+              <div style="font:500 9.5px Inter;color:#6B7280;padding:2px 8px 4px">Infra</div>
+              <div style="font:500 9.5px Inter;color:#6B7280;padding:2px 8px 4px">Vault</div>
+              <div style="font:500 9.5px Inter;color:#6B7280;padding:2px 8px 4px">Histórico</div>
+            </div>
+          </div>
+          <div style="flex:1;padding:10px 14px;display:flex;flex-direction:column;gap:8px;min-width:0;overflow:hidden">
+            <div style="font:600 10px Inter;color:#0D1117;text-transform:uppercase;letter-spacing:.06em">Dados cadastrais</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:1px;background:#ECEDF0;border:1px solid #ECEDF0;border-radius:6px;overflow:hidden">
+              <div style="background:#fff;padding:7px 9px"><div style="font:500 8px Inter;color:#6B7280;text-transform:uppercase">CNPJ</div><div style="font:500 9.5px ui-monospace,monospace;color:#0D1117">04.251.312/0001-77</div></div>
+              <div style="background:#fff;padding:7px 9px"><div style="font:500 8px Inter;color:#6B7280;text-transform:uppercase">Fase</div><div style="font:600 9.5px Inter;color:#0D1117">Migração</div></div>
+              <div style="background:#fff;padding:7px 9px"><div style="font:500 8px Inter;color:#6B7280;text-transform:uppercase">Consultor</div><div style="font:600 9.5px Inter;color:#0D1117">M. Ferreira</div></div>
+              <div style="background:#fff;padding:7px 9px"><div style="font:500 8px Inter;color:#6B7280;text-transform:uppercase">Virada</div><div style="font:500 9.5px ui-monospace,monospace;color:#0D1117">12/08/2026</div></div>
+            </div>
+            <div style="font:600 10px Inter;color:#0D1117;text-transform:uppercase;letter-spacing:.06em;margin-top:2px">Servidores e estações</div>
+            <div style="flex:1;background:#fff;border:1px solid #ECEDF0;border-radius:6px;padding:8px">
+              <div style="height:7px;background:#F1F2F4;border-radius:2px;margin-bottom:4px"></div>
+              <div style="height:7px;background:#FAFAFB;border-radius:2px;margin-bottom:4px"></div>
+              <div style="height:7px;background:#F1F2F4;border-radius:2px;margin-bottom:4px"></div>
+              <div style="height:7px;background:#FAFAFB;border-radius:2px"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="font:400 10.5px Inter;color:#6B7280;margin-top:6px">Header do cliente sticky com tabs-âncora: um scroll único percorre as 8 seções; a tab ativa acompanha o scroll. Sem glass — superfícies chapadas.</div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- ============ 1c ============ -->
+<div class="dv-opt" id="1c">
+<div class="dv-olabel"><a class="dv-oid" href="#1c">1c</a>Hub — chrome escuro #0D1117 (a marca vive na moldura), conteúdo claro, glass premium</div>
+<div class="dv-card" style="width:1020px;background:#F5F6F8">
+  <div style="display:flex;align-items:center;gap:10px;padding:18px 24px;background:#0D1117">
+    <svg width="22" height="24" viewBox="0 0 20 22"><polygon points="10,0 19,5.5 19,16.5 10,22 1,16.5 1,5.5" fill="#FF6A00"></polygon></svg>
+    <div style="font:700 15px Sora,sans-serif;color:#fff">IT<span style="color:#FF6A00">MIZER</span> · Hub</div>
+    <div style="margin-left:auto;font:500 10px ui-monospace,monospace;color:#6B7280">radius 12px · base 13px · moldura dark, conteúdo light</div>
+  </div>
+  <div style="padding:22px 24px;display:flex;flex-direction:column;gap:22px">
+
+    <div style="display:flex;gap:28px;flex-wrap:wrap">
+      <div>
+        <div style="font:600 10px Inter;letter-spacing:.08em;color:#6B7280;text-transform:uppercase;margin-bottom:8px">Cores — dark é do chrome, não do conteúdo</div>
+        <div style="display:flex;gap:8px">
+          <div style="width:64px"><div style="height:44px;border-radius:10px;background:#0D1117"></div><div style="font:500 9.5px ui-monospace,monospace;color:#374151;margin-top:4px">chrome<br>#0D1117</div></div>
+          <div style="width:64px"><div style="height:44px;border-radius:10px;background:#1E293B"></div><div style="font:500 9.5px ui-monospace,monospace;color:#374151;margin-top:4px">chrome-2<br>#1E293B</div></div>
+          <div style="width:64px"><div style="height:44px;border-radius:10px;background:#FF6A00"></div><div style="font:500 9.5px ui-monospace,monospace;color:#374151;margin-top:4px">primary<br>#FF6A00</div></div>
+          <div style="width:64px"><div style="height:44px;border-radius:10px;background:#F5F6F8;border:1px solid #E5E7EB"></div><div style="font:500 9.5px ui-monospace,monospace;color:#374151;margin-top:4px">canvas<br>#F5F6F8</div></div>
+          <div style="width:64px"><div style="height:44px;border-radius:10px;background:rgba(255,255,255,.72);border:1px solid #E5E7EB;backdrop-filter:blur(6px)"></div><div style="font:500 9.5px ui-monospace,monospace;color:#374151;margin-top:4px">glass<br>72% blur</div></div>
+        </div>
+      </div>
+      <div style="flex:1;min-width:280px">
+        <div style="font:600 10px Inter;letter-spacing:.08em;color:#6B7280;text-transform:uppercase;margin-bottom:8px">Glass com regra</div>
+        <div style="font:400 11.5px/1.55 Inter;color:#374151">Glass (<span style="font-family:ui-monospace,monospace">bg 72% + blur 12px</span>) só em superfícies que flutuam: header sticky, KPI cards do dashboard, modais e o vault. Tabelas e formulários ficam em branco sólido — legibilidade primeiro.</div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:28px;flex-wrap:wrap;align-items:flex-start">
+      <div style="flex:1;min-width:300px">
+        <div style="font:600 10px Inter;letter-spacing:.08em;color:#6B7280;text-transform:uppercase;margin-bottom:8px">Tipografia + card glass</div>
+        <div style="border-radius:12px;padding:14px 16px;background:linear-gradient(135deg,rgba(255,255,255,.85),rgba(255,255,255,.65));border:1px solid rgba(13,17,23,.08);box-shadow:0 8px 24px rgba(13,17,23,.08);backdrop-filter:blur(12px);display:flex;flex-direction:column;gap:6px;position:relative;overflow:hidden">
+          <svg width="90" height="100" viewBox="0 0 20 22" style="position:absolute;right:-18px;top:-14px;opacity:.07"><polygon points="10,0 19,5.5 19,16.5 10,22 1,16.5 1,5.5" fill="#FF6A00"></polygon></svg>
+          <div style="font:600 20px Sora,sans-serif;color:#0D1117">Sora SemiBold 20</div>
+          <div style="font:400 13px/1.5 Inter;color:#374151">Inter 13 — hexágono da marca como marca-d'água nos cards premium.</div>
+          <div style="display:flex;gap:14px;margin-top:4px">
+            <div><div style="font:700 18px Sora,sans-serif;color:#FF6A00">37</div><div style="font:500 9.5px Inter;color:#6B7280">em migração</div></div>
+            <div><div style="font:700 18px Sora,sans-serif;color:#0D1117">12</div><div style="font:500 9.5px Inter;color:#6B7280">Recém VR</div></div>
+            <div><div style="font:700 18px Sora,sans-serif;color:#0D1117">214</div><div style="font:500 9.5px Inter;color:#6B7280">clientes</div></div>
+          </div>
+        </div>
+      </div>
+      <div style="flex:1.4;min-width:420px">
+        <div style="font:600 10px Inter;letter-spacing:.08em;color:#6B7280;text-transform:uppercase;margin-bottom:8px">Componentes</div>
+        <div style="background:#fff;border:1px solid #E5E7EB;border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <button style="font:600 12.5px Inter;color:#fff;background:linear-gradient(180deg,#FF7D1F,#F56200);border:none;border-radius:9px;padding:8px 15px;box-shadow:0 2px 6px rgba(255,106,0,.35);cursor:pointer">Nova validação</button>
+            <button style="font:600 12.5px Inter;color:#0D1117;background:#F1F2F4;border:none;border-radius:9px;padding:8px 15px;cursor:pointer">Exportar</button>
+            <button style="font:600 12.5px Inter;color:#FF6A00;background:transparent;border:1px solid #FFD9BD;border-radius:9px;padding:8px 15px;cursor:pointer">Ver tudo</button>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <div style="flex:1;min-width:180px">
+              <div style="font:500 11px Inter;color:#374151;margin-bottom:4px">CNPJ</div>
+              <div style="font:400 13px Inter;color:#0D1117;background:#F7F8FA;border:1px solid transparent;border-radius:9px;padding:8px 11px">04.251.312/0001-77</div>
+            </div>
+            <div style="flex:1;min-width:180px">
+              <div style="font:500 11px Inter;color:#FF6A00;margin-bottom:4px">Fase (focus)</div>
+              <div style="font:400 13px Inter;color:#0D1117;background:#fff;border:1px solid #FF6A00;box-shadow:0 0 0 3px rgba(255,106,0,.14);border-radius:9px;padding:8px 11px">Migração de dados</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span style="font:600 10.5px Inter;color:#2563EB;background:#EFF4FF;border-radius:7px;padding:3px 9px">Validação</span>
+            <span style="font:600 10.5px Inter;color:#B45309;background:#FFF6E6;border-radius:7px;padding:3px 9px">Em migração</span>
+            <span style="font:600 10.5px Inter;color:#7C3AED;background:#F4EFFF;border-radius:7px;padding:3px 9px">Implantação</span>
+            <span style="font:600 10.5px Inter;color:#fff;background:#FF6A00;border-radius:7px;padding:3px 9px">Recém VR</span>
+            <span style="font:600 10.5px Inter;color:#15803D;background:#EAF9F0;border-radius:7px;padding:3px 9px">Concluído</span>
+            <span style="font:600 10.5px Inter;color:#fff;background:#DC2626;border-radius:7px;padding:3px 9px">Crítico</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div style="font:600 10px Inter;letter-spacing:.08em;color:#6B7280;text-transform:uppercase;margin-bottom:8px">Padrão de página — Cliente 360 com rail, dentro do chrome escuro (miniatura)</div>
+      <div style="border:1px solid #E5E7EB;border-radius:12px;overflow:hidden;display:flex;height:340px;background:#F5F6F8">
+        <div style="width:150px;background:#0D1117;padding:10px 8px;display:flex;flex-direction:column;gap:2px;flex:none">
+          <div style="display:flex;align-items:center;gap:6px;padding:4px 8px 10px"><svg width="14" height="16" viewBox="0 0 20 22"><polygon points="10,0 19,5.5 19,16.5 10,22 1,16.5 1,5.5" fill="#FF6A00"></polygon></svg><span style="font:700 10px Sora,sans-serif;color:#fff">IT<span style="color:#FF6A00">MIZER</span></span></div>
+          <div style="font:500 10px Inter;color:#9CA3AF;padding:5px 8px;border-radius:6px">Dashboard</div>
+          <div style="font:600 10px Inter;color:#fff;background:rgba(255,106,0,.18);border-left:2px solid #FF6A00;padding:5px 8px;border-radius:6px">Clientes</div>
+          <div style="font:500 10px Inter;color:#9CA3AF;padding:5px 8px;border-radius:6px">Validações</div>
+          <div style="font:500 10px Inter;color:#9CA3AF;padding:5px 8px;border-radius:6px">Migração</div>
+          <div style="font:500 10px Inter;color:#9CA3AF;padding:5px 8px;border-radius:6px">Implantações</div>
+          <div style="font:500 10px Inter;color:#9CA3AF;padding:5px 8px;border-radius:6px">Recém VR</div>
+          <div style="font:500 10px Inter;color:#9CA3AF;padding:5px 8px;border-radius:6px">Infraestrutura</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;min-width:0">
+          <div style="height:38px;background:rgba(245,246,248,.8);backdrop-filter:blur(10px);border-bottom:1px solid #E5E7EB;display:flex;align-items:center;gap:8px;padding:0 14px;flex:none">
+            <div style="font:400 10px Inter;color:#6B7280">Clientes / <span style="color:#0D1117;font-weight:600">Supermercado Andrade</span></div>
+            <div style="margin-left:auto;display:flex;gap:6px"><span style="font:600 9px Inter;color:#B45309;background:#FFF6E6;border-radius:6px;padding:2px 8px">Em migração</span><button style="font:600 10px Inter;color:#fff;background:linear-gradient(180deg,#FF7D1F,#F56200);border:none;border-radius:7px;padding:4px 10px">Ações</button></div>
+          </div>
+          <div style="flex:1;display:flex;min-height:0">
+            <div style="width:118px;padding:10px 6px 10px 12px;display:flex;flex-direction:column;gap:1px;flex:none">
+              <div style="font:600 9.5px Inter;color:#fff;background:#FF6A00;padding:4px 8px;border-radius:7px">Dados</div>
+              <div style="font:500 9.5px Inter;color:#374151;padding:4px 8px">Validações</div>
+              <div style="font:500 9.5px Inter;color:#374151;padding:4px 8px">Migrações</div>
+              <div style="font:500 9.5px Inter;color:#374151;padding:4px 8px">Implantações</div>
+              <div style="font:500 9.5px Inter;color:#374151;padding:4px 8px">Recém VR</div>
+              <div style="font:500 9.5px Inter;color:#374151;padding:4px 8px">Infraestrutura</div>
+              <div style="font:500 9.5px Inter;color:#374151;padding:4px 8px">Vault</div>
+              <div style="font:500 9.5px Inter;color:#374151;padding:4px 8px">Histórico</div>
+            </div>
+            <div style="flex:1;padding:10px 12px 10px 6px;display:flex;flex-direction:column;gap:8px;min-width:0">
+              <div style="font:600 13px Sora,sans-serif;color:#0D1117">Dados cadastrais</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+                <div style="background:linear-gradient(135deg,rgba(255,255,255,.9),rgba(255,255,255,.7));backdrop-filter:blur(8px);border:1px solid rgba(13,17,23,.07);box-shadow:0 4px 12px rgba(13,17,23,.06);border-radius:10px;padding:8px"><div style="font:500 8.5px Inter;color:#6B7280">CNPJ</div><div style="font:600 10.5px Inter;color:#0D1117">04.251.312/0001-77</div></div>
+                <div style="background:linear-gradient(135deg,rgba(255,255,255,.9),rgba(255,255,255,.7));backdrop-filter:blur(8px);border:1px solid rgba(13,17,23,.07);box-shadow:0 4px 12px rgba(13,17,23,.06);border-radius:10px;padding:8px"><div style="font:500 8.5px Inter;color:#6B7280">Fase atual</div><div style="font:600 10.5px Inter;color:#FF6A00">Migração de dados</div></div>
+                <div style="background:linear-gradient(135deg,rgba(255,255,255,.9),rgba(255,255,255,.7));backdrop-filter:blur(8px);border:1px solid rgba(13,17,23,.07);box-shadow:0 4px 12px rgba(13,17,23,.06);border-radius:10px;padding:8px"><div style="font:500 8.5px Inter;color:#6B7280">Consultor</div><div style="font:600 10.5px Inter;color:#0D1117">M. Ferreira</div></div>
+              </div>
+              <div style="flex:1;background:#fff;border:1px solid #E5E7EB;border-radius:10px;padding:8px">
+                <div style="font:600 10px Inter;color:#374151;margin-bottom:6px">Servidores e estações</div>
+                <div style="height:8px;background:#F1F2F4;border-radius:3px;margin-bottom:4px"></div>
+                <div style="height:8px;background:#F7F8FA;border-radius:3px;margin-bottom:4px"></div>
+                <div style="height:8px;background:#F1F2F4;border-radius:3px;margin-bottom:4px"></div>
+                <div style="height:8px;background:#F7F8FA;border-radius:3px"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="font:400 10.5px Inter;color:#6B7280;margin-top:6px">A marca dark do manual vive na sidebar/moldura; o conteúdo continua light para trabalho denso. Glass premium nos cards de resumo, sólido nas tabelas.</div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+</div>
+<p class="dv-next">Próximos passos: "aplique <a class="dv-oid" href="#1a">1a</a> na tela Cliente 360 em tamanho real" · "misture o chrome escuro de <a class="dv-oid" href="#1c">1c</a> com a densidade de <a class="dv-oid" href="#1b">1b</a>" · "mostre o dark mode de <a class="dv-oid" href="#1b">1b</a>"</p>
+</section>
+
+</x-dc>
+</body>
+</html>

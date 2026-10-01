@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style data-omelette-print-defaults>
+@media print {
+  @page { margin: 0.5in; }
+  h1, h2, h3, h4, h5, h6 { break-after: avoid; }
+  figure, table, pre, blockquote, img, svg, tr, [class~="card" i] { break-inside: avoid; }
+  img, svg { max-width: 100%; }
+  p { orphans: 3; widows: 3; }
+}
+</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<template id="__bundler_thumbnail" data-bg-color="#0D1117">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#0D1117"></rect>
+    <polygon points="600,300 660,335 660,405 600,440 540,405 540,335" fill="none" stroke="#FF6A00" stroke-width="14"></polygon>
+    <text x="600" y="510" text-anchor="middle" font-family="Sora,Inter,sans-serif" font-weight="700" font-size="58" fill="#E6EDF3"><tspan fill="#FF6A00">IT</tspan>MIZER</text>
+  </svg>
+</template>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FAFAFB;--surface:#FFFFFF;--border:#ECEDF0;--divider:#F3F4F6;
+  --ink:#0D1117;--text2:#374151;--muted:#6B7280;--faint:#C7CBD1;
+  --track:#F1F2F4;--inputBorder:#D8DBE2;--hover:#F4F5F7;
+  --brand:#FF6A00;--brandHover:#E55F00;--brandText:#C2410C;
+  --orangeTint:#FFF0E5;--orangeTintRow:#FFF8F2;--orangeBorder:#FFD9BD;
+  --ok:#15803D;--warn:#B45309;--info:#2563EB;--danger:#DC2626;
+  --dotOk:#22C55E;--dotWarn:#F59E0B;--dotDanger:#DC2626;--dotInfo:#2563EB;
+  --shadow:0 12px 40px rgba(13,17,23,.14);
+}
+[data-theme="dark"]{
+  --bg:#0D1117;--surface:#161B22;--border:#232A34;--divider:#1B212A;
+  --ink:#E6EDF3;--text2:#AEB6C0;--muted:#8B949E;--faint:#495260;
+  --track:#232A34;--inputBorder:#2D3543;--hover:#1C232E;
+  --brand:#FF6A00;--brandHover:#FF7D1F;--brandText:#FF934D;
+  --orangeTint:rgba(255,106,0,.16);--orangeTintRow:rgba(255,106,0,.07);--orangeBorder:rgba(255,106,0,.42);
+  --ok:#4ADE80;--warn:#FBBF24;--info:#60A5FA;--danger:#F87171;
+  --dotOk:#22C55E;--dotWarn:#F59E0B;--dotDanger:#EF4444;--dotInfo:#3B82F6;
+  --shadow:0 12px 40px rgba(0,0,0,.55);
+}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;transition:background .18s,color .18s}
+::selection{background:rgba(255,106,0,.24)}
+</style>
+</helmet>
+
+<div data-screen-label="ITmizer" style="display:flex;min-height:100vh;align-items:stretch;background:var(--bg)">
+
+  <!-- ===== Sidebar retrátil ===== -->
+  <aside style="width:{{ sideW }};flex:none;position:sticky;top:0;height:100vh;box-sizing:border-box;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;transition:width .18s ease;overflow:hidden">
+    <div style="display:flex;align-items:center;gap:8px;padding:14px 12px 12px;flex:none;justify-content:{{ navJustify }}">
+      <svg width="20" height="22" viewBox="0 0 20 22" style="flex:none"><polygon points="10,0 19,5.5 19,16.5 10,22 1,16.5 1,5.5" fill="none" stroke="#FF6A00" stroke-width="2"></polygon></svg>
+      <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+        <span style="font:700 14px Sora,sans-serif;color:var(--ink);white-space:nowrap"><span style="color:#FF6A00">IT</span>MIZER</span>
+      </sc-if>
+    </div>
+
+    <nav style="flex:1;display:flex;flex-direction:column;gap:2px;padding:6px 8px;min-height:0">
+      <sc-for list="{{ nav }}" as="it" hint-placeholder-count="8">
+        <div title="{{ it.label }}" onClick="{{ it.go }}" style="display:flex;align-items:center;gap:9px;padding:6px 8px;border-radius:6px;cursor:pointer;background:{{ it.bg }};border-left:2px solid {{ it.edge }};justify-content:{{ navJustify }}">
+          <span style="flex:none;width:20px;height:20px;border-radius:5px;display:flex;align-items:center;justify-content:center;font:600 10px ui-monospace,Menlo,monospace;background:{{ it.tileBg }};color:{{ it.tileFg }}">{{ it.glyph }}</span>
+          <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+            <span style="font:500 12.5px Inter;color:{{ it.fg }};white-space:nowrap">{{ it.label }}</span>
+          </sc-if>
+        </div>
+      </sc-for>
+    </nav>
+
+    <sc-if value="{{ showVrgyn }}" hint-placeholder-val="{{ true }}">
+      <div style="flex:none;margin:8px;padding:9px 10px;border:1px solid var(--border);border-radius:6px;background:var(--bg);display:flex;align-items:center;gap:8px;justify-content:{{ navJustify }};overflow:hidden">
+        <span style="flex:none;width:8px;height:8px;border-radius:2px;background:var(--dotOk)"></span>
+        <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+          <span style="white-space:nowrap;font:400 10.5px Inter;color:var(--muted)">Vinculado ao <span style="font:700 10.5px Sora,sans-serif;color:var(--brand)">VRGYN</span></span>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <button onClick="{{ toggle }}" title="Recolher / expandir menu" style="flex:none;margin:0 8px 12px;padding:7px 8px;border:1px solid var(--border);border-radius:6px;background:var(--surface);cursor:pointer;display:flex;align-items:center;gap:8px;justify-content:{{ navJustify }};color:var(--muted)">
+      <span style="font:600 12px ui-monospace,monospace">{{ toggleChar }}</span>
+      <sc-if value="{{ expanded }}" hint-placeholder-val="{{ true }}">
+        <span style="font:500 11.5px Inter;white-space:nowrap">Recolher menu</span>
+      </sc-if>
+    </button>
+  </aside>
+
+  <!-- ===== Main ===== -->
+  <main style="flex:1;min-width:0;display:flex;flex-direction:column">
+
+    <!-- barra superior fina -->
+    <div style="height:46px;flex:none;display:flex;align-items:center;gap:12px;padding:0 20px;border-bottom:1px solid var(--border);background:var(--surface)">
+      <div onClick="{{ crumbGo }}" style="font:400 12px Inter;color:var(--muted);cursor:pointer;white-space:nowrap">{{ crumbA }} <span style="color:var(--ink);font-weight:600">{{ crumbB }}</span></div>
+
+      <!-- gatilho de busca de rotas -->
+      <div onClick="{{ openPalette }}" style="margin-left:auto;display:flex;align-items:center;gap:8px;border:1px solid var(--inputBorder);border-radius:7px;padding:5px 10px;color:var(--muted);font:400 12px Inter;background:var(--bg);cursor:pointer;min-width:200px" style-hover="border-color:var(--brand)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" style="flex:none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"></circle><path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
+        <span style="flex:1">Buscar telas…</span>
+        <span style="font:600 10px ui-monospace,monospace;background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:1px 5px">⌘K</span>
+      </div>
+
+      <!-- toggle de tema -->
+      <button onClick="{{ toggleTheme }}" title="Alternar tema" style="flex:none;width:30px;height:30px;border-radius:7px;border:1px solid var(--border);background:var(--bg);color:var(--text2);display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:var(--hover)">
+        <sc-if value="{{ isDark }}" hint-placeholder-val="{{ false }}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="2"></circle><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"></path></g></svg>
+        </sc-if>
+        <sc-if value="{{ isLight }}" hint-placeholder-val="{{ true }}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path></svg>
+        </sc-if>
+      </button>
+
+      <div style="flex:none;width:28px;height:28px;border-radius:7px;background:var(--ink);color:var(--surface);display:flex;align-items:center;justify-content:center;font:600 10px Inter">MF</div>
+    </div>
+
+    <!-- ===== Cliente 360 ===== -->
+    <sc-if value="{{ isCliente }}" hint-placeholder-val="{{ true }}">
+    <div style="position:sticky;top:0;z-index:30;background:var(--surface);border-bottom:1px solid var(--border)">
+      <div style="display:flex;align-items:baseline;gap:10px;padding:14px 24px 0;flex-wrap:wrap">
+        <h1 style="margin:0;font:600 19px Sora,sans-serif;letter-spacing:-.01em;color:var(--ink)">Supermercado Andrade</h1>
+        <span style="font:500 11.5px ui-monospace,monospace;color:var(--muted)">#CLI-0412</span>
+        <span style="display:inline-flex;align-items:center;gap:5px;font:500 11px Inter;color:var(--text2);border:1px solid var(--border);border-radius:4px;padding:2px 8px"><span style="width:7px;height:7px;border-radius:2px;background:var(--dotWarn)"></span>Em migração</span>
+        <div style="margin-left:auto;display:flex;gap:8px">
+          <button style="font:600 12px Inter;color:var(--ink);background:var(--surface);border:1px solid var(--inputBorder);border-radius:5px;padding:6px 12px;cursor:pointer" style-hover="background:var(--hover)">Exportar</button>
+          <button onClick="{{ novaValidacao }}" style="font:600 12px Inter;color:#fff;background:var(--brand);border:none;border-radius:5px;padding:6px 12px;cursor:pointer" style-hover="background:var(--brandHover)">Nova validação</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:2px;padding:8px 16px 0;overflow-x:auto">
+        <sc-for list="{{ tabs }}" as="tab" hint-placeholder-count="8">
+          <button onClick="{{ tab.go }}" style="font:600 12px Inter;color:{{ tab.fg }};background:none;border:none;border-bottom:2px solid {{ tab.edge }};padding:4px 10px 9px;cursor:pointer;white-space:nowrap">{{ tab.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="padding:20px 24px 60px;display:flex;flex-direction:column;gap:28px">
+
+      <section id="sec-dados">
+        <div style="font:600 11px Inter;color:var(--ink);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">Dados cadastrais</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden">
+          <div style="background:var(--surface);padding:10px 12px"><div style="font:500 10px Inter;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">CNPJ</div><div style="font:500 12.5px ui-monospace,monospace;color:var(--ink);margin-top:2px">04.251.312/0001-77</div></div>
+          <div style="background:var(--surface);padding:10px 12px"><div style="font:500 10px Inter;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">Razão social</div><div style="font:500 12.5px Inter;color:var(--ink);margin-top:2px">Andrade Comércio de Alimentos LTDA</div></div>
+          <div style="background:var(--surface);padding:10px 12px"><div style="font:500 10px Inter;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">Fase atual</div><div style="font:600 12.5px Inter;color:var(--ink);margin-top:2px">Migração de dados</div></div>
+          <div style="background:var(--surface);padding:10px 12px"><div style="font:500 10px Inter;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">Consultor</div><div style="font:500 12.5px Inter;color:var(--ink);margin-top:2px">M. Ferreira</div></div>
+          <div style="background:var(--surface);padding:10px 12px"><div style="font:500 10px Inter;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">Sistema anterior</div><div style="font:500 12.5px Inter;color:var(--ink);margin-top:2px">RMS Retail</div></div>
+          <div style="background:var(--surface);padding:10px 12px"><div style="font:500 10px Inter;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">Lojas</div><div style="font:500 12.5px ui-monospace,monospace;color:var(--ink);margin-top:2px">3</div></div>
+          <div style="background:var(--surface);padding:10px 12px"><div style="font:500 10px Inter;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">PDVs</div><div style="font:500 12.5px ui-monospace,monospace;color:var(--ink);margin-top:2px">14</div></div>
+          <div style="background:var(--surface);padding:10px 12px"><div style="font:500 10px Inter;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">Data prevista de virada</div><div style="font:500 12.5px ui-monospace,monospace;color:var(--ink);margin-top:2px">12/08/2026</div></div>
+        </div>
+      </section>
+
+      <section id="sec-validacoes">
+        <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:10px"><div style="font:600 11px Inter;color:var(--ink);text-transform:uppercase;letter-spacing:.07em">Validações</div><span style="font:500 11px ui-monospace,monospace;color:var(--muted)">2</span></div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden">
+          <div style="display:grid;grid-template-columns:1fr 1.6fr 1.2fr 1fr;gap:12px;padding:7px 12px;border-bottom:1px solid var(--border);font:600 10px ui-monospace,monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.06em"><div>data</div><div>escopo</div><div>responsável</div><div>resultado</div></div>
+          <div style="display:grid;grid-template-columns:1fr 1.6fr 1.2fr 1fr;gap:12px;padding:8px 12px;border-bottom:1px solid var(--divider);font:400 12px Inter;color:var(--ink);align-items:center"><div style="font:400 11.5px ui-monospace,monospace">03/06/2026</div><div>Parque completo — 3 lojas</div><div>C. Nogueira</div><div style="display:flex;align-items:center;gap:5px;font:500 11px Inter;color:var(--warn)"><span style="width:7px;height:7px;border-radius:2px;background:var(--dotWarn)"></span>Ressalvas</div></div>
+          <div style="display:grid;grid-template-columns:1fr 1.6fr 1.2fr 1fr;gap:12px;padding:8px 12px;font:400 12px Inter;color:var(--ink);align-items:center;background:var(--bg)"><div style="font:400 11.5px ui-monospace,monospace">21/06/2026</div><div>Reteste servidor retaguarda L2</div><div>C. Nogueira</div><div style="display:flex;align-items:center;gap:5px;font:500 11px Inter;color:var(--ok)"><span style="width:7px;height:7px;border-radius:2px;background:var(--dotOk)"></span>Aprovado</div></div>
+        </div>
+      </section>
+
+      <section id="sec-migracoes">
+        <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:10px"><div style="font:600 11px Inter;color:var(--ink);text-transform:uppercase;letter-spacing:.07em">Migrações</div><span style="font:500 11px ui-monospace,monospace;color:var(--muted)">3 bases</span></div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden">
+          <div style="display:grid;grid-template-columns:1.4fr 1fr 1.6fr 1fr;gap:12px;padding:7px 12px;border-bottom:1px solid var(--border);font:600 10px ui-monospace,monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.06em"><div>base de origem</div><div>registros</div><div>progresso</div><div>status</div></div>
+          <div style="display:grid;grid-template-columns:1.4fr 1fr 1.6fr 1fr;gap:12px;padding:8px 12px;border-bottom:1px solid var(--divider);font:400 12px Inter;color:var(--ink);align-items:center"><div>Cadastro de produtos</div><div style="font:400 11.5px ui-monospace,monospace">148.220</div><div style="display:flex;align-items:center;gap:8px"><div style="flex:1;height:5px;background:var(--track);border-radius:3px;overflow:hidden"><div style="width:100%;height:100%;background:var(--dotOk)"></div></div><span style="font:500 10.5px ui-monospace,monospace;color:var(--muted)">100%</span></div><div style="display:flex;align-items:center;gap:5px;font:500 11px Inter;color:var(--ok)"><span style="width:7px;height:7px;border-radius:2px;background:var(--dotOk)"></span>Concluída</div></div>
+          <div style="display:grid;grid-template-columns:1.4fr 1fr 1.6fr 1fr;gap:12px;padding:8px 12px;border-bottom:1px solid var(--divider);font:400 12px Inter;color:var(--ink);align-items:center;background:var(--bg)"><div>Clientes e convênios</div><div style="font:400 11.5px ui-monospace,monospace">32.418</div><div style="display:flex;align-items:center;gap:8px"><div style="flex:1;height:5px;background:var(--track);border-radius:3px;overflow:hidden"><div style="width:62%;height:100%;background:var(--brand)"></div></div><span style="font:500 10.5px ui-monospace,monospace;color:var(--muted)">62%</span></div><div style="display:flex;align-items:center;gap:5px;font:500 11px Inter;color:var(--warn)"><span style="width:7px;height:7px;border-radius:2px;background:var(--dotWarn)"></span>Em execução</div></div>
+          <div style="display:grid;grid-template-columns:1.4fr 1fr 1.6fr 1fr;gap:12px;padding:8px 12px;font:400 12px Inter;color:var(--ink);align-items:center"><div>Financeiro / contas</div><div style="font:400 11.5px ui-monospace,monospace">—</div><div style="display:flex;align-items:center;gap:8px"><div style="flex:1;height:5px;background:var(--track);border-radius:3px"></div><span style="font:500 10.5px ui-monospace,monospace;color:var(--muted)">0%</span></div><div style="display:flex;align-items:center;gap:5px;font:500 11px Inter;color:var(--muted)"><span style="width:7px;height:7px;border-radius:2px;background:var(--faint)"></span>Aguardando</div></div>
+        </div>
+      </section>
+
+      <section id="sec-implantacoes">
+        <div style="font:600 11px Inter;color:var(--ink);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">Implantações</div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:4px 0">
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--divider)"><span style="width:7px;height:7px;border-radius:2px;background:var(--dotOk);flex:none"></span><span style="font:400 12px Inter;color:var(--ink);flex:1">Instalação retaguarda — Loja 1 (matriz)</span><span style="font:400 11px ui-monospace,monospace;color:var(--muted)">18/06/2026</span></div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--divider)"><span style="width:7px;height:7px;border-radius:2px;background:var(--dotOk);flex:none"></span><span style="font:400 12px Inter;color:var(--ink);flex:1">Instalação PDVs — Loja 1 (6 caixas)</span><span style="font:400 11px ui-monospace,monospace;color:var(--muted)">25/06/2026</span></div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--divider)"><span style="width:7px;height:7px;border-radius:2px;background:var(--dotWarn);flex:none"></span><span style="font:400 12px Inter;color:var(--ink);flex:1">Instalação retaguarda — Loja 2</span><span style="font:500 11px Inter;color:var(--warn)">agendada · 10/07</span></div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 12px"><span style="width:7px;height:7px;border-radius:2px;background:var(--faint);flex:none"></span><span style="font:400 12px Inter;color:var(--muted);flex:1">Instalação PDVs — Lojas 2 e 3</span><span style="font:400 11px Inter;color:var(--muted)">pendente</span></div>
+        </div>
+      </section>
+
+      <section id="sec-recemvr">
+        <div style="font:600 11px Inter;color:var(--ink);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">Recém VR</div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;display:flex;gap:28px;align-items:center;flex-wrap:wrap">
+          <div style="font:400 12px Inter;color:var(--muted)">Cliente ainda não virou. Acompanhamento pós-virada inicia em <span style="font:500 11.5px ui-monospace,monospace;color:var(--ink)">12/08/2026</span>.</div>
+          <div style="display:flex;gap:6px;margin-left:auto">
+            <span style="display:inline-flex;align-items:center;gap:5px;font:500 11px Inter;color:var(--text2);border:1px solid var(--border);border-radius:4px;padding:2px 8px"><span style="width:7px;height:7px;border-radius:2px;background:var(--faint)"></span>Criticidade — a definir</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="sec-infra">
+        <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:10px"><div style="font:600 11px Inter;color:var(--ink);text-transform:uppercase;letter-spacing:.07em">Infraestrutura do cliente</div><span style="font:500 11px ui-monospace,monospace;color:var(--muted)">17 equipamentos</span></div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden">
+          <div style="display:grid;grid-template-columns:1.4fr 1.2fr 1fr 1.2fr 1fr;gap:12px;padding:7px 12px;border-bottom:1px solid var(--border);font:600 10px ui-monospace,monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.06em"><div>equipamento</div><div>tipo</div><div>loja</div><div>so</div><div>status</div></div>
+          <div style="display:grid;grid-template-columns:1.4fr 1.2fr 1fr 1.2fr 1fr;gap:12px;padding:8px 12px;border-bottom:1px solid var(--divider);font:400 12px Inter;color:var(--ink);align-items:center"><div style="font:500 11.5px ui-monospace,monospace">SRV-RET-01</div><div>Retaguarda</div><div>Loja 1</div><div style="font:400 11.5px ui-monospace,monospace">Ubuntu 22.04</div><div style="display:flex;align-items:center;gap:5px;font:500 11px Inter;color:var(--ok)"><span style="width:7px;height:7px;border-radius:2px;background:var(--dotOk)"></span>Homologado</div></div>
+          <div style="display:grid;grid-template-columns:1.4fr 1.2fr 1fr 1.2fr 1fr;gap:12px;padding:8px 12px;border-bottom:1px solid var(--divider);font:400 12px Inter;color:var(--ink);align-items:center;background:var(--bg)"><div style="font:500 11.5px ui-monospace,monospace">SRV-RET-02</div><div>Retaguarda</div><div>Loja 2</div><div style="font:400 11.5px ui-monospace,monospace">WinSrv 2016</div><div style="display:flex;align-items:center;gap:5px;font:500 11px Inter;color:var(--warn)"><span style="width:7px;height:7px;border-radius:2px;background:var(--dotWarn)"></span>Atenção</div></div>
+          <div style="display:grid;grid-template-columns:1.4fr 1.2fr 1fr 1.2fr 1fr;gap:12px;padding:8px 12px;border-bottom:1px solid var(--divider);font:400 12px Inter;color:var(--ink);align-items:center"><div style="font:500 11.5px ui-monospace,monospace">EST-CX-04</div><div>Estação caixa</div><div>Loja 1</div><div style="font:400 11.5px ui-monospace,monospace">Win 10 Pro</div><div style="display:flex;align-items:center;gap:5px;font:600 11px Inter;color:var(--danger)"><span style="width:7px;height:7px;border-radius:2px;background:var(--dotDanger)"></span>Reprovar</div></div>
+          <div style="display:grid;grid-template-columns:1.4fr 1.2fr 1fr 1.2fr 1fr;gap:12px;padding:8px 12px;font:400 12px Inter;color:var(--ink);align-items:center;background:var(--bg)"><div style="font:500 11.5px ui-monospace,monospace">LINK-L1</div><div>Internet</div><div>Loja 1</div><div style="font:400 11.5px ui-monospace,monospace">500 Mbps fibra</div><div style="display:flex;align-items:center;gap:5px;font:500 11px Inter;color:var(--ok)"><span style="width:7px;height:7px;border-radius:2px;background:var(--dotOk)"></span>Homologado</div></div>
+        </div>
+      </section>
+
+      <section id="sec-vault">
+        <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:10px"><div style="font:600 11px Inter;color:var(--ink);text-transform:uppercase;letter-spacing:.07em">Vault de credenciais</div><span style="display:inline-flex;align-items:center;gap:5px;font:500 10.5px Inter;color:var(--ok)"><span style="width:7px;height:7px;border-radius:2px;background:var(--dotOk)"></span>criptografado</span></div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:4px 0">
+          <div style="display:flex;align-items:center;gap:12px;padding:8px 12px;border-bottom:1px solid var(--divider)"><span style="font:500 12px Inter;color:var(--ink);flex:1">Acesso SSH — SRV-RET-01</span><span style="font:500 12px ui-monospace,monospace;color:var(--muted);letter-spacing:2px">••••••••••</span><button style="font:600 11px Inter;color:var(--ink);background:var(--surface);border:1px solid var(--inputBorder);border-radius:5px;padding:3px 10px;cursor:pointer" style-hover="background:var(--hover)">Revelar</button></div>
+          <div style="display:flex;align-items:center;gap:12px;padding:8px 12px;border-bottom:1px solid var(--divider)"><span style="font:500 12px Inter;color:var(--ink);flex:1">Banco RMS (origem da migração)</span><span style="font:500 12px ui-monospace,monospace;color:var(--muted);letter-spacing:2px">••••••••••</span><button style="font:600 11px Inter;color:var(--ink);background:var(--surface);border:1px solid var(--inputBorder);border-radius:5px;padding:3px 10px;cursor:pointer" style-hover="background:var(--hover)">Revelar</button></div>
+          <div style="display:flex;align-items:center;gap:12px;padding:8px 12px"><span style="font:500 12px Inter;color:var(--ink);flex:1">Acesso remoto — TeamViewer L1</span><span style="font:500 12px ui-monospace,monospace;color:var(--muted);letter-spacing:2px">••••••••••</span><button style="font:600 11px Inter;color:var(--ink);background:var(--surface);border:1px solid var(--inputBorder);border-radius:5px;padding:3px 10px;cursor:pointer" style-hover="background:var(--hover)">Revelar</button></div>
+        </div>
+      </section>
+
+      <section id="sec-historico">
+        <div style="font:600 11px Inter;color:var(--ink);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">Histórico</div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;display:flex;flex-direction:column;gap:0">
+          <div style="display:flex;gap:12px"><div style="display:flex;flex-direction:column;align-items:center"><span style="width:8px;height:8px;border-radius:2px;background:var(--brand);flex:none;margin-top:4px"></span><span style="width:1px;flex:1;background:var(--border)"></span></div><div style="padding-bottom:14px"><div style="font:500 12px Inter;color:var(--ink)">Migração de clientes iniciada (62%)</div><div style="font:400 11px ui-monospace,monospace;color:var(--muted);margin-top:2px">02/07/2026 14:32 · M. Ferreira</div></div></div>
+          <div style="display:flex;gap:12px"><div style="display:flex;flex-direction:column;align-items:center"><span style="width:8px;height:8px;border-radius:2px;background:var(--dotOk);flex:none;margin-top:4px"></span><span style="width:1px;flex:1;background:var(--border)"></span></div><div style="padding-bottom:14px"><div style="font:500 12px Inter;color:var(--ink)">Reteste do servidor retaguarda L2 aprovado</div><div style="font:400 11px ui-monospace,monospace;color:var(--muted);margin-top:2px">21/06/2026 09:10 · C. Nogueira</div></div></div>
+          <div style="display:flex;gap:12px"><div style="display:flex;flex-direction:column;align-items:center"><span style="width:8px;height:8px;border-radius:2px;background:var(--dotOk);flex:none;margin-top:4px"></span></div><div><div style="font:500 12px Inter;color:var(--ink)">Cliente cadastrado a partir do VRGYN</div><div style="font:400 11px ui-monospace,monospace;color:var(--muted);margin-top:2px">28/05/2026 16:45 · integração</div></div></div>
+        </div>
+      </section>
+
+    </div>
+    </sc-if>
+
+    <!-- ===== Dashboard ===== -->
+    <sc-if value="{{ isDashboard }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Dashboard" style="padding:20px 24px 60px;display:flex;flex-direction:column;gap:20px">
+      <h1 style="margin:0;font:600 19px Sora,sans-serif;letter-spacing:-.01em;color:var(--ink)">Dashboard</h1>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden">
+        <div style="background:var(--surface);padding:12px 14px"><div style="font:500 10px Inter;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">Clientes ativos</div><div style="font:600 22px Sora,sans-serif;color:var(--ink);margin-top:4px">214</div></div>
+        <div style="background:var(--surface);padding:12px 14px"><div style="font:500 10px Inter;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">Em migração</div><div style="font:600 22px Sora,sans-serif;color:var(--brand);margin-top:4px">37</div></div>
+        <div style="background:var(--surface);padding:12px 14px"><div style="font:500 10px Inter;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">Implantações no mês</div><div style="font:600 22px Sora,sans-serif;color:var(--ink);margin-top:4px">9</div></div>
+        <div style="background:var(--surface);padding:12px 14px"><div style="font:500 10px Inter;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">Recém VR críticos</div><div style="font:600 22px Sora,sans-serif;color:var(--danger);margin-top:4px">3</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:16px">
+        <div>
+          <div style="font:600 11px Inter;color:var(--ink);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">Migrações em andamento</div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden">
+            <div style="display:grid;grid-template-columns:1.4fr 1fr 1.4fr;gap:12px;padding:7px 12px;border-bottom:1px solid var(--border);font:600 10px ui-monospace,monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.06em"><div>cliente</div><div>fase</div><div>progresso</div></div>
+            <div onClick="{{ openCliente }}" style="display:grid;grid-template-columns:1.4fr 1fr 1.4fr;gap:12px;padding:8px 12px;border-bottom:1px solid var(--divider);font:400 12px Inter;color:var(--ink);align-items:center;cursor:pointer"><div style="font-weight:500">Supermercado Andrade</div><div>Clientes</div><div style="display:flex;align-items:center;gap:8px"><div style="flex:1;height:5px;background:var(--track);border-radius:3px;overflow:hidden"><div style="width:62%;height:100%;background:var(--brand)"></div></div><span style="font:500 10.5px ui-monospace,monospace;color:var(--muted)">62%</span></div></div>
+            <div style="display:grid;grid-template-columns:1.4fr 1fr 1.4fr;gap:12px;padding:8px 12px;border-bottom:1px solid var(--divider);font:400 12px Inter;color:var(--ink);align-items:center;background:var(--bg)"><div style="font-weight:500">Mercado Boa Vista</div><div>Produtos</div><div style="display:flex;align-items:center;gap:8px"><div style="flex:1;height:5px;background:var(--track);border-radius:3px;overflow:hidden"><div style="width:88%;height:100%;background:var(--brand)"></div></div><span style="font:500 10.5px ui-monospace,monospace;color:var(--muted)">88%</span></div></div>
+            <div style="display:grid;grid-template-columns:1.4fr 1fr 1.4fr;gap:12px;padding:8px 12px;font:400 12px Inter;color:var(--ink);align-items:center"><div style="font-weight:500">Atacadão Lima</div><div>Financeiro</div><div style="display:flex;align-items:center;gap:8px"><div style="flex:1;height:5px;background:var(--track);border-radius:3px;overflow:hidden"><div style="width:31%;height:100%;background:var(--brand)"></div></div><span style="font:500 10.5px ui-monospace,monospace;color:var(--muted)">31%</span></div></div>
+          </div>
+        </div>
+        <div>
+          <div style="font:600 11px Inter;color:var(--ink);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">Recém VR — atenção</div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:4px 0">
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--divider)"><span style="width:7px;height:7px;border-radius:2px;background:var(--dotDanger);flex:none"></span><span style="font:400 12px Inter;color:var(--ink);flex:1">Padaria Central — 11 chamados</span><span style="font:400 11px ui-monospace,monospace;color:var(--muted)">D+4</span></div>
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--divider)"><span style="width:7px;height:7px;border-radius:2px;background:var(--dotDanger);flex:none"></span><span style="font:400 12px Inter;color:var(--ink);flex:1">Hortifruti Sul — caixa parado</span><span style="font:400 11px ui-monospace,monospace;color:var(--muted)">D+1</span></div>
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 12px"><span style="width:7px;height:7px;border-radius:2px;background:var(--dotWarn);flex:none"></span><span style="font:400 12px Inter;color:var(--ink);flex:1">Mercearia Nova — treinamento pendente</span><span style="font:400 11px ui-monospace,monospace;color:var(--muted)">D+9</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ===== Clientes (listagem) ===== -->
+    <sc-if value="{{ isClientes }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Clientes" style="padding:20px 24px 60px;display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:10px">
+        <h1 style="margin:0;font:600 19px Sora,sans-serif;letter-spacing:-.01em;color:var(--ink)">Clientes</h1>
+        <span style="font:500 11px ui-monospace,monospace;color:var(--muted)">214</span>
+        <button style="margin-left:auto;font:600 12px Inter;color:#fff;background:var(--brand);border:none;border-radius:5px;padding:6px 12px;cursor:pointer" style-hover="background:var(--brandHover)">Novo cliente</button>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <div style="flex:1;max-width:280px;display:flex;align-items:center;gap:6px;border:1px solid var(--inputBorder);border-radius:5px;padding:6px 10px;background:var(--surface);color:var(--muted);font:400 12px Inter">Buscar por nome ou CNPJ…</div>
+        <span style="font:600 11px Inter;color:var(--brand);border:1px solid var(--orangeBorder);background:var(--orangeTint);border-radius:4px;padding:4px 10px;cursor:pointer">Todas as fases</span>
+        <span style="font:500 11px Inter;color:var(--text2);border:1px solid var(--border);border-radius:4px;padding:4px 10px;cursor:pointer" style-hover="background:var(--hover)">Em migração</span>
+        <span style="font:500 11px Inter;color:var(--text2);border:1px solid var(--border);border-radius:4px;padding:4px 10px;cursor:pointer" style-hover="background:var(--hover)">Recém VR</span>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden">
+        <div style="display:grid;grid-template-columns:1.6fr 1.3fr 1fr 1fr 1fr;gap:12px;padding:7px 12px;border-bottom:1px solid var(--border);font:600 10px ui-monospace,monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.06em"><div>cliente</div><div>cnpj</div><div>fase</div><div>consultor</div><div>virada</div></div>
+        <div onClick="{{ openCliente }}" style="display:grid;grid-template-columns:1.6fr 1.3fr 1fr 1fr 1fr;gap:12px;padding:8px 12px;border-bottom:1px solid var(--divider);font:400 12px Inter;color:var(--ink);align-items:center;cursor:pointer" style-hover="background:var(--orangeTintRow)"><div style="font-weight:500">Supermercado Andrade</div><div style="font:400 11.5px ui-monospace,monospace">04.251.312/0001-77</div><div style="display:flex;align-items:center;gap:5px;font:500 11px Inter;color:var(--warn)"><span style="width:7px;height:7px;border-radius:2px;background:var(--dotWarn)"></span>Migração</div><div>M. Ferreira</div><div style="font:400 11.5px ui-monospace,monospace">12/08/2026</div></div>
+        <div style="display:grid;grid-template-columns:1.6fr 1.3fr 1fr 1fr 1fr;gap:12px;padding:8px 12px;border-bottom:1px solid var(--divider);font:400 12px Inter;color:var(--ink);align-items:center;cursor:pointer;background:var(--bg)" style-hover="background:var(--orangeTintRow)"><div style="font-weight:500">Mercado Boa Vista</div><div style="font:400 11.5px ui-monospace,monospace">11.402.881/0001-30</div><div style="display:flex;align-items:center;gap:5px;font:500 11px Inter;color:var(--warn)"><span style="width:7px;height:7px;border-radius:2px;background:var(--dotWarn)"></span>Migração</div><div>C. Nogueira</div><div style="font:400 11.5px ui-monospace,monospace">02/09/2026</div></div>
+        <div style="display:grid;grid-template-columns:1.6fr 1.3fr 1fr 1fr 1fr;gap:12px;padding:8px 12px;border-bottom:1px solid var(--divider);font:400 12px Inter;color:var(--ink);align-items:center;cursor:pointer" style-hover="background:var(--orangeTintRow)"><div style="font-weight:500">Padaria Central</div><div style="font:400 11.5px ui-monospace,monospace">28.774.019/0001-05</div><div style="display:flex;align-items:center;gap:5px;font:500 11px Inter;color:var(--brandText)"><span style="width:7px;height:7px;border-radius:2px;background:var(--brand)"></span>Recém VR</div><div>R. Salles</div><div style="font:400 11.5px ui-monospace,monospace">30/06/2026</div></div>
+        <div style="display:grid;grid-template-columns:1.6fr 1.3fr 1fr 1fr 1fr;gap:12px;padding:8px 12px;border-bottom:1px solid var(--divider);font:400 12px Inter;color:var(--ink);align-items:center;cursor:pointer;background:var(--bg)" style-hover="background:var(--orangeTintRow)"><div style="font-weight:500">Atacadão Lima</div><div style="font:400 11.5px ui-monospace,monospace">07.556.230/0001-64</div><div style="display:flex;align-items:center;gap:5px;font:500 11px Inter;color:var(--info)"><span style="width:7px;height:7px;border-radius:2px;background:var(--dotInfo)"></span>Validação</div><div>M. Ferreira</div><div style="font:400 11.5px ui-monospace,monospace">—</div></div>
+        <div style="display:grid;grid-template-columns:1.6fr 1.3fr 1fr 1fr 1fr;gap:12px;padding:8px 12px;font:400 12px Inter;color:var(--ink);align-items:center;cursor:pointer" style-hover="background:var(--orangeTintRow)"><div style="font-weight:500">Hortifruti Sul</div><div style="font:400 11.5px ui-monospace,monospace">33.190.477/0001-22</div><div style="display:flex;align-items:center;gap:5px;font:500 11px Inter;color:var(--ok)"><span style="width:7px;height:7px;border-radius:2px;background:var(--dotOk)"></span>Concluído</div><div>R. Salles</div><div style="font:400 11.5px ui-monospace,monospace">14/05/2026</div></div>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ===== Módulo genérico ===== -->
+    <sc-if value="{{ isModulo }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Módulo" style="padding:20px 24px 60px;display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:10px">
+        <h1 style="margin:0;font:600 19px Sora,sans-serif;letter-spacing:-.01em;color:var(--ink)">{{ moduloLabel }}</h1>
+        <button onClick="{{ novoRegistro }}" style="margin-left:auto;font:600 12px Inter;color:#fff;background:var(--brand);border:none;border-radius:5px;padding:6px 12px;cursor:pointer" style-hover="background:var(--brandHover)">Novo registro</button>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <div style="flex:1;max-width:280px;display:flex;align-items:center;gap:6px;border:1px solid var(--inputBorder);border-radius:5px;padding:6px 10px;background:var(--surface);color:var(--muted);font:400 12px Inter">Buscar…</div>
+        <span style="font:500 11px Inter;color:var(--text2);border:1px solid var(--border);border-radius:4px;padding:4px 10px;cursor:pointer" style-hover="background:var(--hover)">Filtros</span>
+      </div>
+      <div style="border:1px dashed var(--inputBorder);border-radius:6px;background:var(--surface);min-height:260px;display:flex;align-items:center;justify-content:center">
+        <div style="font:500 11.5px ui-monospace,monospace;color:var(--muted);text-align:center;line-height:1.7">listagem de {{ moduloLabel }}<br>mesmo padrão da tela Clientes: toolbar + tabela compacta 32px</div>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ===== Formulário ===== -->
+    <sc-if value="{{ isForm }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Formulário" style="padding:20px 24px 80px;display:flex;flex-direction:column;gap:18px;max-width:920px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <button onClick="{{ backFromForm }}" title="Voltar" style="flex:none;width:28px;height:28px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text2);cursor:pointer;font:600 13px ui-monospace,monospace" style-hover="background:var(--hover)">←</button>
+        <h1 style="margin:0;font:600 19px Sora,sans-serif;letter-spacing:-.01em;color:var(--ink)">{{ formTitle }}</h1>
+      </div>
+
+      <!-- Form: Validação -->
+      <sc-if value="{{ isFormValidacao }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:16px 18px">
+          <div style="font:600 11px Inter;color:var(--ink);text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px">Identificação</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+            <label style="display:flex;flex-direction:column;gap:5px"><span style="font:500 11px Inter;color:var(--text2)">Cliente</span><select style="font:400 12.5px Inter;color:var(--ink);background:var(--surface);border:1px solid var(--inputBorder);border-radius:6px;padding:8px 10px"><option>Supermercado Andrade</option><option>Mercado Boa Vista</option><option>Atacadão Lima</option></select></label>
+            <label style="display:flex;flex-direction:column;gap:5px"><span style="font:500 11px Inter;color:var(--text2)">Data do levantamento</span><input type="date" style="font:400 12.5px Inter;color:var(--ink);background:var(--surface);border:1px solid var(--inputBorder);border-radius:6px;padding:7px 10px"></label>
+            <label style="display:flex;flex-direction:column;gap:5px"><span style="font:500 11px Inter;color:var(--text2)">Responsável técnico</span><input placeholder="Nome do consultor" style="font:400 12.5px Inter;color:var(--ink);background:var(--surface);border:1px solid var(--inputBorder);border-radius:6px;padding:8px 10px"></label>
+            <label style="display:flex;flex-direction:column;gap:5px"><span style="font:500 11px Inter;color:var(--text2)">Escopo</span><select style="font:400 12.5px Inter;color:var(--ink);background:var(--surface);border:1px solid var(--inputBorder);border-radius:6px;padding:8px 10px"><option>Parque completo</option><option>Loja específica</option><option>Reteste pontual</option></select></label>
+          </div>
+        </div>
+
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:16px 18px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><div style="font:600 11px Inter;color:var(--ink);text-transform:uppercase;letter-spacing:.07em">Equipamentos levantados</div><button style="margin-left:auto;font:600 11px Inter;color:var(--brand);background:var(--orangeTint);border:1px solid var(--orangeBorder);border-radius:5px;padding:4px 10px;cursor:pointer">+ Adicionar linha</button></div>
+          <div style="border:1px solid var(--border);border-radius:6px;overflow:hidden">
+            <div style="display:grid;grid-template-columns:1.4fr 1.2fr 1.4fr 1fr;gap:10px;padding:7px 12px;border-bottom:1px solid var(--border);font:600 10px ui-monospace,monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.06em"><div>identificação</div><div>tipo</div><div>sistema operacional</div><div>parecer</div></div>
+            <div style="display:grid;grid-template-columns:1.4fr 1.2fr 1.4fr 1fr;gap:10px;padding:8px 12px;border-bottom:1px solid var(--divider);align-items:center"><input value="SRV-RET-01" style="font:400 11.5px ui-monospace,monospace;color:var(--ink);background:var(--bg);border:1px solid var(--inputBorder);border-radius:5px;padding:6px 8px"><input value="Retaguarda" style="font:400 11.5px Inter;color:var(--ink);background:var(--bg);border:1px solid var(--inputBorder);border-radius:5px;padding:6px 8px"><input value="Ubuntu 22.04" style="font:400 11.5px ui-monospace,monospace;color:var(--ink);background:var(--bg);border:1px solid var(--inputBorder);border-radius:5px;padding:6px 8px"><select style="font:400 11.5px Inter;color:var(--ink);background:var(--bg);border:1px solid var(--inputBorder);border-radius:5px;padding:6px 8px"><option>Homologado</option><option>Atenção</option><option>Reprovar</option></select></div>
+            <div style="display:grid;grid-template-columns:1.4fr 1.2fr 1.4fr 1fr;gap:10px;padding:8px 12px;align-items:center"><input value="EST-CX-04" style="font:400 11.5px ui-monospace,monospace;color:var(--ink);background:var(--bg);border:1px solid var(--inputBorder);border-radius:5px;padding:6px 8px"><input value="Estação caixa" style="font:400 11.5px Inter;color:var(--ink);background:var(--bg);border:1px solid var(--inputBorder);border-radius:5px;padding:6px 8px"><input value="Win 10 Pro" style="font:400 11.5px ui-monospace,monospace;color:var(--ink);background:var(--bg);border:1px solid var(--inputBorder);border-radius:5px;padding:6px 8px"><select style="font:400 11.5px Inter;color:var(--ink);background:var(--bg);border:1px solid var(--inputBorder);border-radius:5px;padding:6px 8px"><option>Reprovar</option><option>Atenção</option><option>Homologado</option></select></div>
+          </div>
+        </div>
+
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:16px 18px">
+          <div style="font:600 11px Inter;color:var(--ink);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px">Conectividade & parecer</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+            <label style="display:flex;flex-direction:column;gap:5px"><span style="font:500 11px Inter;color:var(--text2)">Link de internet (matriz)</span><input value="500 Mbps fibra dedicada" style="font:400 12.5px Inter;color:var(--ink);background:var(--surface);border:1px solid var(--inputBorder);border-radius:6px;padding:8px 10px"></label>
+            <label style="display:flex;flex-direction:column;gap:5px"><span style="font:500 11px Inter;color:var(--text2)">Resultado geral</span><select style="font:400 12.5px Inter;color:var(--ink);background:var(--surface);border:1px solid var(--inputBorder);border-radius:6px;padding:8px 10px"><option>Aprovado com ressalvas</option><option>Aprovado</option><option>Reprovado</option></select></label>
+          </div>
+          <label style="display:flex;flex-direction:column;gap:5px"><span style="font:500 11px Inter;color:var(--text2)">Observações</span><textarea rows="3" placeholder="Pendências, riscos, recomendações antes da migração…" style="font:400 12.5px Inter;color:var(--ink);background:var(--surface);border:1px solid var(--inputBorder);border-radius:6px;padding:8px 10px;resize:vertical"></textarea></label>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- Form: Usuário -->
+      <sc-if value="{{ isFormUsuario }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:16px 18px">
+          <div style="font:600 11px Inter;color:var(--ink);text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px">Dados do usuário</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+            <label style="display:flex;flex-direction:column;gap:5px"><span style="font:500 11px Inter;color:var(--text2)">Nome completo</span><input placeholder="ex.: Marina Ferreira" style="font:400 12.5px Inter;color:var(--ink);background:var(--surface);border:1px solid var(--inputBorder);border-radius:6px;padding:8px 10px"></label>
+            <label style="display:flex;flex-direction:column;gap:5px"><span style="font:500 11px Inter;color:var(--text2)">E-mail corporativo</span><input placeholder="nome@vrsoftware.com.br" style="font:400 12.5px Inter;color:var(--ink);background:var(--surface);border:1px solid var(--inputBorder);border-radius:6px;padding:8px 10px"></label>
+            <label style="display:flex;flex-direction:column;gap:5px"><span style="font:500 11px Inter;color:var(--text2)">Papel</span><select style="font:400 12.5px Inter;color:var(--ink);background:var(--surface);border:1px solid var(--inputBorder);border-radius:6px;padding:8px 10px"><option>Consultor de migração</option><option>Analista de implantação</option><option>Suporte</option><option>Administrador</option></select></label>
+            <label style="display:flex;flex-direction:column;gap:5px"><span style="font:500 11px Inter;color:var(--text2)">Equipe</span><select style="font:400 12.5px Inter;color:var(--ink);background:var(--surface);border:1px solid var(--inputBorder);border-radius:6px;padding:8px 10px"><option>Migração</option><option>Implantação</option><option>Suporte</option><option>Vendas</option></select></label>
+          </div>
+        </div>
+
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:16px 18px">
+          <div style="font:600 11px Inter;color:var(--ink);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Permissões por menu</div>
+          <div style="font:400 11px Inter;color:var(--muted);margin-bottom:12px">Controle granular de acesso a cada módulo do sistema.</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden">
+            <sc-for list="{{ permMenus }}" as="m" hint-placeholder-count="8">
+              <label style="display:flex;align-items:center;gap:9px;background:var(--surface);padding:9px 12px;cursor:pointer">
+                <input type="checkbox" checked="{{ m.on }}" style="accent-color:#FF6A00;width:15px;height:15px">
+                <span style="font:500 12px Inter;color:var(--ink)">{{ m.label }}</span>
+              </label>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- rodapé de ações -->
+      <div style="position:sticky;bottom:0;display:flex;gap:8px;align-items:center;padding:12px 0;background:linear-gradient(to top,var(--bg) 70%,transparent)">
+        <button onClick="{{ backFromForm }}" style="font:600 12px Inter;color:var(--text2);background:transparent;border:none;border-radius:5px;padding:8px 12px;cursor:pointer" style-hover="color:var(--ink)">Cancelar</button>
+        <button style="margin-left:auto;font:600 12px Inter;color:var(--ink);background:var(--surface);border:1px solid var(--inputBorder);border-radius:5px;padding:8px 14px;cursor:pointer" style-hover="background:var(--hover)">Salvar rascunho</button>
+        <button style="font:600 12px Inter;color:#fff;background:var(--brand);border:none;border-radius:5px;padding:8px 16px;cursor:pointer" style-hover="background:var(--brandHover)">{{ formSubmit }}</button>
+      </div>
+    </div>
+    </sc-if>
+
+  </main>
+
+  <!-- ===== Command palette / busca de rotas ===== -->
+  <sc-if value="{{ paletteOpen }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closePalette }}" style="position:fixed;inset:0;z-index:80;background:rgba(13,17,23,.45);backdrop-filter:blur(2px);display:flex;align-items:flex-start;justify-content:center;padding-top:12vh">
+    <div onClick="{{ stop }}" style="width:min(560px,92vw);background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);overflow:hidden">
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--border)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="flex:none;color:var(--muted)"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"></circle><path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
+        <input id="itm-palette-input" value="{{ query }}" onInput="{{ onQuery }}" placeholder="Buscar telas, módulos e ações…" style="flex:1;border:none;outline:none;background:transparent;font:400 14px Inter;color:var(--ink)">
+        <span style="font:600 10px ui-monospace,monospace;color:var(--muted);background:var(--bg);border:1px solid var(--border);border-radius:3px;padding:2px 6px">ESC</span>
+      </div>
+      <div style="max-height:52vh;overflow-y:auto;padding:6px">
+        <sc-for list="{{ results }}" as="r" hint-placeholder-count="6">
+          <div onClick="{{ r.go }}" style="display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:7px;cursor:pointer" style-hover="background:var(--hover)">
+            <span style="flex:none;width:22px;height:22px;border-radius:5px;background:var(--track);color:var(--muted);display:flex;align-items:center;justify-content:center;font:600 9px ui-monospace,monospace">{{ r.glyph }}</span>
+            <span style="flex:1;font:500 13px Inter;color:var(--ink)">{{ r.label }}</span>
+            <span style="font:500 10px Inter;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">{{ r.kind }}</span>
+          </div>
+        </sc-for>
+        <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:20px;text-align:center;font:400 12px Inter;color:var(--muted)">Nada encontrado para “{{ query }}”.</div>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;sidebarRecolhida&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;},&quot;badgeVrgyn&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Marca&quot;}}">
+class Component extends DCLogic {
+  state = { collapsed: null, active: 'dados', route: 'cliente', theme: null, paletteOpen: false, query: '' };
+
+  sections = [
+    { id: 'dados', label: 'Dados' },
+    { id: 'validacoes', label: 'Validações' },
+    { id: 'migracoes', label: 'Migrações' },
+    { id: 'implantacoes', label: 'Implantações' },
+    { id: 'recemvr', label: 'Recém VR' },
+    { id: 'infra', label: 'Infraestrutura' },
+    { id: 'vault', label: 'Vault' },
+    { id: 'historico', label: 'Histórico' }
+  ];
+
+  navItems = [
+    { glyph: 'DA', label: 'Dashboard', route: 'dashboard' },
+    { glyph: 'CL', label: 'Clientes', route: 'clientes' },
+    { glyph: 'VA', label: 'Validações', route: 'modulo' },
+    { glyph: 'MI', label: 'Migração', route: 'modulo' },
+    { glyph: 'IM', label: 'Implantações', route: 'modulo' },
+    { glyph: 'RV', label: 'Recém VR', route: 'modulo' },
+    { glyph: 'IN', label: 'Infraestrutura', route: 'modulo' },
+    { glyph: 'US', label: 'Usuários', route: 'modulo' }
+  ];
+
+  permMenus = ['Dashboard','Clientes','Validações','Migração','Implantações','Recém VR','Infraestrutura','Usuários'];
+
+  paletteRoutes = [
+    { glyph: 'DA', label: 'Dashboard', kind: 'Página', route: 'dashboard' },
+    { glyph: 'CL', label: 'Clientes', kind: 'Página', route: 'clientes' },
+    { glyph: '360', label: 'Supermercado Andrade', kind: 'Cliente 360', route: 'cliente' },
+    { glyph: 'VA', label: 'Validações', kind: 'Módulo', route: 'modulo' },
+    { glyph: 'MI', label: 'Migração', kind: 'Módulo', route: 'modulo' },
+    { glyph: 'IM', label: 'Implantações', kind: 'Módulo', route: 'modulo' },
+    { glyph: 'RV', label: 'Recém VR', kind: 'Módulo', route: 'modulo' },
+    { glyph: 'IN', label: 'Infraestrutura', kind: 'Módulo', route: 'modulo' },
+    { glyph: 'US', label: 'Usuários', kind: 'Módulo', route: 'modulo' },
+    { glyph: 'PF', label: 'Perfil', kind: 'Página', route: 'modulo' },
+    { glyph: 'AD', label: 'Admin — permissões', kind: 'Página', route: 'modulo' },
+    { glyph: '+V', label: 'Nova validação', kind: 'Ação', route: 'form', form: 'validacao' },
+    { glyph: '+U', label: 'Novo usuário', kind: 'Ação', route: 'form', form: 'usuario' }
+  ];
+
+  applyTheme(t) {
+    document.documentElement.setAttribute('data-theme', t === 'dark' ? 'dark' : 'light');
+  }
+
+  componentDidMount() {
+    const savedCol = localStorage.getItem('itmizer-sidebar-collapsed');
+    if (savedCol !== null) this.setState({ collapsed: savedCol === '1' });
+    const savedTheme = localStorage.getItem('itmizer-theme') || 'light';
+    this.setState({ theme: savedTheme });
+    this.applyTheme(savedTheme);
+
+    this.onScroll = () => {
+      if (this.state.route !== 'cliente') return;
+      let act = this.sections[0].id;
+      for (const s of this.sections) {
+        const el = document.getElementById('sec-' + s.id);
+        if (el && el.getBoundingClientRect().top <= 140) act = s.id;
+      }
+      if (act !== this.state.active) this.setState({ active: act });
+    };
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+
+    this.onKey = (e) => {
+      if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) {
+        e.preventDefault();
+        this.openPalette();
+      } else if (e.key === 'Escape' && this.state.paletteOpen) {
+        this.setState({ paletteOpen: false });
+      }
+    };
+    window.addEventListener('keydown', this.onKey);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.onScroll);
+    window.removeEventListener('keydown', this.onKey);
+  }
+
+  openPalette = () => {
+    this.setState({ paletteOpen: true, query: '' });
+    setTimeout(() => { const el = document.getElementById('itm-palette-input'); if (el) el.focus(); }, 30);
+  };
+
+  navigate(item) {
+    this.setState({
+      route: item.route,
+      moduloLabel: item.route === 'modulo' ? item.label : this.state.moduloLabel,
+      formType: item.form || this.state.formType,
+      activeLabel: item.route === 'form' ? this.state.activeLabel : item.label,
+      paletteOpen: false
+    });
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }
+
+  renderVals() {
+    const collapsed = this.state.collapsed ?? (this.props.sidebarRecolhida ?? false);
+    const expanded = !collapsed;
+    const active = this.state.active;
+    const route = this.state.route;
+    const theme = this.state.theme ?? 'light';
+    const activeLabel = this.state.activeLabel || 'Clientes';
+    const formType = this.state.formType || 'validacao';
+
+    const go = (r, label) => () => this.navigate({ route: r, label });
+    const openForm = (form, title) => () => {
+      this.setState({ route: 'form', formType: form, formTitle: title });
+      window.scrollTo({ top: 0, behavior: 'auto' });
+    };
+
+    const crumbMap = {
+      dashboard: ['', 'Dashboard'],
+      clientes: ['', 'Clientes'],
+      cliente: ['Clientes /', 'Supermercado Andrade'],
+      modulo: ['', this.state.moduloLabel || 'Módulo'],
+      form: [(formType === 'usuario' ? 'Usuários /' : 'Clientes /'), (formType === 'usuario' ? 'Novo usuário' : 'Nova validação')]
+    };
+    const crumb = crumbMap[route] || ['', ''];
+
+    const q = (this.state.query || '').trim().toLowerCase();
+    const filtered = this.paletteRoutes.filter(r => !q || r.label.toLowerCase().includes(q) || r.kind.toLowerCase().includes(q));
+
+    const formTitle = route === 'form'
+      ? (this.state.formTitle || (formType === 'usuario' ? 'Novo usuário' : 'Nova validação'))
+      : '';
+
+    return {
+      // rotas
+      isCliente: route === 'cliente',
+      isDashboard: route === 'dashboard',
+      isClientes: route === 'clientes',
+      isModulo: route === 'modulo',
+      isForm: route === 'form',
+      moduloLabel: this.state.moduloLabel || 'Módulo',
+      crumbA: crumb[0],
+      crumbB: crumb[1],
+      crumbGo: route === 'cliente' ? go('clientes', 'Clientes') : (route === 'form' ? this.backFromForm : (() => {})),
+      openCliente: go('cliente', 'Clientes'),
+
+      // formulário
+      formTitle,
+      isFormValidacao: formType !== 'usuario',
+      isFormUsuario: formType === 'usuario',
+      formSubmit: formType === 'usuario' ? 'Criar usuário' : 'Concluir validação',
+      novaValidacao: openForm('validacao', 'Nova validação'),
+      novoRegistro: () => {
+        const isUsers = (this.state.moduloLabel || '') === 'Usuários';
+        this.setState({ route: 'form', formType: isUsers ? 'usuario' : 'validacao', formTitle: isUsers ? 'Novo usuário' : ('Novo registro — ' + (this.state.moduloLabel || '')) });
+        window.scrollTo({ top: 0, behavior: 'auto' });
+      },
+      backFromForm: this.backFromForm,
+      permMenus: this.permMenus.map((label, i) => ({ label, on: i < 5 })),
+
+      // tema
+      isDark: theme === 'dark',
+      isLight: theme !== 'dark',
+      toggleTheme: () => {
+        const next = theme === 'dark' ? 'light' : 'dark';
+        localStorage.setItem('itmizer-theme', next);
+        this.applyTheme(next);
+        this.setState({ theme: next });
+      },
+
+      // palette
+      paletteOpen: this.state.paletteOpen,
+      query: this.state.query,
+      openPalette: this.openPalette,
+      closePalette: () => this.setState({ paletteOpen: false }),
+      stop: (e) => e.stopPropagation(),
+      onQuery: (e) => this.setState({ query: e.target.value }),
+      results: filtered.map(r => ({ glyph: r.glyph, label: r.label, kind: r.kind, go: () => this.navigate(r) })),
+      noResults: filtered.length === 0,
+
+      // sidebar
+      expanded,
+      sideW: collapsed ? '56px' : '224px',
+      navJustify: collapsed ? 'center' : 'flex-start',
+      toggleChar: collapsed ? '»' : '«',
+      showVrgyn: this.props.badgeVrgyn ?? true,
+      toggle: () => {
+        const next = !collapsed;
+        localStorage.setItem('itmizer-sidebar-collapsed', next ? '1' : '0');
+        this.setState({ collapsed: next });
+      },
+      nav: this.navItems.map(it => {
+        const on = it.label === activeLabel && route !== 'form';
+        return {
+          glyph: it.glyph,
+          label: it.label,
+          go: go(it.route, it.label),
+          bg: on ? 'var(--orangeTint)' : 'transparent',
+          edge: on ? 'var(--brand)' : 'transparent',
+          fg: on ? 'var(--brandText)' : 'var(--text2)',
+          tileBg: on ? 'var(--brand)' : 'var(--track)',
+          tileFg: on ? '#fff' : 'var(--muted)'
+        };
+      }),
+      tabs: this.sections.map(s => ({
+        label: s.label,
+        fg: active === s.id ? 'var(--brand)' : 'var(--muted)',
+        edge: active === s.id ? 'var(--brand)' : 'transparent',
+        go: () => {
+          const el = document.getElementById('sec-' + s.id);
+          if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 110, behavior: 'smooth' });
+        }
+      }))
+    };
+  }
+
+  backFromForm = () => {
+    const isUsers = (this.state.formType === 'usuario');
+    this.setState({ route: isUsers ? 'modulo' : 'cliente', activeLabel: isUsers ? 'Usuários' : 'Clientes', moduloLabel: isUsers ? 'Usuários' : this.state.moduloLabel });
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  };
+}
+</script>
+<script>
+(async () => {
+  if (!document.title || !document.title.trim()) document.title = "ITmizer Console - Cliente 360";
+  // Prepend so page-supplied @page / break rules (deck-stage's margin:0,
+  // author CSS) keep source-order precedence over the baseline.
+  const baseCss = document.createElement('style');
+  baseCss.textContent = "@media print {\n  figure, table { break-inside: avoid; }\n  *, *::before, *::after {\n    print-color-adjust: exact; -webkit-print-color-adjust: exact;\n    backdrop-filter: none !important; -webkit-backdrop-filter: none !important;\n    animation-delay: -99s !important; animation-duration: .001s !important;\n    animation-iteration-count: 1 !important; animation-fill-mode: both !important;\n    animation-play-state: running !important; transition-duration: 0s !important;\n  }\n}";
+  document.head.prepend(baseCss);
+  if (document.readyState === 'loading') {
+    await new Promise((r) => document.addEventListener('DOMContentLoaded', r, { once: true }));
+  }
+  let ds = document.querySelector('deck-stage');
+  // whenDefined never resolves when nothing registers the element, so only
+  // await it when a <deck-stage> tag exists (and race a timeout regardless).
+  if (ds && !customElements.get('deck-stage')) {
+    try {
+      await Promise.race([
+        customElements.whenDefined('deck-stage'),
+        new Promise((r) => setTimeout(r, 3000)),
+      ]);
+    } catch (e) {}
+    ds = document.querySelector('deck-stage');
+  }
+  // dc-runtime assigns window.DCLogic at init and mounts into #dc-root on
+  // DOMContentLoaded; settle on that subtree so React has rendered before
+  // print(). Non-DC pages fall through to weighing body.
+  const isDc = !ds && 'DCLogic' in window;
+  const settleRoot = ds || (isDc ? document.getElementById('dc-root') : null) || document.body;
+  if (settleRoot) {
+    // Weigh only content children — skip script/style/template so inline
+    // Babel/CSS doesn't register as stable "content" before the framework
+    // has mounted anything.
+    const MEDIA = 'img,svg,canvas,video,picture,iframe,embed,object';
+    const weigh = () => {
+      let text = 0, media = 0;
+      for (const c of settleRoot.children) {
+        const t = c.tagName;
+        if (t === 'SCRIPT' || t === 'STYLE' || t === 'TEMPLATE') continue;
+        text += (c.textContent || '').trim().length;
+        media += c.querySelectorAll(MEDIA).length + (c.matches(MEDIA) ? 1 : 0);
+      }
+      return text + media * 100;
+    };
+    // "Non-zero and stable" alone is not sufficient to mean rendered: generic
+    // body can carry a static shell while async main content is pending, and
+    // #dc-root can carry the root DC's static text while child refs are still
+    // .sc-placeholder boxes. Gate generic on readyState 'complete', and never
+    // accept stability while a dc-runtime placeholder is present.
+    const isGeneric = settleRoot === document.body;
+    const deadline = Date.now() + 15000;
+    let last = -1, stable = 0;
+    while (Date.now() < deadline) {
+      const n = weigh();
+      const ready =
+        (!isGeneric || document.readyState === 'complete') &&
+        !settleRoot.querySelector('.sc-placeholder');
+      if (n > 0 && n === last && ready) { if (++stable >= 2) break; } else { stable = 0; }
+      last = n;
+      await new Promise((r) => setTimeout(r, 250));
+    }
+  }
+  // Project support.js may predate runtime default-seeding; push via bridge.
+  if (isDc && window.__dcSetProps && window.__dcRootName) {
+    try {
+      const dpEl = document.querySelector('script[data-dc-script]');
+      const meta = JSON.parse((dpEl && dpEl.getAttribute('data-props')) || '{}');
+      const bag = {};
+      for (const k in meta)
+        if (k[0] !== '$' && meta[k] && meta[k].default !== undefined)
+          bag[k] = meta[k].default;
+      if (Object.keys(bag).length) {
+        window.__dcSetProps(window.__dcRootName(), bag);
+        await new Promise((r) => setTimeout(r, 50));
+      }
+    } catch (e) {}
+  }
+  // Reveal content gated on scroll or visibility before printing. Lazy <img>,
+  // IntersectionObserver fade-ins, and collapsed <details> don't render while
+  // off-screen, so a long page would print with them blank or closed. Open
+  // every <details>, force native-lazy images eager, and scroll the document
+  // through its full height to trip lazy-load + IO; then wait (bounded) for the
+  // newly-triggered images. Inert for deck-stage (slides aren't scroll-gated).
+  try {
+    for (const d of document.querySelectorAll('details')) d.open = true;
+    for (const img of document.querySelectorAll('img[loading="lazy"]'))
+      img.loading = 'eager';
+    const scroller = document.scrollingElement || document.documentElement;
+    const full = Math.max(scroller.scrollHeight, document.body.scrollHeight);
+    const step = window.innerHeight || 800;
+    for (let y = 0; y <= full; y += step) {
+      window.scrollTo(0, y);
+      await new Promise((r) => requestAnimationFrame(r));
+    }
+    window.scrollTo(0, 0);
+    await Promise.race([
+      Promise.all(
+        [...document.images].map((img) =>
+          img.complete
+            ? null
+            : new Promise((res) => {
+                img.addEventListener('load', res, { once: true });
+                img.addEventListener('error', res, { once: true });
+              })
+        )
+      ),
+      new Promise((r) => setTimeout(r, 4000)),
+    ]);
+  } catch (e) {}
+  try { await document.fonts.ready; } catch (e) {}
+  // Jump every animation to its end state so print() never captures a slide
+  // mid-entrance. Ordering matters: the 0s-transition style must be live
+  // BEFORE data-deck-active is set so attribute-keyed transitions don't
+  // start a (now-0s) run from the pre-active base.
+  const st = document.createElement('style');
+  st.textContent = '*,*::before,*::after{animation-delay:-99s !important;animation-duration:.001s !important;animation-iteration-count:1 !important;animation-fill-mode:both !important;animation-play-state:running !important;transition-duration:0s !important}';
+  document.head.appendChild(st);
+  for (const d of document.querySelectorAll('deck-stage')) {
+    for (const c of d.children) {
+      const t = c.tagName;
+      if (t === 'SCRIPT' || t === 'STYLE' || t === 'TEMPLATE') continue;
+      c.setAttribute('data-deck-active', '');
+    }
+  }
+  // Re-append deck-stage's @page last so no author @page can add a margin and
+  // spill each full-bleed slide onto two sheets. Backstop for old copies.
+  if (ds) {
+    let pg = document.getElementById('deck-stage-print-page');
+    if (!pg) {
+      pg = document.createElement('style');
+      pg.textContent = '@page{size:' + (+ds.getAttribute('width') || 1920) +
+        'px ' + (+ds.getAttribute('height') || 1080) + 'px;margin:0}';
+    }
+    document.body.appendChild(pg);
+  }
+  try {
+    const sweep = () => {
+      for (const a of document.getAnimations()) {
+        try { a.finish(); } catch (e) {
+          try { a.currentTime = (a.effect && a.effect.getComputedTiming().duration) || 0; a.pause(); } catch (e2) {}
+        }
+      }
+    };
+    sweep();
+    await new Promise((r) => requestAnimationFrame(r));
+    sweep();
+    await new Promise((r) => requestAnimationFrame(r));
+  } catch (e) {}
+  // Size the PDF page to the rendered design unless the file opted into
+  // standard paper via @page{size:letter|A4|…}. Decks own their own @page.
+  // Wrappers (body, …) lose padding+margin so the frame sits at (0,0); the
+  // frame itself loses only margin — its padding is INSIDE the measured
+  // rect and must stay, or content shifts and leaves a gap at bottom/right.
+  var __m = null;
+  try { __m = (() => {
+  var STAMP = true;
+  var docEl = document.documentElement;
+  var doc = { width: docEl.scrollWidth, height: docEl.scrollHeight };
+
+  var ds = document.querySelector('deck-stage');
+  if (ds) {
+    var dw = Number(ds.getAttribute('width')) || 1920;
+    var dh = Number(ds.getAttribute('height')) || 1080;
+    var n = typeof ds.length === 'number' ? ds.length : ds.children.length;
+    var idx = typeof ds.index === 'number' ? ds.index : 0;
+    var frames = [];
+    for (var i = 0; i < n; i++) frames.push({ left: 0, top: 0, width: dw, height: dh });
+    return { kind: 'deck', source: 'declared', doc: doc, frames: frames,
+      authored: frames.map(function(){return{width:true,height:true}}),
+      deck: { width: dw, height: dh, slideCount: n, index: idx },
+      signals: { paperPage: false, pxPage: false } };
+  }
+
+  // Declared kind: a doc-page tag names the kind outright, so no signal
+  // heuristics run (like the deck branch above, signals report false —
+  // they describe inferred classifications only). The tag alone is not
+  // trusted: the element must have upgraded (shadowRoot present), so a
+  // leftover tag whose script was deleted falls through to the heuristics
+  // that handle plain markup.
+  var stageSx = window.scrollX || 0, stageSy = window.scrollY || 0;
+  var dp = document.querySelector('doc-page');
+  if (dp && dp.shadowRoot) {
+    // Crop to the sheet, not the host — the desk around it is screen-only
+    // chrome that must not land in PNG exports.
+    var sheet = dp.shadowRoot.querySelector('.sheet');
+    var sr = (sheet || dp).getBoundingClientRect();
+    return { kind: 'paper-doc', source: 'declared', doc: doc,
+      frames: [{ left: sr.left + stageSx, top: sr.top + stageSy,
+        width: sr.width, height: sr.height }],
+      authored: [{ width: false, height: false }],
+      signals: { paperPage: false, pxPage: false } };
+  }
+  var paperPage = false, pxPage = false;
+  var eachRule = function (fn) {
+    for (var s = 0; s < document.styleSheets.length; s++) {
+      var rs; try { rs = document.styleSheets[s].cssRules; } catch (e) { continue; }
+      for (var r = 0; r < rs.length; r++) {
+        fn(rs[r]);
+        if (rs[r].cssRules) for (var n = 0; n < rs[r].cssRules.length; n++) fn(rs[r].cssRules[n]);
+      }
+    }
+  };
+  eachRule(function (r) {
+    if (r.type !== 6) return;
+    var m = /\bsize\s*:\s*([^;}]+)/i.exec(r.cssText || '');
+    if (!m) return;
+    if (/\b(letter|a[3-5]|legal|ledger)\b/i.test(m[1])) paperPage = true;
+    if (/\d+(?:\.\d+)?px\b/i.test(m[1])) pxPage = true;
+  });
+  var signals = { paperPage: paperPage, pxPage: pxPage };
+
+  var pxVal = function (v) {
+    var m = /^(\d+(?:\.\d+)?)px$/.exec(v || ''); return m ? +m[1] : 0;
+  };
+  var authoredPx = function (el, prop) {
+    if (pxVal(el.style[prop])) return true;
+    var attr = el.getAttribute(prop);
+    if (attr && /^\d+$/.test(attr)) return true;
+    var hit = false;
+    eachRule(function (r) {
+      if (hit || r.type !== 1 || !r.style) return;
+      try { if (el.matches(r.selectorText) && pxVal(r.style[prop])) hit = true; } catch (e) {}
+    });
+    return hit;
+  };
+
+  var el = document.body, rootPxW = false;
+  for (;;) {
+    var kids = [];
+    for (var c = 0; c < el.children.length; c++) {
+      var t = el.children[c].tagName;
+      if (t !== 'SCRIPT' && t !== 'STYLE' && t !== 'TEMPLATE') kids.push(el.children[c]);
+    }
+    if (kids.length !== 1 || !(kids[0] instanceof HTMLElement)) break;
+    if (STAMP) el.setAttribute('data-om-frame-wrap', '');
+    el = kids[0];
+    rootPxW = authoredPx(el, 'width');
+    if (rootPxW) break;
+  }
+  if (!rootPxW) rootPxW = authoredPx(el, 'width');
+
+  // @page{size:letter} alone is a flowing doc; with a px-width root it's a
+  // fixed sheet pretending to be paper — fall through and size to render.
+  if (paperPage && !rootPxW) {
+    return { kind: 'paper-doc', source: 'inferred', doc: doc, signals: signals,
+      frames: [{ left: 0, top: 0, width: doc.width, height: doc.height }],
+      authored: [{ width: false, height: false }] };
+  }
+
+  var sx = window.scrollX || 0, sy = window.scrollY || 0;
+  var rectOf = function (e) {
+    var r = e.getBoundingClientRect();
+    var oy; try { oy = getComputedStyle(e).overflowY; } catch (err) {}
+    var h = oy === 'visible' ? Math.max(r.height, e.scrollHeight || 0) : r.height;
+    return { left: r.left + sx, top: r.top + sy, width: r.width, height: h };
+  };
+
+  // Multi-frame: ≥2 visible non-fixed children, each with authored px width
+  // AND height, all within ±2px of each other. Off unless the page opts in
+  // via data-om-multi-frame on the stop element — guards against card grids
+  // and pricing tables that match the geometry but aren't separate canvases.
+  if (el.hasAttribute('data-om-multi-frame')) {
+    var cands = [];
+    for (var k = 0; k < el.children.length; k++) {
+      var ch = el.children[k];
+      var cs; try { cs = getComputedStyle(ch); } catch (e) { continue; }
+      if (cs.display === 'none' || cs.visibility === 'hidden' || cs.position === 'fixed') continue;
+      var rc = rectOf(ch);
+      if (rc.width < 2 || rc.height < 2) continue;
+      if (!authoredPx(ch, 'width') || !authoredPx(ch, 'height')) continue;
+      cands.push(rc);
+    }
+    if (cands.length >= 2) {
+      var w0 = cands[0].width, h0 = cands[0].height, ok = true;
+      for (var q = 1; q < cands.length; q++)
+        if (Math.abs(cands[q].width - w0) > 2 || Math.abs(cands[q].height - h0) > 2) ok = false;
+      if (ok) return { kind: 'multi-frame', source: 'inferred', doc: doc, signals: signals,
+        frames: cands, authored: cands.map(function(){return{width:true,height:true}}) };
+    }
+  }
+
+  if (STAMP) el.setAttribute('data-om-frame', '');
+  return { kind: 'single-canvas', source: 'inferred', doc: doc, signals: signals,
+    frames: [rectOf(el)],
+    authored: [{ width: rootPxW, height: authoredPx(el, 'height') }] };
+})(); } catch (e) {}
+  var frame = null;
+  if (__m && __m.kind === 'single-canvas') {
+    var f = __m.frames && __m.frames[0];
+    if (f && f.width >= 200 && f.height >= 200) {
+      frame = f;
+      var fst = document.createElement('style');
+      fst.textContent = '@media print{@page{size:' + Math.ceil(f.width) + 'px ' +
+        Math.ceil(f.height) + 'px;margin:0}' +
+        'html,body,[data-om-frame-wrap]{padding:0!important;margin:0!important;background:none!important}' +
+        '[data-om-frame]{margin:0!important}}';
+      document.body.appendChild(fst);
+    }
+  }
+  // Relax break-inside on oversized elements. An element taller than a
+  // printable page can't honor break-inside: avoid — browsers either overflow
+  // it or push it whole to the next page, leaving a blank gap, then break it
+  // anyway at an arbitrary point. After the final layout (content revealed,
+  // animations jumped), find elements taller than a page that still compute
+  // break-inside: avoid and reset them to auto, so the browser breaks them at
+  // their children's boundaries instead (children keep their own avoid). PAGE_PX
+  // is a conservative portrait estimate at 96 CSS px/in — Letter/A4 usable
+  // height minus our 0.5in margins — so only clearly-oversized elements are
+  // touched and under-page elements still stay whole. Skipped for decks (slides
+  // are sized to the page) and for fixed-size canvases (frame set, or an author
+  // px-based @page) — runs as before for flowing docs on letter/A4.
+  try {
+    if (!ds && !frame && !(__m && __m.signals && __m.signals.pxPage)) {
+      const PAGE_PX = 1024;
+      // Our print defaults add a real @page margin only when the source has
+      // no @page of its own; computed style can't tell us (it reports screen
+      // media), so read the injected rule directly.
+      const defaults = document.querySelector('style[data-omelette-print-defaults]');
+      const pageInset = /@page\s*\{[^}]*margin/.test(defaults ? defaults.textContent || '' : '');
+      const SEL = 'section,article,figure,table,pre,blockquote,[class~="card" i],[class~="page" i],[class~="sheet" i]';
+      for (const el of document.body.querySelectorAll(SEL)) {
+        if (el instanceof HTMLElement && el.offsetHeight > PAGE_PX) {
+          el.setAttribute('data-om-oversized', '');
+          // Fake-paged docs simulate sheets with over-tall break-after:page
+          // boxes; honoring the break spills half-blank pages and ends a
+          // colored box mid-sheet. Flow them, and (only when we own the page
+          // inset) drop the redundant padding/background via the rule below.
+          const cs = getComputedStyle(el);
+          if (cs.breakAfter === 'page' || cs.pageBreakAfter === 'always') {
+            el.setAttribute('data-om-fakepage', '');
+          }
+        }
+      }
+      const ost = document.createElement('style');
+      ost.textContent = '@media print{' +
+        '[data-om-oversized]{break-inside:auto !important;page-break-inside:auto !important}' +
+        '[data-om-fakepage]{break-after:auto !important;page-break-after:auto !important}' +
+        (pageInset ? '[data-om-fakepage]{padding:0 !important;background:none !important}' : '') +
+        '}';
+      document.head.appendChild(ost);
+    }
+  } catch (e) {}
+  // macOS Preview renders Skia-PDF Luminosity soft-masks as opaque grey boxes;
+  // swap the CSS that triggers them for Preview-safe forms.
+  try {
+    for (const el of document.body.querySelectorAll('*')) {
+      const cs = getComputedStyle(el);
+
+      if (cs.boxShadow !== 'none' && cs.filter === 'none') {
+        const outs = [], kept = [];
+        for (const s of cs.boxShadow.split(/,(?![^(]*[)])/)) {
+          const t = s.trim();
+          const m = t.match(/^(rgba?[(][^)]+[)]) (-?[0-9.]+px) (-?[0-9.]+px) ([0-9.]+px) -?[0-9.]+px$/);
+          if (m && parseFloat(m[4]) > 0) outs.push('drop-shadow(' + m[2] + ' ' + m[3] + ' ' + m[4] + ' ' + m[1] + ')');
+          else kept.push(t);
+        }
+        if (outs.length) {
+          el.style.setProperty('filter', outs.join(' '), 'important');
+          el.style.setProperty('box-shadow', kept.join(', ') || 'none', 'important');
+        }
+      }
+
+      const mask = cs.maskImage && cs.maskImage !== 'none' ? cs.maskImage : cs.webkitMaskImage;
+      if (mask && mask !== 'none' && cs.filter === 'none') el.style.setProperty('filter', 'opacity(1)', 'important');
+    }
+  } catch (e) {}
+  setTimeout(() => { try { window.print(); } catch (e) {} }, 200);
+})();
+</script>
+</body>
+</html>

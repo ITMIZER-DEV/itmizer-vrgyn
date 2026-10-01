@@ -30,8 +30,10 @@ model User {
   recemVrAnalisados        RecemVr[]                @relation("RecemVrAnalista")
   recemVrAcompanhamentos   RecemVrAcompanhamento[]
   recemVrHistory           RecemVrHistory[]
-  createdCredentials       ClientCredential[]
-  credentialAccessLogs     ClientCredentialAccessLog[]
+  createdCredentials            ClientCredential[]
+  credentialAccessLogs          ClientCredentialAccessLog[]
+  criticalCases                 CriticalCase[]                 @relation("CriticalCaseResponsavel")
+  criticalCaseAcompanhamentos   CriticalCaseAcompanhamento[]
 
   @@map("users")
 }
@@ -140,6 +142,7 @@ model Client {
   infrastructure  ClientInfrastructure[]
   credentials     ClientCredential[]
   tickets         ClientTicket[]
+  criticalCases   CriticalCase[]
 
   @@map("clients")
 }
@@ -573,3 +576,61 @@ model RecemVrHistory {
 
   @@map("recem_vr_history")
 }
+
+// ============================================================
+// MÓDULO SUPORTE / CASOS CRÍTICOS
+// ============================================================
+
+enum CriticalCaseStatus {
+  ABERTO
+  EM_ANDAMENTO
+  RESOLVIDO
+  CANCELADO
+}
+
+enum CriticalCaseCategory {
+  ALINHAMENTO
+  CHAMADO
+  REUNIAO
+  RECLAMACAO
+  TREINAMENTO
+  LEVANTAMENTOS
+  PROJETOS
+  INFORMATIVO
+}
+
+model CriticalCase {
+  id             String                 @id @default(uuid())
+  clientId       String                 @map("client_id")
+  client         Client                 @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  categories     CriticalCaseCategory[] @default([])
+  participantes  String?                @db.Text
+  observacoes    String?                @db.Text
+  proximosPassos String?                @map("proximos_passos") @db.Text
+  status         CriticalCaseStatus     @default(ABERTO)
+  responsavelId  String?                @map("responsavel_id")
+  responsavel    User?                  @relation("CriticalCaseResponsavel", fields: [responsavelId], references: [id], onDelete: SetNull)
+  createdAt      DateTime               @default(now()) @map("created_at")
+  updatedAt      DateTime               @updatedAt @map("updated_at")
+
+  acompanhamentos CriticalCaseAcompanhamento[]
+
+  @@map("critical_cases")
+}
+
+model CriticalCaseAcompanhamento {
+  id             String              @id @default(uuid())
+  criticalCaseId String              @map("critical_case_id")
+  criticalCase   CriticalCase        @relation(fields: [criticalCaseId], references: [id], onDelete: Cascade)
+  userId         String?             @map("user_id")
+  user           User?               @relation(fields: [userId], references: [id], onDelete: SetNull)
+  data           DateTime            @default(now())
+  tipo           String              @default("ACOMPANHAMENTO")
+  descricao      String              @db.Text
+  proximosPassos String?             @map("proximos_passos") @db.Text
+  statusNovo     CriticalCaseStatus? @map("status_novo")
+  createdAt      DateTime            @default(now()) @map("created_at")
+
+  @@map("critical_case_acompanhamentos")
+}
+

@@ -139,7 +139,7 @@ export default function ClientInfrastructureTab({ clientId }: Props) {
                   <Label htmlFor="nome">Nome *</Label>
                   <Input id="nome" {...register('nome', { required: true })} placeholder="Ex: Servidor Principal" />
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="hostname">Hostname</Label>
                     <Input id="hostname" {...register('hostname')} />

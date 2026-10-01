@@ -44,6 +44,38 @@ export class ClientCredentialsService {
     });
   }
 
+  findAll(search?: string, clientId?: string) {
+    const where: any = {};
+    if (clientId) {
+      where.clientId = clientId;
+    }
+    if (search) {
+      where.OR = [
+        { label: { contains: search, mode: 'insensitive' } },
+        { username: { contains: search, mode: 'insensitive' } },
+        { client: { nomeFantasia: { contains: search, mode: 'insensitive' } } },
+        { client: { cnpj: { contains: search } } },
+      ];
+    }
+
+    return this.prisma.clientCredential.findMany({
+      where,
+      select: {
+        ...METADATA_SELECT,
+        client: {
+          select: {
+            id: true,
+            nomeFantasia: true,
+            razaoSocial: true,
+            cnpj: true,
+            driveLink: true,
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
   findByClient(clientId: string) {
     return this.prisma.clientCredential.findMany({
       where: { clientId },

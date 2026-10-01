@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, Query } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { AppRole } from '@prisma/client';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -19,6 +19,11 @@ export class ClientCredentialsController {
   @Post()
   create(@Request() req, @Body() dto: CreateClientCredentialDto) {
     return this.service.create(dto, req.user?.userId);
+  }
+
+  @Get()
+  findAll(@Query('search') search?: string, @Query('clientId') clientId?: string) {
+    return this.service.findAll(search, clientId);
   }
 
   @Get('client/:clientId')

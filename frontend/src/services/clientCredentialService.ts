@@ -6,6 +6,10 @@ import type {
 } from '@/types/clientCredential';
 
 export const clientCredentialService = {
+  findAll: async (params?: { search?: string; clientId?: string }) => {
+    const response = await api.get<ClientCredential[]>('/client-credentials', { params });
+    return response.data;
+  },
   findByClient: async (clientId: string) => {
     const response = await api.get<ClientCredential[]>(`/client-credentials/client/${clientId}`);
     return response.data;

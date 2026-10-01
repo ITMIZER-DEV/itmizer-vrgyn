@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsOptional, IsEnum, IsEmail } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsEnum, IsEmail, ValidateIf } from 'class-validator';
 import { ClientCredentialType } from '@prisma/client';
 
 export class CreateClientCredentialDto {
@@ -38,8 +38,8 @@ export class CreateClientCredentialDto {
   responsavelTelefone?: string;
 
   @ApiProperty({ required: false })
+  @ValidateIf((o) => !!o.responsavelEmail)
   @IsEmail()
-  @IsOptional()
   responsavelEmail?: string;
 
   @ApiProperty({ required: false })
