@@ -15,11 +15,13 @@ import {
     ChevronRight,
     Sun,
     Moon,
-    Search
+    Search,
+    Sparkles
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { BrandLogo } from '@/components/BrandLogo';
 import { CommandPalette, CommandPaletteItem } from '@/components/CommandPalette';
+import { ReleaseNotesDialog } from '@/components/ReleaseNotesDialog';
 import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
 import {
@@ -56,6 +58,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
     const [standardMenus, setStandardMenus] = useState<ApiMenuItem[]>([]);
     const [adminMenu, setAdminMenu] = useState<ApiMenuItem | null>(null);
     const [paletteOpen, setPaletteOpen] = useState(false);
+    const [releaseNotesOpen, setReleaseNotesOpen] = useState(false);
     const { user, isAdmin, signOut } = useAuth();
     const location = useLocation();
     const { theme, setTheme } = useTheme();
@@ -281,28 +284,36 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                     })}
                 </nav>
 
-                {/* Badge VRGYN & Versão */}
-                <div
+                {/* Badge VRGYN & Versão Interativo */}
+                <button
+                    type="button"
+                    onClick={() => setReleaseNotesOpen(true)}
+                    title="Clique para ver o histórico e novidades de releases"
                     className={cn(
-                        "mx-2 mb-2 flex flex-col gap-1 rounded-md border border-border bg-background/80 backdrop-blur px-2.5 py-2",
+                        "mx-2 mb-2 flex flex-col gap-1 rounded-md border border-border bg-background/80 hover:bg-muted/60 hover:border-primary/40 transition-all duration-200 backdrop-blur px-2.5 py-2 text-left group cursor-pointer",
                         isCollapsed ? "items-center" : ""
                     )}
                 >
-                    <div className="flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-sm bg-success shrink-0" />
+                    <div className="flex items-center justify-between w-full">
+                        <div className="flex items-center gap-2">
+                            <span className="w-2 h-2 rounded-sm bg-success shrink-0" />
+                            {!isCollapsed && (
+                                <span className="text-2xs text-muted-foreground whitespace-nowrap">
+                                    Vinculado ao <span className="font-display font-bold text-primary">VRGYN</span>
+                                </span>
+                            )}
+                        </div>
                         {!isCollapsed && (
-                            <span className="text-2xs text-muted-foreground whitespace-nowrap">
-                                Vinculado ao <span className="font-display font-bold text-primary">VRGYN</span>
-                            </span>
+                            <Sparkles className="w-3 h-3 text-muted-foreground/60 group-hover:text-primary transition-colors shrink-0" />
                         )}
                     </div>
                     {!isCollapsed && (
-                        <div className="text-[10px] text-muted-foreground/70 font-mono flex items-center justify-between border-t border-border/40 pt-1 mt-0.5">
+                        <div className="text-[10px] text-muted-foreground/70 group-hover:text-foreground/90 font-mono flex items-center justify-between border-t border-border/40 pt-1 mt-0.5 w-full transition-colors">
                             <span>v{APP_VERSION}</span>
-                            <span>build #{APP_BUILD}</span>
+                            <span className="text-2xs underline underline-offset-2 decoration-primary/40 group-hover:decoration-primary">build #{APP_BUILD}</span>
                         </div>
                     )}
-                </div>
+                </button>
 
             </aside>
 
@@ -396,6 +407,11 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                                             <UserCircle className="w-4 h-4 mr-2" />
                                             Meu Perfil
                                         </Link>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => setReleaseNotesOpen(true)} className="rounded-lg cursor-pointer py-2 px-2.5 text-muted-foreground hover:text-foreground">
+                                        <Sparkles className="w-4 h-4 mr-2 text-primary" />
+                                        <span>Novidades da Versão</span>
+                                        <span className="ml-auto text-2xs font-mono text-muted-foreground bg-muted px-1.5 py-0.5 rounded">v{APP_VERSION}</span>
                                     </DropdownMenuItem>
                                     <DropdownMenuSeparator className="bg-border/40" />
                                     <DropdownMenuItem onClick={handleSignOut} className="text-destructive cursor-pointer group rounded-lg py-2 px-2.5">
@@ -513,13 +529,17 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                 </nav>
 
                 <div className="p-4 border-t border-border bg-muted/30 flex flex-col gap-2">
+                    <Button variant="outline" className="w-full gap-2 rounded-xl justify-start" onClick={() => { setIsSidebarOpen(false); setReleaseNotesOpen(true); }}>
+                        <Sparkles className="w-4 h-4 text-primary" />
+                        <span>Novidades da Versão (v{APP_VERSION})</span>
+                    </Button>
                     <Link to="/profile" onClick={() => setIsSidebarOpen(false)}>
-                        <Button variant="outline" className="w-full gap-2 rounded-xl">
+                        <Button variant="outline" className="w-full gap-2 rounded-xl justify-start">
                             <UserCircle className="w-4 h-4" />
                             Meu Perfil
                         </Button>
                     </Link>
-                    <Button variant="ghost" className="w-full gap-2 text-destructive hover:bg-destructive/10 rounded-xl font-semibold" onClick={handleSignOut}>
+                    <Button variant="ghost" className="w-full gap-2 text-destructive hover:bg-destructive/10 rounded-xl font-semibold justify-start" onClick={handleSignOut}>
                         <LogOut className="w-4 h-4" />
                         Sair do Sistema
                     </Button>
@@ -527,6 +547,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
             </aside>
 
             <CommandPalette open={paletteOpen} onOpenChange={setPaletteOpen} items={paletteItems} />
+            <ReleaseNotesDialog open={releaseNotesOpen} onOpenChange={setReleaseNotesOpen} />
         </div>
     );
 }

@@ -1,9 +1,16 @@
 {
-  "version": "1.0.0",
-  "build": 1,
-  "releaseDate": "2026-09-30T22:15:00.000Z",
+  "version": "1.0.1",
+  "build": 2,
+  "releaseDate": "2026-10-01T12:12:09.898Z",
   "systemName": "ITMIZER VR (VRGYN)",
   "history": [
+    {
+      "version": "1.0.1",
+      "build": 2,
+      "date": "2026-10-01",
+      "type": "patch",
+      "description": "Revisão das Skills de IA e modal interativo de histórico de releases no frontend"
+    },
     {
       "version": "1.0.0",
       "build": 1,

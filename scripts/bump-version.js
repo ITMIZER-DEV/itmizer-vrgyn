@@ -132,11 +132,20 @@ Exemplos:
   console.log(`✔ version.json atualizado.`);
 
   // 2. Atualiza frontend/src/config/version.ts
-  const frontendConfigContent = `export interface SystemVersion {
+  const frontendConfigContent = `export interface ReleaseHistoryItem {
+  version: string;
+  build: number;
+  date: string;
+  type: 'major' | 'minor' | 'patch' | string;
+  description: string;
+}
+
+export interface SystemVersion {
   version: string;
   build: number;
   releaseDate: string;
   systemName: string;
+  history?: ReleaseHistoryItem[];
 }
 
 export const APP_VERSION = '${newVersion}';
@@ -144,11 +153,14 @@ export const APP_BUILD = ${newBuild};
 export const RELEASE_DATE = '${releaseDate}';
 export const SYSTEM_NAME = '${versionData.systemName || 'ITMIZER VR (VRGYN)'}';
 
+export const RELEASE_HISTORY: ReleaseHistoryItem[] = ${JSON.stringify(versionData.history || [], null, 2)};
+
 export const VERSION_INFO: SystemVersion = {
   version: APP_VERSION,
   build: APP_BUILD,
   releaseDate: RELEASE_DATE,
   systemName: SYSTEM_NAME,
+  history: RELEASE_HISTORY,
 };
 `;
   fs.writeFileSync(FRONTEND_CONFIG_PATH, frontendConfigContent, 'utf-8');

@@ -9,9 +9,9 @@ export interface AppVersionResponse {
   uptime: number;
 }
 
-export const APP_VERSION = '1.0.0';
-export const APP_BUILD = 1;
-export const RELEASE_DATE = '2026-09-30T22:15:00.000Z';
+export const APP_VERSION = '1.0.1';
+export const APP_BUILD = 2;
+export const RELEASE_DATE = '2026-10-01T12:12:09.898Z';
 export const SYSTEM_NAME = 'ITMIZER VR (VRGYN)';
 
 @Injectable()
