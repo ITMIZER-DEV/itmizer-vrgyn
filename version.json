@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0",
+  "build": 1,
+  "releaseDate": "2026-09-30T22:15:00.000Z",
+  "systemName": "ITMIZER VR (VRGYN)",
+  "history": [
+    {
+      "version": "1.0.0",
+      "build": 1,
+      "date": "2026-09-30",
+      "type": "major",
+      "description": "Release inicial: Módulo de Suporte, Dados de Acesso (Vault), Casos Críticos, Timeline de Evoluções e Relatórios em PDF"
+    }
+  ]
+}

@@ -32,6 +32,7 @@ import {
 import { menuService, MenuItem as ApiMenuItem } from '@/services/menuService';
 import { useTheme } from 'next-themes';
 import { userService } from '@/services/userService';
+import { APP_VERSION, APP_BUILD } from '@/config/version';
 
 function getInitials(nameOrEmail: string): string {
     const base = nameOrEmail.split('@')[0].trim();
@@ -165,12 +166,17 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                 {/* Sidebar Header */}
                 <div
                     className={cn(
-                        "flex items-center border-b border-border/30 px-4",
+                        "flex items-center border-b border-border/30 px-3",
                         isCollapsed ? "flex-col gap-2 py-3" : "h-16 justify-between"
                     )}
                 >
-                    <Link to="/" className="flex items-center gap-2 overflow-hidden shrink-0">
+                    <Link to="/" className="flex items-center gap-1.5 overflow-hidden shrink-0">
                         <BrandLogo showWordmark={!isCollapsed} />
+                        {!isCollapsed && (
+                            <span className="text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded bg-primary/10 text-primary border border-primary/20">
+                                v{APP_VERSION}
+                            </span>
+                        )}
                     </Link>
                     <Button
                         variant="ghost"
@@ -275,18 +281,26 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                     })}
                 </nav>
 
-                {/* Badge VRGYN */}
+                {/* Badge VRGYN & Versão */}
                 <div
                     className={cn(
-                        "mx-2 mb-2 flex items-center gap-2 rounded-md border border-border bg-background px-2.5 py-2",
-                        isCollapsed ? "justify-center" : ""
+                        "mx-2 mb-2 flex flex-col gap-1 rounded-md border border-border bg-background/80 backdrop-blur px-2.5 py-2",
+                        isCollapsed ? "items-center" : ""
                     )}
                 >
-                    <span className="w-2 h-2 rounded-sm bg-success shrink-0" />
+                    <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-sm bg-success shrink-0" />
+                        {!isCollapsed && (
+                            <span className="text-2xs text-muted-foreground whitespace-nowrap">
+                                Vinculado ao <span className="font-display font-bold text-primary">VRGYN</span>
+                            </span>
+                        )}
+                    </div>
                     {!isCollapsed && (
-                        <span className="text-2xs text-muted-foreground whitespace-nowrap">
-                            Vinculado ao <span className="font-display font-bold text-primary">VRGYN</span>
-                        </span>
+                        <div className="text-[10px] text-muted-foreground/70 font-mono flex items-center justify-between border-t border-border/40 pt-1 mt-0.5">
+                            <span>v{APP_VERSION}</span>
+                            <span>build #{APP_BUILD}</span>
+                        </div>
                     )}
                 </div>
 
