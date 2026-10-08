@@ -11,10 +11,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
-import { Shield, Server, Cpu, Plus, Trash2, ArrowLeft, Users, Menu as MenuIcon } from 'lucide-react';
+import { Shield, Server, Cpu, Plus, Trash2, ArrowLeft, Users, Menu as MenuIcon, HardDrive } from 'lucide-react';
 import { UsersListContent } from './Users/List';
 import { InfrastructureContent } from '@/components/Admin/InfrastructureContent';
 import { MenusManager } from '@/components/Admin/MenusManager';
+import { BackupsContent } from '@/components/Admin/BackupsContent';
 
 
 interface Peripheral {
@@ -151,6 +152,10 @@ export default function Admin({ defaultTab = 'requirements' }: { defaultTab?: st
               <MenuIcon className="w-4 h-4" />
               Menus & Navegação
             </TabsTrigger>
+            <TabsTrigger value="backups" className="gap-2">
+              <HardDrive className="w-4 h-4" />
+              Backups & Nuvem
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="requirements">
@@ -242,8 +247,13 @@ export default function Admin({ defaultTab = 'requirements' }: { defaultTab?: st
           <TabsContent value="menus">
             <MenusManager />
           </TabsContent>
+
+          <TabsContent value="backups">
+            <BackupsContent />
+          </TabsContent>
         </Tabs>
       </div>
     </div>
   );
 }
+

@@ -34,6 +34,8 @@ import SupportCredentialsList from "./pages/Support/CredentialsList";
 import CriticalCasesList from "./pages/Support/CriticalCases/List";
 import CriticalCaseForm from "./pages/Support/CriticalCases/Form";
 
+import BackupsPage from "./pages/Admin/Backups";
+
 const queryClient = new QueryClient();
 
 const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || "861662437462-aiqf9g5nhiqi0f13tv1bki24s9h70amm.apps.googleusercontent.com";
@@ -55,6 +57,7 @@ const App = () => (
                 <Route path="/admin/user" element={<UsersList title="Gestão de Usuários" />} />
                 <Route path="/admin/menus" element={<Admin defaultTab="menus" />} />
                 <Route path="/admin/menus/:id" element={<MenuPermissions />} />
+                <Route path="/admin/backups" element={<BackupsPage />} />
                 <Route path="/clients" element={<ClientsList />} />
                 <Route path="/clients/new" element={<ClientForm />} />
                 <Route path="/clients/:id" element={<ClientForm />} />

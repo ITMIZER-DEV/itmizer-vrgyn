@@ -634,3 +634,47 @@ model CriticalCaseAcompanhamento {
   @@map("critical_case_acompanhamentos")
 }
 
+// ============================================================
+// MÓDULO DE BACKUP & SINCRONIZAÇÃO EM NUVEM (GOOGLE DRIVE)
+// ============================================================
+
+model SystemBackupConfig {
+  id                  String    @id @default("default")
+  scheduleEnabled     Boolean   @default(true) @map("schedule_enabled")
+  scheduleTime        String    @default("00:00") @map("schedule_time")
+  frequency           String    @default("DAILY") @map("frequency") // DAILY, WEEKLY
+  googleDriveEnabled  Boolean   @default(true) @map("google_drive_enabled")
+  googleDriveFolderId String    @default("0AAzNdB7t26iUUk9PVA") @map("google_drive_folder_id")
+  googleDriveFolderUrl String?  @map("google_drive_folder_url")
+  retentionDays       Int       @default(15) @map("retention_days")
+  backupFormat        String    @default("HYBRID") @map("backup_format") // HYBRID, JSON, SQL
+  lastRunAt           DateTime? @map("last_run_at")
+  lastStatus          String?   @map("last_status") // SUCCESS, FAILED
+  lastMessage         String?   @map("last_message") @db.Text
+  updatedAt           DateTime  @updatedAt @map("updated_at")
+
+  @@map("system_backup_configs")
+}
+
+model SystemBackupLog {
+  id                  String    @id @default(uuid())
+  filename            String
+  filepath            String
+  fileSize            BigInt    @default(0) @map("file_size")
+  fileSizeFormatted   String?   @map("file_size_formatted")
+  totalRecords        Int       @default(0) @map("total_records")
+  tablesCount         Int       @default(0) @map("tables_count")
+  type                String    @default("AUTOMATIC") @map("type") // AUTOMATIC, MANUAL
+  status              String    @default("SUCCESS") @map("status") // SUCCESS, FAILED
+  googleDriveFileId   String?   @map("google_drive_file_id")
+  googleDriveFolderId String?   @map("google_drive_folder_id")
+  googleDriveStatus   String    @default("PENDING") @map("google_drive_status") // UPLOADED, FAILED, DISABLED, SKIPPED
+  googleDriveError    String?   @map("google_drive_error") @db.Text
+  googleDriveWebUrl   String?   @map("google_drive_web_url")
+  details             Json?
+  createdAt           DateTime  @default(now()) @map("created_at")
+
+  @@map("system_backup_logs")
+}
+
+

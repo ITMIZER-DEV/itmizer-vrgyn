@@ -18,9 +18,13 @@ import { ClientCredentialsModule } from './client-credentials/client-credentials
 import { ClientTicketsModule } from './client-tickets/client-tickets.module';
 import { CriticalCasesModule } from './critical-cases/critical-cases.module';
 
+import { ScheduleModule } from '@nestjs/schedule';
+import { BackupModule } from './backup/backup.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    ScheduleModule.forRoot(),
     PrismaModule,
     AuthModule,
     UsersModule,
@@ -36,6 +40,7 @@ import { CriticalCasesModule } from './critical-cases/critical-cases.module';
     ClientCredentialsModule,
     ClientTicketsModule,
     CriticalCasesModule,
+    BackupModule,
   ],
   controllers: [AppController],
   providers: [AppService],

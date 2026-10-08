@@ -4,6 +4,25 @@ Este documento registra o histórico contínuo de decisões arquiteturais, novos
 
 ---
 
+## [2026-10-08 20:30] - Módulo de Gestão de Backups, Agendamento Diário e Sincronização Google Drive (15 Dias)
+- **Agente / Modelo**: Antigravity (Gemini 3.7 Flash)
+- **Objetivo / Demanda do Usuário**: Desenvolver um módulo completo no sistema para gerenciamento de backups e restauração, agenda autônoma configurável (horário diário customizado), integração com pasta do Google Drive (`0AAzNdB7t26iUUk9PVA`) e política de retenção de 15 dias com limpeza automática.
+- **Módulos e Arquivos Criados/Afetados**:
+  - `backend/prisma/schema.prisma`: Modelos `SystemBackupConfig` (configurações da agenda, pasta Drive e retenção) e `SystemBackupLog` (histórico de execuções com status de upload).
+  - `backend/src/backup/google-drive.service.ts`: Serviço de integração com Google Drive API (upload de snapshots, teste de conexão da pasta e expurgo automático de arquivos com mais de 15 dias).
+  - `backend/src/backup/backup.service.ts`: Geração sob demanda e agendada (`@Cron`), extração estruturada das 27 tabelas, restore idempotente com integridade referencial e limpeza local de backups.
+  - `backend/src/backup/backup.controller.ts`: Endpoints protegidos por JWT (`GET /config`, `PUT /config`, `POST /test-drive`, `GET /logs`, `POST /generate`, `POST /restore`, `GET /download`).
+  - `backend/src/backup/backup.module.ts` & `backend/src/app.module.ts`: Registro do `ScheduleModule.forRoot()` e `BackupModule`.
+  - `frontend/src/services/backupService.ts`: Cliente TypeScript para os novos endpoints REST.
+  - `frontend/src/components/Admin/BackupsContent.tsx` & `frontend/src/pages/Admin/Backups.tsx`: Tela e aba com cards de métricas, formulário de horário da agenda, pasta do Drive, teste de conexão, disparo manual e tabela com download/restore.
+  - `frontend/src/pages/Admin.tsx` & `frontend/src/App.tsx`: Rota `/admin/backups` e aba "Backups & Nuvem" no Painel Administrativo.
+- **Validações Executadas**:
+  - [x] Prisma generate e compilação do backend NestJS: OK.
+  - [x] Compilação do frontend React/Vite: OK.
+  - [x] Rota `/admin/backups` e aba de Backups integradas com sucesso.
+
+---
+
 ## [2026-10-08 12:45] - Migração de Infraestrutura: Docker + Portainer, Ferramentas de Backup/Restore e Cloudflare Tunnel
 - **Agente / Modelo**: Antigravity (Gemini 3.7 Flash)
 - **Objetivo / Demanda do Usuário**: Migrar a plataforma de banco e hospedagem do ITmizer-VR de Prisma Platform / Vercel para Containers Docker gerenciados via Portainer, criar ferramentas automatizadas de backup e restore com integridade referencial, e disponibilizar a aplicação localmente e via Cloudflare Tunnel com frontend na porta 3009 e API blindada na rede interna.
