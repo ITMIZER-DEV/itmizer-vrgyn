@@ -21,14 +21,33 @@ async function runRestore() {
     console.log('📥 ITMIZER-VR: Ferramenta de Restore de Banco de Dados');
     console.log('====================================================');
     console.log(`Conectando em: ${customUrl ? customUrl.replace(/:[^:@]+@/, ':****@') : 'URL padrão do ambiente'}`);
-    const backupDir = path.resolve(__dirname, '../../backups');
+    // Detectar diretório de backups de forma flexível (Local ou Docker Container)
+    const possibleDirs = [
+        path.resolve(process.cwd(), 'backups'),
+        path.resolve(__dirname, '../backups'),
+        path.resolve(__dirname, '../../backups'),
+        '/app/backups',
+    ];
+    const backupDir = possibleDirs.find((d) => fs.existsSync(d)) || possibleDirs[0];
     let targetFilePath = '';
     if (fileArg) {
-        targetFilePath = path.resolve(process.cwd(), fileArg.split('=')[1]);
+        const rawPath = fileArg.split('=')[1];
+        if (fs.existsSync(rawPath)) {
+            targetFilePath = path.resolve(rawPath);
+        }
+        else if (fs.existsSync(path.resolve(process.cwd(), rawPath))) {
+            targetFilePath = path.resolve(process.cwd(), rawPath);
+        }
+        else if (fs.existsSync(path.join(backupDir, path.basename(rawPath)))) {
+            targetFilePath = path.join(backupDir, path.basename(rawPath));
+        }
+        else {
+            targetFilePath = path.resolve(process.cwd(), rawPath);
+        }
     }
     else {
         if (!fs.existsSync(backupDir)) {
-            console.error('❌ Diretório de backups não encontrado!');
+            console.error(`❌ Diretório de backups não encontrado! (verificados: ${possibleDirs.join(', ')})`);
             process.exit(1);
         }
         const files = fs
@@ -37,7 +56,7 @@ async function runRestore() {
             .sort()
             .reverse();
         if (files.length === 0) {
-            console.error('❌ Nenhum arquivo de backup encontrado em backups/ !');
+            console.error(`❌ Nenhum arquivo de backup encontrado em ${backupDir} !`);
             process.exit(1);
         }
         targetFilePath = path.join(backupDir, files[0]);
