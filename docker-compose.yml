@@ -76,6 +76,9 @@ services:
     depends_on:
       - frontend
       - backend
+    extra_hosts:
+      - "localhost:host-gateway"
+      - "host.docker.internal:host-gateway"
     networks:
       - itmizer_network
 

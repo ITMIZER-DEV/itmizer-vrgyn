@@ -36,9 +36,11 @@ import CriticalCaseForm from "./pages/Support/CriticalCases/Form";
 
 const queryClient = new QueryClient();
 
+const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || "861662437462-aiqf9g5nhiqi0f13tv1bki24s9h70amm.apps.googleusercontent.com";
+
 const App = () => (
   <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme" attribute="class">
-    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ""}>
+    <GoogleOAuthProvider clientId={googleClientId}>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <TooltipProvider>
