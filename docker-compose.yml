@@ -5,14 +5,17 @@ services:
   # Banco de Dados PostgreSQL (Rede Interna + Porta 5432 opcional)
   # ==========================================
   postgres:
-    image: postgres:17-alpine
+    image: ${POSTGRES_IMAGE:-postgres:17-alpine}
     container_name: itmizer_postgres
     restart: unless-stopped
+    shm_size: 256mb
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-itmizer_admin}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-itmizer_secure_pwd_2026}
       POSTGRES_DB: ${POSTGRES_DB:-itmizer_vr}
       PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256 --auth-local=scram-sha-256 --encoding=UTF8 --lc-collate=C --lc-ctype=C"
+      POSTGRES_HOST_AUTH_METHOD: "scram-sha-256"
     ports:
       - "5432:5432"
     volumes:
@@ -24,6 +27,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 25s
 
   # ==========================================
   # Backend NestJS + Prisma (Rede Interna)
