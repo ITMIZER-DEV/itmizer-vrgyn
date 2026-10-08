@@ -2,10 +2,10 @@ version: '3.8'
 
 services:
   # ==========================================
-  # Banco de Dados PostgreSQL (Rede Interna + Porta 5432 opcional)
+  # Banco de Dados PostgreSQL 18 (Rede Interna + Porta 5432 opcional)
   # ==========================================
   postgres:
-    image: ${POSTGRES_IMAGE:-postgres:16-alpine}
+    image: ${POSTGRES_IMAGE:-postgres:18-alpine}
     container_name: itmizer_postgres
     restart: unless-stopped
     shm_size: 256mb
@@ -19,7 +19,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - itmizer_pgdata:/var/lib/postgresql/data
+      - itmizer_pgdata_v18:/var/lib/postgresql/data
     networks:
       - itmizer_network
     healthcheck:
@@ -89,8 +89,8 @@ services:
       - itmizer_network
 
 volumes:
-  itmizer_pgdata:
-    name: itmizer_pgdata
+  itmizer_pgdata_v18:
+    name: itmizer_pgdata_v18
 
 networks:
   itmizer_network:
