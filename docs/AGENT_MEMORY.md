@@ -4,6 +4,39 @@ Este documento registra o histórico contínuo de decisões arquiteturais, novos
 
 ---
 
+## [2026-10-08 12:45] - Migração de Infraestrutura: Docker + Portainer, Ferramentas de Backup/Restore e Cloudflare Tunnel
+- **Agente / Modelo**: Antigravity (Gemini 3.7 Flash)
+- **Objetivo / Demanda do Usuário**: Migrar a plataforma de banco e hospedagem do ITmizer-VR de Prisma Platform / Vercel para Containers Docker gerenciados via Portainer, criar ferramentas automatizadas de backup e restore com integridade referencial, e disponibilizar a aplicação localmente e via Cloudflare Tunnel com frontend na porta 3009 e API blindada na rede interna.
+- **Módulos e Arquivos Criados/Afetados**:
+  - `backend/Dockerfile` & `backend/.dockerignore`: Multi-stage build Node 20 Alpine com `prisma db push` automático na inicialização e suporte aos scripts utilitários compilados.
+  - `frontend/Dockerfile` & `frontend/nginx.conf`: Multi-stage build com Nginx 1.27 Alpine, compressão gzip, cache de estáticos e proxy reverso interno para `/api/` e `/apiDocs` apontando para `http://backend:3000`.
+  - `docker-compose.yml`: Stack de produção/Portainer com PostgreSQL 16 (volume persistente `itmizer_pgdata`), Backend NestJS interno, Frontend Nginx (porta 3009) e Cloudflare Tunnel (`vrgyn.itmizer.com`).
+  - `docker-compose.local.yml`: Compose para desenvolvimento de banco local.
+  - `.env.docker.example` & `DOCKER_PORTAINER_GUIDE.md`: Template de variáveis para Portainer Stack e guia passo a passo de deploy e restauração.
+  - `backend/scripts/backup-db.ts`: Ferramenta que extrai todas as 27 tabelas do schema Prisma com metadados e relatório (`npm run db:backup`).
+  - `backend/scripts/restore-db.ts`: Ferramenta de restore sequencial idempotente (`upsert`) com ordenação de chaves estrangeiras e tratamento nullish coalescing (`npm run db:restore`).
+  - `backend/src/prisma/prisma.service.ts`: Desacoplado do Prisma Accelerate, usando conexão nativa de alta performance do PostgreSQL quando `DATABASE_URL` for `postgresql://` (e fallback se `prisma://`).
+  - `frontend/src/App.tsx`: Fallback seguro para Google Client ID prevenindo exceções do SDK OAuth.
+- **Modelos Prisma / Banco de Dados**:
+  - Adicionado `linux-musl-openssl-3.0.x` e `debian-openssl-3.0.x` aos `binaryTargets` do `schema.prisma`.
+  - Migração de dados 100% concluída: **2.037 registros** extraídos do banco legado e restaurados com sucesso no novo PostgreSQL em Docker.
+- **Decisões Técnicas & Segurança (Zero Trust / LGPD)**:
+  - **API e Banco Blindados**: Nem a porta do PostgreSQL (5432) nem a da API NestJS (3000) ficam expostas para a internet. Toda a comunicação externa é intermediada pelo Nginx do frontend na porta 3009 e pelo Cloudflare Tunnel.
+  - **Volume Persistente**: Os dados residem em volume nomeado do Docker (`itmizer_pgdata`), sobrevivendo a reinicializações e updates de container no Portainer.
+  - **Preparação para Redundância (HA / Failover)**: Arquitetura desenhada para permitir nó secundário de backup com PostgreSQL Streaming Replication e Cloudflare Load Balancing.
+- **Pontos de Atenção para o Próximo Agente**:
+  - Para cadastrar novas origens de login Google OAuth, adicionar no Google Cloud Console: `http://localhost:3009` e `https://vrgyn.itmizer.com`.
+  - Ao subir no Portainer em VPS/Servidor, basta colar o `docker-compose.yml` e preencher as variáveis do `.env.docker.example`.
+- **Validações Executadas**:
+  - [x] Extração de Backup: 2.037 registros salvos em `backups/backup_itmizer_*.json`.
+  - [x] Restauração no PostgreSQL do Docker: 2.037 registros restaurados com sucesso em 10.02s.
+  - [x] Build do Backend e Frontend em containers Docker: OK.
+  - [x] Healthcheck do PostgreSQL: Healthy.
+  - [x] Resposta HTTP do Frontend na porta 3009 e Swagger `/apiDocs`: 200 OK.
+  - [x] Conexão do Cloudflare Tunnel: Conectado via QUIC para `vrgyn.itmizer.com`.
+
+---
+
 ## [2026-10-01] - Revisão de Skills do Projeto e Modal de Histórico de Releases
 
 - **Agente / Modelo**: Antigravity (Gemini Flash)
