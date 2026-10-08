@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   # ==========================================
-  # Banco de Dados PostgreSQL 16
+  # Banco de Dados PostgreSQL 16 (Rede Interna)
   # ==========================================
   postgres:
     image: postgres:16-alpine
@@ -10,7 +10,7 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-itmizer_secure_pwd_2026}
       POSTGRES_DB: ${POSTGRES_DB:-itmizer_vr}
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
@@ -24,7 +24,7 @@ services:
       retries: 5
 
   # ==========================================
-  # Backend NestJS + Prisma
+  # Backend NestJS + Prisma (Rede Interna - Não exposto)
   # ==========================================
   backend:
     build:
@@ -36,32 +36,46 @@ services:
       postgres:
         condition: service_healthy
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-itmizer_vr}?schema=public
-      DIRECT_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-itmizer_vr}?schema=public
-      JWT_SECRET: ${JWT_SECRET}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-itmizer_secure_pwd_2026}@postgres:5432/${POSTGRES_DB:-itmizer_vr}?schema=public
+      DIRECT_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-itmizer_secure_pwd_2026}@postgres:5432/${POSTGRES_DB:-itmizer_vr}?schema=public
+      JWT_SECRET: ${JWT_SECRET:-itmizer_jwt_super_secret_key_2026}
       JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-1d}
-      CREDENTIAL_ENCRYPTION_KEY: ${CREDENTIAL_ENCRYPTION_KEY}
+      CREDENTIAL_ENCRYPTION_KEY: ${CREDENTIAL_ENCRYPTION_KEY:-m0yU7X/W2t3qL8zF1+n6jK9xV4cR7tE1aP8oD3iU5vA=}
       PORT: 3000
-    ports:
-      - "${BACKEND_PORT:-3000}:3000"
+    volumes:
+      - ./backups:/app/backups
     networks:
       - itmizer_network
 
   # ==========================================
-  # Frontend React (Vite + Nginx)
+  # Frontend React (Vite + Nginx na Porta 3009)
   # ==========================================
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        VITE_API_URL: ${VITE_API_URL:-http://localhost:3000}
+        VITE_API_URL: ${VITE_API_URL:-/api}
     container_name: itmizer_frontend
     restart: unless-stopped
     depends_on:
       - backend
     ports:
-      - "${FRONTEND_PORT:-8080}:80"
+      - "3009:80"
+    networks:
+      - itmizer_network
+
+  # ==========================================
+  # Cloudflare Tunnel
+  # ==========================================
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: itmizer_cloudflared
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN:-eyJhIjoiOTY0ZjZkMjVlMGNmOTRmMTYyYzZkNjc4NGVlNTIyOGYiLCJ0IjoiOGYwYzE5NDYtNDg3ZC00NzdmLTk2NzEtZWY2NmJmNzMyNmZlIiwicyI6Ik9HVXlNamd3TkdJdE5ETTNNQzAwTXpRekxXSXpPVGd0TkdVMFltRXhPVGRqTWpJMiJ9}
+    depends_on:
+      - frontend
+      - backend
     networks:
       - itmizer_network
 

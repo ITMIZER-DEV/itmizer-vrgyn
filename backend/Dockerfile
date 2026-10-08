@@ -23,6 +23,7 @@ RUN npx prisma generate
 # Copiar código fonte e configurações
 COPY tsconfig*.json nest-cli.json ./
 COPY src ./src
+COPY scripts ./scripts
 
 # Compilar NestJS
 RUN npm run build
@@ -51,5 +52,5 @@ COPY --from=builder /app/prisma ./prisma
 
 EXPOSE 3000
 
-# Executa migrações do Prisma e inicia a API
-CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main.js"]
+# Executa sincronização de schema do Prisma e inicia a API
+CMD ["sh", "-c", "npx prisma db push --accept-data-loss && (node dist/src/main.js || node dist/main.js)"]
