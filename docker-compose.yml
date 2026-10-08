@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  # ==========================================
+  # Banco de Dados PostgreSQL 16
+  # ==========================================
+  postgres:
+    image: postgres:16-alpine
+    container_name: itmizer_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-itmizer_vr}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - itmizer_pgdata:/var/lib/postgresql/data
+    networks:
+      - itmizer_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-itmizer_vr}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ==========================================
+  # Backend NestJS + Prisma
+  # ==========================================
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: itmizer_backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-itmizer_vr}?schema=public
+      DIRECT_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-itmizer_vr}?schema=public
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-1d}
+      CREDENTIAL_ENCRYPTION_KEY: ${CREDENTIAL_ENCRYPTION_KEY}
+      PORT: 3000
+    ports:
+      - "${BACKEND_PORT:-3000}:3000"
+    networks:
+      - itmizer_network
+
+  # ==========================================
+  # Frontend React (Vite + Nginx)
+  # ==========================================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:3000}
+    container_name: itmizer_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "${FRONTEND_PORT:-8080}:80"
+    networks:
+      - itmizer_network
+
+volumes:
+  itmizer_pgdata:
+    name: itmizer_pgdata
+
+networks:
+  itmizer_network:
+    name: itmizer_network
+    driver: bridge

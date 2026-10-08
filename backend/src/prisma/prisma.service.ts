@@ -8,18 +8,19 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
 
     constructor() {
         super();
-        // IMPORTANTE: Retornamos o $extends diretamente do 'this' (instância criada pelo super)
-        // Isso evita criar DUAS instâncias do PrismaClient toda vez que o serviço inicia.
-        return this.$extends(withAccelerate()) as any;
+        const dbUrl = process.env.DATABASE_URL || '';
+        if (dbUrl.startsWith('prisma://')) {
+            this.logger.log('Conexão configurada para Prisma Accelerate Proxy.');
+            return this.$extends(withAccelerate()) as any;
+        }
     }
 
     async onModuleInit() {
         try {
-            // Em ambiente serverless (Vercel), o connect é opcional mas ajuda a validar a URL
             await (this as any).$connect();
-            this.logger.log('Prisma Accelerate inicializado com sucesso.');
+            this.logger.log('Prisma conectado ao banco de dados com sucesso.');
         } catch (error) {
-            this.logger.error('Erro ao conectar ao Prisma Accelerate na inicialização.', error);
+            this.logger.error('Erro ao conectar ao banco de dados na inicialização.', error);
         }
     }
 }

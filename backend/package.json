@@ -19,7 +19,10 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "ensure-admin": "ts-node scripts/ensure-admin.ts"
+    "ensure-admin": "ts-node scripts/ensure-admin.ts",
+    "db:backup": "ts-node scripts/backup-db.ts",
+    "db:restore": "ts-node scripts/restore-db.ts",
+    "prisma:deploy": "prisma migrate deploy"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
