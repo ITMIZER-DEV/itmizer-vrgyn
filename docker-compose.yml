@@ -5,7 +5,7 @@ services:
   # Banco de Dados PostgreSQL (Rede Interna + Porta 5432 opcional)
   # ==========================================
   postgres:
-    image: ${POSTGRES_IMAGE:-postgres:17-alpine}
+    image: ${POSTGRES_IMAGE:-postgres:16-alpine}
     container_name: itmizer_postgres
     restart: unless-stopped
     shm_size: 256mb
