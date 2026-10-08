@@ -48,8 +48,6 @@ services:
       JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-1d}
       CREDENTIAL_ENCRYPTION_KEY: ${CREDENTIAL_ENCRYPTION_KEY:-m0yU7X/W2t3qL8zF1+n6jK9xV4cR7tE1aP8oD3iU5vA=}
       PORT: 3000
-    volumes:
-      - ./backups:/app/backups
     networks:
       - itmizer_network
 
