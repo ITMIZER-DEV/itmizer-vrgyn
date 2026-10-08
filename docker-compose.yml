@@ -2,29 +2,7 @@ version: '3.8'
 
 services:
   # ==========================================
-  # Banco de Dados PostgreSQL 16 (Rede Interna)
-  # ==========================================
-  postgres:
-    image: postgres:16-alpine
-    container_name: itmizer_postgres
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-itmizer_secure_pwd_2026}
-      POSTGRES_DB: ${POSTGRES_DB:-itmizer_vr}
-      PGDATA: /var/lib/postgresql/data/pgdata
-    volumes:
-      - itmizer_pgdata:/var/lib/postgresql/data
-    networks:
-      - itmizer_network
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-itmizer_vr}"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  # ==========================================
-  # Backend NestJS + Prisma (Rede Interna - Não exposto)
+  # Backend NestJS + Prisma (Conecta ao Banco Externo)
   # ==========================================
   backend:
     build:
@@ -32,12 +10,9 @@ services:
       dockerfile: Dockerfile
     container_name: itmizer_backend
     restart: unless-stopped
-    depends_on:
-      postgres:
-        condition: service_healthy
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-itmizer_secure_pwd_2026}@postgres:5432/${POSTGRES_DB:-itmizer_vr}?schema=public
-      DIRECT_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-itmizer_secure_pwd_2026}@postgres:5432/${POSTGRES_DB:-itmizer_vr}?schema=public
+      DATABASE_URL: ${DATABASE_URL}
+      DIRECT_URL: ${DIRECT_URL:-${DATABASE_URL}}
       JWT_SECRET: ${JWT_SECRET:-itmizer_jwt_super_secret_key_2026}
       JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-1d}
       CREDENTIAL_ENCRYPTION_KEY: ${CREDENTIAL_ENCRYPTION_KEY:-m0yU7X/W2t3qL8zF1+n6jK9xV4cR7tE1aP8oD3iU5vA=}
@@ -81,10 +56,6 @@ services:
       - "host.docker.internal:host-gateway"
     networks:
       - itmizer_network
-
-volumes:
-  itmizer_pgdata:
-    name: itmizer_pgdata
 
 networks:
   itmizer_network:
