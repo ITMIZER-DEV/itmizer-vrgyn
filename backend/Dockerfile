@@ -49,8 +49,11 @@ COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/scripts ./scripts
+COPY --from=builder /app/tsconfig*.json ./
 
 EXPOSE 3000
 
 # Executa sincronização de schema do Prisma e inicia a API
 CMD ["sh", "-c", "npx prisma db push --accept-data-loss && (node dist/src/main.js || node dist/main.js)"]
+
