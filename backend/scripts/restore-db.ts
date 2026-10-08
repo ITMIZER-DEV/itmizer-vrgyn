@@ -29,9 +29,21 @@ async function runRestore() {
         path.resolve(process.cwd(), 'backups'),
         path.resolve(__dirname, '../backups'),
         path.resolve(__dirname, '../../backups'),
+        path.resolve(__dirname, '../backend/backups'),
         '/app/backups',
+        '/app/backend/backups',
     ];
-    const backupDir = possibleDirs.find((d) => fs.existsSync(d)) || possibleDirs[0];
+    // Encontra o primeiro diretório existente que realmente possua arquivos .json
+    let backupDir = possibleDirs.find((d) => {
+        try {
+            return fs.existsSync(d) && fs.readdirSync(d).some((f) => f.endsWith('.json'));
+        } catch {
+            return false;
+        }
+    });
+    if (!backupDir) {
+        backupDir = possibleDirs.find((d) => fs.existsSync(d)) || possibleDirs[0];
+    }
 
     let targetFilePath = '';
 
