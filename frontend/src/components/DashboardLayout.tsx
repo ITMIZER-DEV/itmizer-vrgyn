@@ -131,18 +131,24 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
 
     const activeSectionLabel = standardMenus.find(isActive)?.label;
 
-    const paletteItems: CommandPaletteItem[] = standardMenus.flatMap((item) => {
-        const entries: CommandPaletteItem[] = [];
-        if (item.route) {
-            entries.push({ id: item.id, label: item.label, route: item.route, icon: item.icon, kind: 'Página' });
-        }
-        item.submenus?.forEach((sub) => {
-            if (sub.route) {
-                entries.push({ id: sub.id, label: sub.label, route: sub.route, icon: sub.icon, kind: 'Página' });
+    const paletteItems: CommandPaletteItem[] = [
+        ...standardMenus.flatMap((item) => {
+            const entries: CommandPaletteItem[] = [];
+            if (item.route) {
+                entries.push({ id: item.id, label: item.label, route: item.route, icon: item.icon, kind: 'Página' });
             }
-        });
-        return entries;
-    });
+            item.submenus?.forEach((sub) => {
+                if (sub.route) {
+                    entries.push({ id: sub.id, label: sub.label, route: sub.route, icon: sub.icon, kind: 'Página' });
+                }
+            });
+            return entries;
+        }),
+        ...(isAdmin ? [
+            { id: 'admin-backups', label: 'Backups & Sincronização em Nuvem', route: '/admin/backups', icon: 'HardDrive', kind: 'Ação' as const },
+            { id: 'admin-panel', label: 'Painel Administrativo', route: '/admin', icon: 'Shield', kind: 'Página' as const },
+        ] : []),
+    ];
 
     const toggleSubmenu = (menuId: string) => {
         if (isCollapsed) {
@@ -370,6 +376,12 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                                                 </Link>
                                             </DropdownMenuItem>
                                         ))}
+                                        <DropdownMenuItem asChild className="rounded-lg">
+                                            <Link to="/admin/backups" className="flex items-center gap-3 w-full cursor-pointer py-2 px-2.5 font-medium text-sm text-muted-foreground hover:text-foreground">
+                                                <LucideIcons.HardDrive className="w-4 h-4 text-primary" />
+                                                Backups & Nuvem
+                                            </Link>
+                                        </DropdownMenuItem>
                                     </DropdownMenuContent>
                                 </DropdownMenu>
                             )}
