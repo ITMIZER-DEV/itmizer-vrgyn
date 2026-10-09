@@ -126,6 +126,21 @@ export class BackupService implements OnModuleInit {
         }
     }
 
+    private parseDatabaseUrl(dbUrl: string) {
+        try {
+            const parsed = new URL(dbUrl);
+            return {
+                host: parsed.hostname || 'localhost',
+                port: parsed.port || '5432',
+                user: decodeURIComponent(parsed.username || 'postgres'),
+                password: decodeURIComponent(parsed.password || ''),
+                database: parsed.pathname ? parsed.pathname.replace(/^\//, '') : 'postgres',
+            };
+        } catch (err) {
+            return null;
+        }
+    }
+
     /**
      * Executa a extração completa dos dados utilizando pg_dump nativo (com fallback para snapshot JSON)
      */
@@ -144,24 +159,34 @@ export class BackupService implements OnModuleInit {
         let report: Record<string, number> = {};
         let backupData: Record<string, any[]> = {};
 
-        // Tentativa 1: pg_dump nativo do PostgreSQL
+        // Tentativa 1: pg_dump nativo do PostgreSQL com formato custom (-F c)
         if (dbUrl) {
-            try {
-                this.logger.log('Tentando executar pg_dump nativo do PostgreSQL...');
-                const { exec } = require('child_process');
-                const util = require('util');
-                const execAsync = util.promisify(exec);
+            const pgConfig = this.parseDatabaseUrl(dbUrl);
+            if (pgConfig) {
+                try {
+                    this.logger.log(`Tentando executar pg_dump nativo para ${pgConfig.user}@${pgConfig.host}:${pgConfig.port}/${pgConfig.database}...`);
+                    const { exec } = require('child_process');
+                    const util = require('util');
+                    const execAsync = util.promisify(exec);
 
-                // Executa pg_dump no formato custom (-Fc)
-                const cmd = `pg_dump "${dbUrl}" --clean --if-exists --no-owner --no-privileges -Fc -f "${filepath}"`;
-                await execAsync(cmd, { timeout: 120000 });
+                    // pg_dump custom format (-F c). Não usar --clean/--if-exists aqui pois são opções do pg_restore.
+                    const cmd = `pg_dump -h "${pgConfig.host}" -p "${pgConfig.port}" -U "${pgConfig.user}" -d "${pgConfig.database}" -F c -b -v --no-owner --no-privileges -f "${filepath}"`;
+                    
+                    await execAsync(cmd, {
+                        timeout: 180000,
+                        env: {
+                            ...process.env,
+                            PGPASSWORD: pgConfig.password,
+                        },
+                    });
 
-                if (fs.existsSync(filepath) && fs.statSync(filepath).size > 1024) {
-                    usedPgDump = true;
-                    this.logger.log(`✅ pg_dump concluído com sucesso: ${filename} (${(fs.statSync(filepath).size / (1024 * 1024)).toFixed(2)} MB)`);
+                    if (fs.existsSync(filepath) && fs.statSync(filepath).size > 1024) {
+                        usedPgDump = true;
+                        this.logger.log(`✅ pg_dump (.dump) concluído com sucesso: ${filename} (${(fs.statSync(filepath).size / (1024 * 1024)).toFixed(2)} MB)`);
+                    }
+                } catch (pgDumpErr: any) {
+                    this.logger.warn(`pg_dump não disponível ou falhou (${pgDumpErr.message}). Utilizando extração estruturada como fallback.`);
                 }
-            } catch (pgDumpErr: any) {
-                this.logger.warn(`pg_dump não disponível ou falhou (${pgDumpErr.message}). Utilizando extração de dados estruturada.`);
             }
         }
 
@@ -379,36 +404,54 @@ export class BackupService implements OnModuleInit {
 
         // Se for arquivo .dump do pg_dump
         if (targetFilePath.endsWith('.dump') && dbUrl) {
-            this.logger.log(`Restaurando arquivo .dump via pg_restore: ${targetFilePath}`);
-            const { exec } = require('child_process');
-            const util = require('util');
-            const execAsync = util.promisify(exec);
+            const pgConfig = this.parseDatabaseUrl(dbUrl);
+            if (pgConfig) {
+                this.logger.log(`Restaurando arquivo .dump via pg_restore para ${pgConfig.user}@${pgConfig.host}:${pgConfig.port}/${pgConfig.database}...`);
+                const { exec } = require('child_process');
+                const util = require('util');
+                const execAsync = util.promisify(exec);
 
-            const cmd = `pg_restore --clean --if-exists --no-owner --no-privileges -d "${dbUrl}" "${targetFilePath}"`;
-            await execAsync(cmd, { timeout: 180000 });
+                const cmd = `pg_restore -h "${pgConfig.host}" -p "${pgConfig.port}" -U "${pgConfig.user}" -d "${pgConfig.database}" --clean --if-exists --no-owner --no-privileges -v "${targetFilePath}"`;
+                await execAsync(cmd, {
+                    timeout: 300000,
+                    env: {
+                        ...process.env,
+                        PGPASSWORD: pgConfig.password,
+                    },
+                });
 
-            return {
-                success: true,
-                totalRestored: 'Base restaurada via pg_restore',
-                filename: path.basename(targetFilePath),
-            };
+                return {
+                    success: true,
+                    totalRestored: 'Base restaurada com sucesso via pg_restore (.dump)',
+                    filename: path.basename(targetFilePath),
+                };
+            }
         }
 
         // Se for arquivo .sql
         if (targetFilePath.endsWith('.sql') && dbUrl) {
-            this.logger.log(`Restaurando arquivo .sql via psql: ${targetFilePath}`);
-            const { exec } = require('child_process');
-            const util = require('util');
-            const execAsync = util.promisify(exec);
+            const pgConfig = this.parseDatabaseUrl(dbUrl);
+            if (pgConfig) {
+                this.logger.log(`Restaurando arquivo .sql via psql para ${pgConfig.user}@${pgConfig.host}:${pgConfig.port}/${pgConfig.database}...`);
+                const { exec } = require('child_process');
+                const util = require('util');
+                const execAsync = util.promisify(exec);
 
-            const cmd = `psql "${dbUrl}" -f "${targetFilePath}"`;
-            await execAsync(cmd, { timeout: 180000 });
+                const cmd = `psql -h "${pgConfig.host}" -p "${pgConfig.port}" -U "${pgConfig.user}" -d "${pgConfig.database}" -f "${targetFilePath}"`;
+                await execAsync(cmd, {
+                    timeout: 300000,
+                    env: {
+                        ...process.env,
+                        PGPASSWORD: pgConfig.password,
+                    },
+                });
 
-            return {
-                success: true,
-                totalRestored: 'Base restaurada via psql',
-                filename: path.basename(targetFilePath),
-            };
+                return {
+                    success: true,
+                    totalRestored: 'Base restaurada com sucesso via psql (.sql)',
+                    filename: path.basename(targetFilePath),
+                };
+            }
         }
 
         // Se for snapshot .json
