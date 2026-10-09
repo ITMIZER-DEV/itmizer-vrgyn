@@ -83,10 +83,13 @@ export class GoogleDriveService {
                 };
             }
 
+            // Garante que a subpasta 'database' exista dentro da pasta raiz
+            const subfolderId = await this.getOrCreateSubfolder(cleanFolderId, 'database');
+
             return {
                 success: true,
-                message: `Conexão bem-sucedida! Pasta "${folder.name}" identificada e pronta para receber backups.`,
-                folderName: folder.name || 'Pasta Google Drive',
+                message: `Conexão bem-sucedida! Pasta "${folder.name}" > subpasta "database" pronta para receber backups.`,
+                folderName: `${folder.name || 'Drive'} / database`,
             };
         } catch (error: any) {
             this.logger.error(`Falha ao conectar no Google Drive (pasta ${cleanFolderId}): ${error.message}`);
@@ -98,9 +101,49 @@ export class GoogleDriveService {
     }
 
     /**
-     * Envia um arquivo para a pasta do Google Drive
+     * Localiza ou cria a subpasta (ex: 'database') dentro da pasta pai informada
      */
-    async uploadFile(filePath: string, folderId: string): Promise<{
+    async getOrCreateSubfolder(parentFolderId: string, subfolderName: string = 'database'): Promise<string> {
+        const drive = this.getDriveClient();
+        if (!drive) throw new Error('Cliente Google Drive não inicializado');
+
+        const cleanParentId = this.extractFolderId(parentFolderId);
+
+        // Busca se já existe a subpasta
+        const query = `'${cleanParentId}' in parents and name = '${subfolderName}' and mimeType = 'application/vnd.google-apps.folder' and trashed = false`;
+        const listRes = await drive.files.list({
+            q: query,
+            fields: 'files(id, name)',
+            supportsAllDrives: true,
+            includeItemsFromAllDrives: true,
+        });
+
+        if (listRes.data.files && listRes.data.files.length > 0) {
+            const foundId = listRes.data.files[0].id!;
+            this.logger.log(`Subpasta "${subfolderName}" encontrada (ID: ${foundId})`);
+            return foundId;
+        }
+
+        // Se não existir, cria a subpasta
+        this.logger.log(`Criando subpasta "${subfolderName}" dentro da pasta ${cleanParentId}...`);
+        const createRes = await drive.files.create({
+            requestBody: {
+                name: subfolderName,
+                mimeType: 'application/vnd.google-apps.folder',
+                parents: [cleanParentId],
+            },
+            fields: 'id, name',
+            supportsAllDrives: true,
+        });
+
+        this.logger.log(`✅ Subpasta "${subfolderName}" criada com sucesso! (ID: ${createRes.data.id})`);
+        return createRes.data.id!;
+    }
+
+    /**
+     * Envia um arquivo para a subpasta 'database' do Google Drive
+     */
+    async uploadFile(filePath: string, parentFolderId: string, subfolderName: string = 'database'): Promise<{
         success: boolean;
         fileId?: string;
         webViewLink?: string;
@@ -114,8 +157,8 @@ export class GoogleDriveService {
             };
         }
 
-        const cleanFolderId = this.extractFolderId(folderId);
-        if (!cleanFolderId) {
+        const cleanParentId = this.extractFolderId(parentFolderId);
+        if (!cleanParentId) {
             return {
                 success: false,
                 error: 'ID da pasta do Google Drive inválido',
@@ -130,14 +173,17 @@ export class GoogleDriveService {
         }
 
         try {
+            // Obter ou criar a subpasta 'database'
+            const targetFolderId = await this.getOrCreateSubfolder(cleanParentId, subfolderName);
+
             const fileName = path.basename(filePath);
             const fileSize = fs.statSync(filePath).size;
-            this.logger.log(`Iniciando upload de ${fileName} (${(fileSize / (1024 * 1024)).toFixed(2)} MB) para pasta Google Drive: ${cleanFolderId}`);
+            this.logger.log(`Iniciando upload de ${fileName} (${(fileSize / (1024 * 1024)).toFixed(2)} MB) para subpasta ${subfolderName} (ID: ${targetFolderId})`);
 
             const response = await drive.files.create({
                 requestBody: {
                     name: fileName,
-                    parents: [cleanFolderId],
+                    parents: [targetFolderId],
                     description: `Backup automatizado ITmizer-VR gerado em ${new Date().toISOString()}`,
                 },
                 media: {
@@ -165,24 +211,27 @@ export class GoogleDriveService {
     }
 
     /**
-     * Limpa backups antigos na pasta do Google Drive que excedem o tempo de retenção em dias
+     * Limpa backups antigos na subpasta 'database' que excedem o tempo de retenção em dias
      */
-    async cleanupOldBackups(folderId: string, retentionDays: number = 15): Promise<{ deletedCount: number }> {
+    async cleanupOldBackups(parentFolderId: string, retentionDays: number = 15, subfolderName: string = 'database'): Promise<{ deletedCount: number }> {
         const drive = this.getDriveClient();
         if (!drive) return { deletedCount: 0 };
 
-        const cleanFolderId = this.extractFolderId(folderId);
-        if (!cleanFolderId) return { deletedCount: 0 };
+        const cleanParentId = this.extractFolderId(parentFolderId);
+        if (!cleanParentId) return { deletedCount: 0 };
 
         try {
+            // Localiza a subpasta 'database'
+            const targetFolderId = await this.getOrCreateSubfolder(cleanParentId, subfolderName);
+
             const cutoffDate = new Date();
             cutoffDate.setDate(cutoffDate.getDate() - retentionDays);
             const cutoffIso = cutoffDate.toISOString();
 
-            this.logger.log(`Verificando backups no Google Drive anteriores a ${cutoffIso} (Retenção: ${retentionDays} dias)...`);
+            this.logger.log(`Verificando backups em "${subfolderName}" anteriores a ${cutoffIso} (Retenção: ${retentionDays} dias)...`);
 
-            // Busca arquivos na pasta que foram criados antes do cutoffDate
-            const query = `'${cleanFolderId}' in parents and trashed = false and createdTime < '${cutoffIso}'`;
+            // Busca arquivos na subpasta database criados antes do cutoffDate
+            const query = `'${targetFolderId}' in parents and trashed = false and createdTime < '${cutoffIso}'`;
             const listRes = await drive.files.list({
                 q: query,
                 fields: 'files(id, name, createdTime)',
@@ -200,7 +249,7 @@ export class GoogleDriveService {
                             fileId: file.id,
                             supportsAllDrives: true,
                         });
-                        this.logger.log(`🗑️ Backup expirado removido do Google Drive: ${file.name} (${file.id})`);
+                        this.logger.log(`🗑️ Backup expirado removido do Google Drive (${subfolderName}): ${file.name} (${file.id})`);
                         deletedCount++;
                     } catch (delErr: any) {
                         this.logger.warn(`Não foi possível remover arquivo ${file.id}: ${delErr.message}`);
@@ -229,3 +278,4 @@ export class GoogleDriveService {
         return trimmed;
     }
 }
+

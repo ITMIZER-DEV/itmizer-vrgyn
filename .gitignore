@@ -60,3 +60,10 @@ coverage/
 # Backups de banco de dados (nunca versionar dump com dados reais de clientes)
 backups/
 *.backup
+
+# Google Cloud Service Account Keys (NUNCA commitar chaves de servico)
+*-*.json
+*.key.json
+*serviceaccount*.json
+vrgyn-platform-*.json
+
