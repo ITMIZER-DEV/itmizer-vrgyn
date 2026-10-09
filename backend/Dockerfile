@@ -39,8 +39,8 @@ FROM node:20-alpine AS runner
 
 WORKDIR /app
 
-# Instalar openssl para o Prisma Engine rodar no Alpine
-RUN apk add --no-cache openssl
+# Instalar openssl e postgresql-client para pg_dump e Prisma Engine rodarem no Alpine
+RUN apk add --no-cache openssl postgresql-client
 
 ENV NODE_ENV=production
 ENV PORT=3000
