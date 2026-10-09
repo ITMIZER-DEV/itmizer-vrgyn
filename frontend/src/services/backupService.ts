@@ -8,6 +8,8 @@ export interface BackupConfig {
     googleDriveEnabled: boolean;
     googleDriveFolderId: string;
     googleDriveFolderUrl?: string;
+    googleServiceAccountJson?: string;
+    googleServiceAccountEmail?: string;
     retentionDays: number;
     backupFormat: string;
     lastRunAt?: string;
@@ -52,8 +54,8 @@ export const backupService = {
         return response.data;
     },
 
-    async testGoogleDrive(folderId?: string): Promise<TestDriveResponse> {
-        const response = await api.post<TestDriveResponse>('/backups/test-drive', { folderId });
+    async testGoogleDrive(folderId?: string, googleServiceAccountJson?: string): Promise<TestDriveResponse> {
+        const response = await api.post<TestDriveResponse>('/backups/test-drive', { folderId, googleServiceAccountJson });
         return response.data;
     },
 

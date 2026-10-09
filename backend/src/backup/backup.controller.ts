@@ -36,10 +36,18 @@ export class BackupController {
     }
 
     @Post('test-drive')
-    async testDrive(@Body('folderId') folderId?: string) {
+    async testDrive(
+        @Body('folderId') folderId?: string,
+        @Body('googleServiceAccountJson') googleServiceAccountJson?: string,
+    ) {
         const config = await this.backupService.getConfig();
         const targetFolder = folderId || config.googleDriveFolderId;
-        return await this.googleDriveService.testConnection(targetFolder);
+        const driveCreds = {
+            googleServiceAccountJson: googleServiceAccountJson || config.googleServiceAccountJson,
+            googleServiceAccountEmail: config.googleServiceAccountEmail,
+            googlePrivateKey: config.googlePrivateKey,
+        };
+        return await this.googleDriveService.testConnection(targetFolder, driveCreds);
     }
 
     @Get('logs')

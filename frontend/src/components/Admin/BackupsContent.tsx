@@ -30,6 +30,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 import {
     HardDrive,
     Cloud,
@@ -43,6 +44,9 @@ import {
     ExternalLink,
     RefreshCw,
     ShieldCheck,
+    Key,
+    FileJson,
+    Upload,
 } from 'lucide-react';
 
 export function BackupsContent() {
@@ -118,7 +122,7 @@ export function BackupsContent() {
         setTestingDrive(true);
         setDriveTestResult(null);
         try {
-            const res = await backupService.testGoogleDrive(config.googleDriveFolderId);
+            const res = await backupService.testGoogleDrive(config.googleDriveFolderId, config.googleServiceAccountJson);
             setDriveTestResult(res);
             if (res.success) {
                 toast({
@@ -145,6 +149,43 @@ export function BackupsContent() {
         } finally {
             setTestingDrive(false);
         }
+    };
+
+    const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            try {
+                const content = event.target?.result as string;
+                const parsed = JSON.parse(content);
+                if (parsed.client_email && (parsed.private_key || parsed.type === 'service_account')) {
+                    setConfig({
+                        ...config,
+                        googleServiceAccountJson: content,
+                        googleServiceAccountEmail: parsed.client_email,
+                    });
+                    toast({
+                        title: 'Chave Carregada com Sucesso!',
+                        description: `Conta de Serviço: ${parsed.client_email}`,
+                    });
+                } else {
+                    toast({
+                        title: 'Arquivo Inválido',
+                        description: 'O arquivo JSON selecionado não possui as chaves client_email / private_key do Google Cloud.',
+                        variant: 'destructive',
+                    });
+                }
+            } catch (err: any) {
+                toast({
+                    title: 'Erro ao ler arquivo JSON',
+                    description: err.message,
+                    variant: 'destructive',
+                });
+            }
+        };
+        reader.readAsText(file);
     };
 
     const handleGenerateBackup = async () => {
@@ -392,7 +433,7 @@ export function BackupsContent() {
                             <Input
                                 value={config.googleDriveFolderId}
                                 onChange={(e) => setConfig({ ...config, googleDriveFolderId: e.target.value })}
-                                placeholder="ID ou URL da pasta Google Drive"
+                                placeholder="ID ou URL da pasta Google Drive (ex: 0AAzNdB7t26iUUk9PVA)"
                                 className="font-mono text-xs h-8"
                                 disabled={!config.googleDriveEnabled}
                             />
@@ -407,6 +448,60 @@ export function BackupsContent() {
                                 <RefreshCw className={`w-3.5 h-3.5 ${testingDrive ? 'animate-spin' : ''}`} />
                                 Testar Conexão
                             </Button>
+                        </div>
+
+                        {/* Configuração da Chave de Serviço no Banco de Dados */}
+                        <div className="pt-2 border-t border-border/40 space-y-2">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                                <Label className="text-xs font-semibold flex items-center gap-1.5">
+                                    <Key className="w-3.5 h-3.5 text-amber-500" />
+                                    Chave da Conta de Serviço Google (JSON)
+                                    {config.googleServiceAccountEmail && (
+                                        <Badge variant="outline" className="text-[10px] text-emerald-600 dark:text-emerald-400 border-emerald-500/30">
+                                            {config.googleServiceAccountEmail}
+                                        </Badge>
+                                    )}
+                                </Label>
+                                <div>
+                                    <input
+                                        type="file"
+                                        id="sa-json-upload"
+                                        accept=".json"
+                                        className="hidden"
+                                        onChange={handleFileUpload}
+                                    />
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        size="sm"
+                                        className="h-7 text-[11px] gap-1.5"
+                                        onClick={() => document.getElementById('sa-json-upload')?.click()}
+                                    >
+                                        <Upload className="w-3 h-3" />
+                                        Carregar Arquivo .JSON
+                                    </Button>
+                                </div>
+                            </div>
+                            <Textarea
+                                value={config.googleServiceAccountJson || ''}
+                                onChange={(e) => {
+                                    const val = e.target.value;
+                                    let email = config.googleServiceAccountEmail;
+                                    try {
+                                        if (val.trim().startsWith('{')) {
+                                            const p = JSON.parse(val);
+                                            if (p.client_email) email = p.client_email;
+                                        }
+                                    } catch {}
+                                    setConfig({ ...config, googleServiceAccountJson: val, googleServiceAccountEmail: email });
+                                }}
+                                placeholder='Cole o conteúdo do arquivo JSON da chave do Google Cloud (contendo "client_email" e "private_key") para salvar direto no banco de dados...'
+                                className="font-mono text-[11px] min-h-[70px] bg-background/80"
+                                disabled={!config.googleDriveEnabled}
+                            />
+                            <p className="text-[10px] text-muted-foreground">
+                                💡 Ao salvar aqui, as credenciais ficam gravadas com segurança no banco de dados, sem necessidade de editar o arquivo <code>.env</code> ou reiniciar contêineres.
+                            </p>
                         </div>
 
                         {driveTestResult && (

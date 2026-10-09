@@ -639,19 +639,22 @@ model CriticalCaseAcompanhamento {
 // ============================================================
 
 model SystemBackupConfig {
-  id                  String    @id @default("default")
-  scheduleEnabled     Boolean   @default(true) @map("schedule_enabled")
-  scheduleTime        String    @default("00:00") @map("schedule_time")
-  frequency           String    @default("DAILY") @map("frequency") // DAILY, WEEKLY
-  googleDriveEnabled  Boolean   @default(true) @map("google_drive_enabled")
-  googleDriveFolderId String    @default("0AAzNdB7t26iUUk9PVA") @map("google_drive_folder_id")
-  googleDriveFolderUrl String?  @map("google_drive_folder_url")
-  retentionDays       Int       @default(15) @map("retention_days")
-  backupFormat        String    @default("HYBRID") @map("backup_format") // HYBRID, JSON, SQL
-  lastRunAt           DateTime? @map("last_run_at")
-  lastStatus          String?   @map("last_status") // SUCCESS, FAILED
-  lastMessage         String?   @map("last_message") @db.Text
-  updatedAt           DateTime  @updatedAt @map("updated_at")
+  id                        String    @id @default("default")
+  scheduleEnabled           Boolean   @default(true) @map("schedule_enabled")
+  scheduleTime              String    @default("00:00") @map("schedule_time")
+  frequency                 String    @default("DAILY") @map("frequency") // DAILY, WEEKLY
+  googleDriveEnabled        Boolean   @default(true) @map("google_drive_enabled")
+  googleDriveFolderId       String    @default("0AAzNdB7t26iUUk9PVA") @map("google_drive_folder_id")
+  googleDriveFolderUrl      String?   @map("google_drive_folder_url")
+  googleServiceAccountJson  String?   @map("google_service_account_json") @db.Text
+  googleServiceAccountEmail String?   @map("google_service_account_email")
+  googlePrivateKey          String?   @map("google_private_key") @db.Text
+  retentionDays             Int       @default(15) @map("retention_days")
+  backupFormat              String    @default("HYBRID") @map("backup_format") // HYBRID, JSON, SQL
+  lastRunAt                 DateTime? @map("last_run_at")
+  lastStatus                String?   @map("last_status") // SUCCESS, FAILED
+  lastMessage               String?   @map("last_message") @db.Text
+  updatedAt                 DateTime  @updatedAt @map("updated_at")
 
   @@map("system_backup_configs")
 }

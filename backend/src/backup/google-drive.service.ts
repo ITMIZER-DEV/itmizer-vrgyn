@@ -3,15 +3,21 @@ import { google, drive_v3 } from 'googleapis';
 import * as fs from 'fs';
 import * as path from 'path';
 
+export interface DriveCredentialsDto {
+    googleServiceAccountJson?: string | null;
+    googleServiceAccountEmail?: string | null;
+    googlePrivateKey?: string | null;
+}
+
 @Injectable()
 export class GoogleDriveService {
     private readonly logger = new Logger(GoogleDriveService.name);
 
-    private getDriveClient(): drive_v3.Drive | null {
+    private getDriveClient(creds?: DriveCredentialsDto): drive_v3.Drive | null {
         try {
-            const rawJson = process.env.GOOGLE_SERVICE_ACCOUNT_JSON || process.env.GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON;
-            const saEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL || process.env.GOOGLE_DRIVE_CLIENT_EMAIL;
-            const saKey = process.env.GOOGLE_PRIVATE_KEY || process.env.GOOGLE_DRIVE_PRIVATE_KEY;
+            const rawJson = creds?.googleServiceAccountJson || process.env.GOOGLE_SERVICE_ACCOUNT_JSON || process.env.GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON;
+            const saEmail = creds?.googleServiceAccountEmail || process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL || process.env.GOOGLE_DRIVE_CLIENT_EMAIL;
+            const saKey = creds?.googlePrivateKey || process.env.GOOGLE_PRIVATE_KEY || process.env.GOOGLE_DRIVE_PRIVATE_KEY;
             const credPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
 
             let auth: any = null;
@@ -51,12 +57,12 @@ export class GoogleDriveService {
     /**
      * Testa se as credenciais e a pasta do Google Drive são válidas e acessíveis
      */
-    async testConnection(folderId: string): Promise<{ success: boolean; message: string; folderName?: string }> {
-        const drive = this.getDriveClient();
+    async testConnection(folderId: string, creds?: DriveCredentialsDto): Promise<{ success: boolean; message: string; folderName?: string }> {
+        const drive = this.getDriveClient(creds);
         if (!drive) {
             return {
                 success: false,
-                message: 'Credenciais do Google Drive não configuradas no servidor (.env). Configure GOOGLE_SERVICE_ACCOUNT_EMAIL e GOOGLE_PRIVATE_KEY ou GOOGLE_SERVICE_ACCOUNT_JSON.',
+                message: 'Credenciais do Google Drive não configuradas. Cole o JSON da Chave de Serviço no formulário ou configure as variáveis de ambiente.',
             };
         }
 
@@ -103,8 +109,8 @@ export class GoogleDriveService {
     /**
      * Localiza ou cria a subpasta (ex: 'database') dentro da pasta pai informada
      */
-    async getOrCreateSubfolder(parentFolderId: string, subfolderName: string = 'database'): Promise<string> {
-        const drive = this.getDriveClient();
+    async getOrCreateSubfolder(parentFolderId: string, subfolderName: string = 'database', creds?: DriveCredentialsDto): Promise<string> {
+        const drive = this.getDriveClient(creds);
         if (!drive) throw new Error('Cliente Google Drive não inicializado');
 
         const cleanParentId = this.extractFolderId(parentFolderId);
@@ -143,17 +149,17 @@ export class GoogleDriveService {
     /**
      * Envia um arquivo para a subpasta 'database' do Google Drive
      */
-    async uploadFile(filePath: string, parentFolderId: string, subfolderName: string = 'database'): Promise<{
+    async uploadFile(filePath: string, parentFolderId: string, subfolderName: string = 'database', creds?: DriveCredentialsDto): Promise<{
         success: boolean;
         fileId?: string;
         webViewLink?: string;
         error?: string;
     }> {
-        const drive = this.getDriveClient();
+        const drive = this.getDriveClient(creds);
         if (!drive) {
             return {
                 success: false,
-                error: 'Credenciais do Google Drive não configuradas no .env',
+                error: 'Credenciais do Google Drive não configuradas (salve a chave na tela de Backups ou no .env)',
             };
         }
 
@@ -174,7 +180,7 @@ export class GoogleDriveService {
 
         try {
             // Obter ou criar a subpasta 'database'
-            const targetFolderId = await this.getOrCreateSubfolder(cleanParentId, subfolderName);
+            const targetFolderId = await this.getOrCreateSubfolder(cleanParentId, subfolderName, creds);
 
             const fileName = path.basename(filePath);
             const fileSize = fs.statSync(filePath).size;
@@ -187,7 +193,7 @@ export class GoogleDriveService {
                     description: `Backup automatizado ITmizer-VR gerado em ${new Date().toISOString()}`,
                 },
                 media: {
-                    mimeType: 'application/json',
+                    mimeType: 'application/octet-stream',
                     body: fs.createReadStream(filePath),
                 },
                 fields: 'id, name, webViewLink, webContentLink',
@@ -213,8 +219,8 @@ export class GoogleDriveService {
     /**
      * Limpa backups antigos na subpasta 'database' que excedem o tempo de retenção em dias
      */
-    async cleanupOldBackups(parentFolderId: string, retentionDays: number = 15, subfolderName: string = 'database'): Promise<{ deletedCount: number }> {
-        const drive = this.getDriveClient();
+    async cleanupOldBackups(parentFolderId: string, retentionDays: number = 15, subfolderName: string = 'database', creds?: DriveCredentialsDto): Promise<{ deletedCount: number }> {
+        const drive = this.getDriveClient(creds);
         if (!drive) return { deletedCount: 0 };
 
         const cleanParentId = this.extractFolderId(parentFolderId);
@@ -222,7 +228,7 @@ export class GoogleDriveService {
 
         try {
             // Localiza a subpasta 'database'
-            const targetFolderId = await this.getOrCreateSubfolder(cleanParentId, subfolderName);
+            const targetFolderId = await this.getOrCreateSubfolder(cleanParentId, subfolderName, creds);
 
             const cutoffDate = new Date();
             cutoffDate.setDate(cutoffDate.getDate() - retentionDays);

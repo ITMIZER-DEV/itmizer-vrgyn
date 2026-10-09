@@ -1,0 +1,12 @@
+{
+    "workbench.editorAssociations": {
+        "*.log": "default",
+        "*.class": "default",
+        "*.jasper": "default",
+        "*.sql": "default",
+        "*.parquet": "duckdb.dataFileViewer",
+        "*.csv": "duckdb.dataFileViewer",
+        "*.tsv": "duckdb.dataFileViewer",
+        "*.xlsx": "duckdb.dataFileViewer"
+    }
+}

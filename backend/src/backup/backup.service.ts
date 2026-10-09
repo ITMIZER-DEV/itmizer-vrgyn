@@ -239,6 +239,11 @@ export class BackupService implements OnModuleInit {
         const fileSizeFormatted = stat.size > 1024 * 1024 ? `${fileSizeMb} MB` : `${(stat.size / 1024).toFixed(2)} KB`;
 
         const config = await this.getConfig();
+        const driveCreds = {
+            googleServiceAccountJson: config.googleServiceAccountJson,
+            googleServiceAccountEmail: config.googleServiceAccountEmail,
+            googlePrivateKey: config.googlePrivateKey,
+        };
 
         // Enviar para o Google Drive na subpasta 'database'
         let googleDriveFileId: string | null = null;
@@ -248,7 +253,7 @@ export class BackupService implements OnModuleInit {
 
         if (config.googleDriveEnabled && config.googleDriveFolderId) {
             googleDriveStatus = 'UPLOADING';
-            const uploadRes = await this.googleDriveService.uploadFile(filepath, config.googleDriveFolderId, 'database');
+            const uploadRes = await this.googleDriveService.uploadFile(filepath, config.googleDriveFolderId, 'database', driveCreds);
             if (uploadRes.success) {
                 googleDriveStatus = 'UPLOADED';
                 googleDriveFileId = uploadRes.fileId || null;
@@ -260,7 +265,7 @@ export class BackupService implements OnModuleInit {
 
             // Executa rotina de retenção de 15 dias na subpasta database do Google Drive
             try {
-                await this.googleDriveService.cleanupOldBackups(config.googleDriveFolderId, config.retentionDays || 15, 'database');
+                await this.googleDriveService.cleanupOldBackups(config.googleDriveFolderId, config.retentionDays || 15, 'database', driveCreds);
             } catch (cleanErr: any) {
                 this.logger.warn(`Erro na limpeza do Google Drive: ${cleanErr.message}`);
             }
